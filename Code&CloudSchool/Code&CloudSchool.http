@@ -1,0 +1,6 @@
+@Code_CloudSchool_HostAddress = http://localhost:5182
+
+GET {{Code_CloudSchool_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
