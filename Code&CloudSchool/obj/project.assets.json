@@ -80,9 +80,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code&CloudSchool.csproj",
-      "projectName": "Code&CloudSchool",
-      "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code&CloudSchool.csproj",
+      "projectUniqueName": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj",
+      "projectName": "Code_CloudSchool",
+      "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj",
       "packagesPath": "C:\\Users\\Kurts\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\obj\\",
       "projectStyle": "PackageReference",
