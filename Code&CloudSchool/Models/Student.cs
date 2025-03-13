@@ -25,9 +25,8 @@ public class Student
     [Required]
     public required string studentGender {get; set;} = "Other"; //default value -> male / female / other
 
-    [Required]
     [EmailAddress]
-    public required string Email {get; set;} = string.Empty;
+    public string Email {get; set;} = string.Empty;
 
     [Phone]
     public string? phoneNumber {get; set;} = null;
