@@ -1,3 +1,6 @@
+using Code_CloudSchool.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // connection to DB String here
-
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// add db context to services 
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
@@ -26,6 +31,7 @@ app.UseHttpsRedirection();
 
 
 // controller based api endpoints
+app.MapControllers();
 app.Run();
 
 
