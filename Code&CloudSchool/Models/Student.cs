@@ -19,14 +19,14 @@ public class Student
     public required string lastName {get; set;} = string.Empty;
 
     [Required]
-    [StringLength(12)]
+    [StringLength(13)]
     public required string IdNo {get; set;} = string.Empty;
 
     [Required]
     public required string studentGender {get; set;} = "Other"; //default value -> male / female / other
 
     [EmailAddress]
-    public string Email {get; set;} = string.Empty;
+    public string? Email {get; set;} = string.Empty;
 
     [Phone]
     public string? phoneNumber {get; set;} = null;
