@@ -29,5 +29,19 @@ public class Student
     [EmailAddress]
     public required string Email {get; set;} = string.Empty;
 
-    
+    [Phone]
+    public string? phoneNumber {get; set;} = null;
+
+    public string? Address {get; set;} = null;
+
+    [Required]
+    public DateTime enrollmentDate {get; set;} = DateTime.UtcNow;
+
+    [Required]
+    [StringLength(50)]
+    public string yearLevel {get; set;} = "1st Year";
+
+    [Required]
+    [StringLength(50)]
+    public string studentStatus {get; set;} = "Active"; //active - Graduated - suspended - expelled etc
 }
