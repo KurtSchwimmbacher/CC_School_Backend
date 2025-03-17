@@ -16,5 +16,7 @@ public class AppDbContext : DbContext
     // list the tables / relationships
     public DbSet<Student> Students { get; set; }
 
+public DbSet<Code_CloudSchool.Models.User> User { get; set; } = default!;
+
 
 }

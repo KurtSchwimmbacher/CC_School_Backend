@@ -29,10 +29,10 @@ namespace Code_CloudSchool.Controllers
         }
 
         // GET: api/Student/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        [HttpGet("{studentNumber}")]
+        public async Task<ActionResult<Student>> GetStudent(string studentNumber)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.Students.FindAsync(studentNumber);
 
             if (student == null)
             {
@@ -44,10 +44,10 @@ namespace Code_CloudSchool.Controllers
 
         // PUT: api/Student/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        [HttpPut("{studentNumber}")]
+        public async Task<IActionResult> PutStudent(string studentNumber, Student student)
         {
-            if (id != student.Id)
+            if (studentNumber != student.StudentNumber)
             {
                 return BadRequest();
             }
@@ -60,7 +60,7 @@ namespace Code_CloudSchool.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!StudentExists(studentNumber))
                 {
                     return NotFound();
                 }
@@ -81,14 +81,14 @@ namespace Code_CloudSchool.Controllers
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            return CreatedAtAction("GetStudent", new { studentNumber = student.StudentNumber }, student);
         }
 
         // DELETE: api/Student/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+        [HttpDelete("{studentNumber}")]
+        public async Task<IActionResult> DeleteStudent(string studentNumber)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.Students.FindAsync(studentNumber);
             if (student == null)
             {
                 return NotFound();
@@ -100,9 +100,9 @@ namespace Code_CloudSchool.Controllers
             return NoContent();
         }
 
-        private bool StudentExists(int id)
+        private bool StudentExists(string studentNumber)
         {
-            return _context.Students.Any(e => e.Id == id);
+            return _context.Students.Any(e => e.StudentNumber == studentNumber);
         }
     }
 }
