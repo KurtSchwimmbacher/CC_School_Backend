@@ -8,19 +8,23 @@ public class User
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id {get; set;}  //PK
+    public int Id { get; set; }  // Primary Key
     
-    public string Name {get; set;} = string.Empty;
-
-    public string lastName {get; set;} = string.Empty;
-
-    [EmailAddress]
-    public string Email {get; set;} = string.Empty;
+    [Required]
+    public string Name { get; set; } = string.Empty;
 
     [Required]
-    public required string Password {get; set;}
+    public string LastName { get; set; } = string.Empty;
 
-    public string Role {get; set;} = "User"; //Admin - Student - Lecturer
+    [Required, EmailAddress]
+    public string Email { get; set; } = string.Empty;
 
+    [Phone]
+    public string? PhoneNumber { get; set; } = null;
 
+    [Required]
+    public string Password { get; set; } = string.Empty;
+
+    [Required]
+    public string Role { get; set; } = "User"; // Will be overridden in subclasses
 }
