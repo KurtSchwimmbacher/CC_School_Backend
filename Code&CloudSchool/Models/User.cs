@@ -26,5 +26,5 @@ public class User
     public string Password { get; set; } = string.Empty;
 
     [Required]
-    public string Role { get; set; } = "User"; // Will be overridden in subclasses
+    public virtual string Role { get; set; } = "User"; 
 }

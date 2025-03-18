@@ -14,9 +14,20 @@ public class AppDbContext : DbContext
     }
 
     // list the tables / relationships
+    public DbSet<User> User { get; set; }
     public DbSet<Student> Students { get; set; }
 
-public DbSet<Code_CloudSchool.Models.User> User { get; set; } = default!;
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // configure student inheritance
+        modelBuilder.Entity<Student>().HasBaseType<User>();
+
+        // unique constraint for student number
+        modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
+
+    }
 
 
 }

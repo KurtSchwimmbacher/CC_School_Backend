@@ -32,7 +32,7 @@ namespace Code_CloudSchool.Controllers
         [HttpGet("{studentNumber}")]
         public async Task<ActionResult<Student>> GetStudent(string studentNumber)
         {
-            var student = await _context.Students.FindAsync(studentNumber);
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
 
             if (student == null)
             {
@@ -88,7 +88,7 @@ namespace Code_CloudSchool.Controllers
         [HttpDelete("{studentNumber}")]
         public async Task<IActionResult> DeleteStudent(string studentNumber)
         {
-            var student = await _context.Students.FindAsync(studentNumber);
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
             if (student == null)
             {
                 return NotFound();

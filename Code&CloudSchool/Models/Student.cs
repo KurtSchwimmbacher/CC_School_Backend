@@ -1,12 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Code_CloudSchool.Models;
 
 public class Student : User
 {
     [Required]
+    [StringLength(50)]
     public required string StudentNumber { get; set; } = string.Empty; 
 
     [Required]
