@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
 using Code_CloudSchool.Services;
+using Code_CloudSchool.Interfaces;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -16,10 +17,12 @@ namespace Code_CloudSchool.Controllers
     public class StudentController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IStudentAuth _StudentAuth;
 
-        public StudentController(AppDbContext context)
+        public StudentController(AppDbContext context, IStudentAuth studentAuth)
         {
             _context = context;
+            _StudentAuth = studentAuth;
         }
 
 
@@ -38,6 +41,21 @@ namespace Code_CloudSchool.Controllers
             return Ok("Student registered successfully");
         }
 
+
+
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> LoginStudent(Student student)
+        {
+            string message = await _StudentAuth.LoginStudent(student.Password, student.Email);
+            if (message == "Login Successful")
+            {
+                return Ok(message);
+            }
+            else
+            {
+                return BadRequest(message);
+            }
+        }
 
 
         // GET: api/Student
@@ -90,17 +108,6 @@ namespace Code_CloudSchool.Controllers
             }
 
             return NoContent();
-        }
-
-        // POST: api/Student
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
-        {
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStudent", new { studentNumber = student.StudentNumber }, student);
         }
 
         // DELETE: api/Student/5

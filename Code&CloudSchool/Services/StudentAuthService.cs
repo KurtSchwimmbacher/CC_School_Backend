@@ -72,4 +72,32 @@ public class StudentAuthService : IStudentAuth
 
         return Task.FromResult(true);
     }
+
+
+
+    public Task<bool> ValidatePassword(Student student, string password)
+    {
+        bool isPasswordValid = BCrypt.Net.BCrypt.EnhancedVerify(password, student.Password);
+        return Task.FromResult(isPasswordValid);
+    }
+
+
+    public Task<string> LoginStudent(string password, string email)
+    {
+        Student? studentFromDB = EmailExists(email).Result;
+
+        // user doesnt exist means cant login
+        if (studentFromDB == null)
+        {
+            return Task.FromResult("Student Doesn't Exist");
+        }
+
+        if (!ValidatePassword(studentFromDB, password).Result)
+        {
+            return Task.FromResult("Password is incorrect");
+        }
+
+        return Task.FromResult("Login Successful");
+    }
+
 }
