@@ -1,4 +1,7 @@
 using Code_CloudSchool.Data;
+using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.LectInterface;
+using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +12,7 @@ builder.Services.AddDbContext<AppContext>(options =>
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<ILAuthService, LAuthService>();
 
 builder.Services.AddControllers();
 
@@ -18,7 +22,7 @@ builder.Services.AddSwaggerGen();
 // connection to DB String here
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // add db context to services 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppContext>(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
