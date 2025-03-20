@@ -24,6 +24,8 @@ public class LecturerReg
     [MaxLength(150)]
     public string LecEmail {get;set;} = string.Empty;
 
+    public string Password {get;set;} = string.Empty;
+
     [Required]
     [MaxLength(50)]
     public string PhoneNumber {get;set;} = string.Empty;
