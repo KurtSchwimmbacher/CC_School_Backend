@@ -31,7 +31,7 @@ namespace Code_CloudSchool.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<bool>> RegisterStudent(Student student)
         {
-            bool isRegistered = await new StudentAuthService(_context).RegisterStudent(student);
+            bool isRegistered = await _StudentAuth.RegisterStudent(student);
 
             if (!isRegistered)
             {
