@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
+using Code_CloudSchool.Services;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -20,6 +21,24 @@ namespace Code_CloudSchool.Controllers
         {
             _context = context;
         }
+
+
+
+        // register student
+        [HttpPost("register")]
+        public async Task<ActionResult<bool>> RegisterStudent(Student student)
+        {
+            bool isRegistered = await new StudentAuthService(_context).RegisterStudent(student);
+
+            if (!isRegistered)
+            {
+                return BadRequest("Student already exists");
+            }
+
+            return Ok("Student registered successfully");
+        }
+
+
 
         // GET: api/Student
         [HttpGet]

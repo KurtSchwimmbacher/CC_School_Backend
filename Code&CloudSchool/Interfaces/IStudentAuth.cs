@@ -9,7 +9,7 @@ public interface IStudentAuth
     public Task<string> HashPassword(string password);
 
     // returns a student number as a string
-    public Task<string> GenerateStudentNumber();
+    public Task<string> GenerateStudentNumber(Student student);
 
     // returns email address based on student number
     public Task<string> GenerateEmailAddress(string studentNumber);
@@ -18,6 +18,6 @@ public interface IStudentAuth
     public Task<bool> RegisterStudent(Student student);
 
     // returns a student object if email address exists
-    public Task<string> EmailExists(string email);
+    public Task<Student?> EmailExists(string email);
 
 }

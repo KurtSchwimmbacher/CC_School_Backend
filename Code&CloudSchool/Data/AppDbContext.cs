@@ -21,13 +21,14 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // configure student inheritance
-        modelBuilder.Entity<Student>().HasBaseType<User>();
+        // Configure TPT: Separate tables for User and Student
+        modelBuilder.Entity<User>().ToTable("Users");
+        modelBuilder.Entity<Student>().ToTable("Students");
 
-        // unique constraint for student number
+        // Unique constraint for StudentNumber
         modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
-
     }
+
 
 
 }
