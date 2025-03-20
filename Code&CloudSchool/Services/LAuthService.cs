@@ -1,5 +1,5 @@
 using System;
-using Code_CloudSchool.Data;
+
 using Code_CloudSchool.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +7,9 @@ namespace Code_CloudSchool.Services;
 
 public class LAuthService : ILAuthService
 {
-    private readonly AppDbContext _context;
+    private readonly AppContext _context;
 
-    public LAuthService(AppDbContext context)
+    public LAuthService(AppContext context)
     {
         _context = context;
     }
@@ -27,7 +27,7 @@ public class LAuthService : ILAuthService
 
 
         //Adding the lecturer to our DB
-        _context.Lecturers.Add(lecturer);
+        _context.LecturerReg.Add(lecturer);
         _context.SaveChanges();
 
         return Task.FromResult(true); //returning true if the user was added successfully
@@ -55,7 +55,7 @@ public class LAuthService : ILAuthService
 
         //checking if the email exists in our DB
         //go find the fist user where their email matches the email we are looking for
-       LecturerReg? userFromDB = await  _context.Lecturers.FirstOrDefaultAsync(userInDB => userInDB.LecEmail == email);
+       LecturerReg? userFromDB = await  _context.LecturerReg.FirstOrDefaultAsync(userInDB => userInDB.LecEmail == email);
        return userFromDB; // if null, email not in use, if User, means User already exists 
     
         throw new NotImplementedException();
