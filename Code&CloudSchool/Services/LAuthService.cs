@@ -1,6 +1,7 @@
 using System;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Code_CloudSchool.Services;
 
@@ -22,11 +23,11 @@ public class LAuthService : ILAuthService
             return Task.FromResult(false); //if the email exists, return false
         }
 
-        Lecturer.Password = HashedPassword(user.Password).Result; //first updating my password 
+        lecturer.Password = HashedPassword(lecturer.Password).Result; //first updating my password 
 
 
-        //Adding the user to our DB
-        _context.Users.Add(user);
+        //Adding the lecturer to our DB
+        _context.Lecturers.Add(lecturer);
         _context.SaveChanges();
 
         return Task.FromResult(true); //returning true if the user was added successfully
@@ -49,12 +50,12 @@ public class LAuthService : ILAuthService
         //returning the hashed password 
     }
 
-    public async Task<User?> EmailExists(string email)
+    public async Task<LecturerReg?> EmailExists(string email)
     {
 
         //checking if the email exists in our DB
         //go find the fist user where their email matches the email we are looking for
-       User? userFromDB = await  _context.Users.FirstOrDefaultAsync(userInDB => userInDB.Email == email);
+       LecturerReg? userFromDB = await  _context.Lecturers.FirstOrDefaultAsync(userInDB => userInDB.LecEmail == email);
        return userFromDB; // if null, email not in use, if User, means User already exists 
     
         throw new NotImplementedException();
@@ -65,7 +66,7 @@ public class LAuthService : ILAuthService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ValidatePassword(User user, string password)
+    public Task<bool> ValidatePassword(LecturerReg lecturer, string password)
     {
         throw new NotImplementedException();
     }
