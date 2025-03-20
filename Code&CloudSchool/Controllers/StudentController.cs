@@ -9,6 +9,7 @@ using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
 using Code_CloudSchool.Services;
 using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.DTOs;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -44,7 +45,7 @@ namespace Code_CloudSchool.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginStudent(Student student)
+        public async Task<ActionResult<string>> LoginStudent(LoginDTO student)
         {
             string message = await _StudentAuth.LoginStudent(student.Password, student.Email);
             if (message == "Login Successful")
