@@ -3,7 +3,7 @@ using Code_CloudSchool.Models;
 
 namespace Code_CloudSchool.Interfaces;
 
-public interface StudentAuthServices
+public interface IStudentAuth
 {
     // returns a hashed password as a string
     public Task<string> HashPassword(string password);
@@ -19,6 +19,5 @@ public interface StudentAuthServices
 
     // returns a student object if email address exists
     public Task<string> EmailExists(string email);
-
 
 }
