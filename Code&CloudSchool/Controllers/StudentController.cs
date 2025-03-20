@@ -20,10 +20,13 @@ namespace Code_CloudSchool.Controllers
         private readonly AppDbContext _context;
         private readonly IStudentAuth _StudentAuth;
 
-        public StudentController(AppDbContext context, IStudentAuth studentAuth)
+        private readonly IStudentStatus _StudentStatus;
+
+        public StudentController(AppDbContext context, IStudentAuth studentAuth, IStudentStatus studentStatus)
         {
             _context = context;
             _StudentAuth = studentAuth;
+            _StudentStatus = studentStatus;
         }
 
 
@@ -110,6 +113,26 @@ namespace Code_CloudSchool.Controllers
 
             return NoContent();
         }
+
+
+        /// <summary>
+        /// update the students status
+        /// </summary>
+        /// <param name="studentNumber"></param>
+        /// <returns></returns>
+        [HttpPut("{studentNumber}/status")]
+        public async Task<IActionResult> UpdateStudentStatus(string studentNumber, UpdateStudentStatusDTO statusDTO)
+        {
+            bool updated = await _StudentStatus.UpdateStudentStatus(studentNumber, statusDTO);
+
+            if (!updated)
+            {
+                return NotFound("Student update failed or student not found");
+            }
+
+            return Ok("Student Status updated successfully");
+        }
+
 
         // DELETE: api/Student/5
         [HttpDelete("{studentNumber}")]

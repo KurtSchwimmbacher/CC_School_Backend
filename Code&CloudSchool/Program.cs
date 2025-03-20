@@ -20,6 +20,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
+builder.Services.AddScoped<IStudentStatus, StudentStatusService>();
+
 
 
 var app = builder.Build();
