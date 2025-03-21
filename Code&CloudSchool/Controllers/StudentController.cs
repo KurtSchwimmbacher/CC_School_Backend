@@ -24,12 +24,15 @@ namespace Code_CloudSchool.Controllers
 
         private readonly IStudentReEnroll _StudentReEnroll;
 
-        public StudentController(AppDbContext context, IStudentAuth studentAuth, IStudentStatus studentStatus, IStudentReEnroll studentReEnroll)
+        private readonly IUpdateStudentPassword _StudentPassword;
+
+        public StudentController(AppDbContext context, IStudentAuth studentAuth, IStudentStatus studentStatus, IStudentReEnroll studentReEnroll, IUpdateStudentPassword studentPassword)
         {
             _context = context;
             _StudentAuth = studentAuth;
             _StudentStatus = studentStatus;
             _StudentReEnroll = studentReEnroll;
+            _StudentPassword = studentPassword;
         }
 
 
@@ -154,6 +157,20 @@ namespace Code_CloudSchool.Controllers
             return Ok("Student Year Level updated Successfully");
         }
 
+
+
+        [HttpPut("{studentNumber}/updatePassword")]
+        public async Task<IActionResult> UpdateStudentPassword(string studentNumber, StudentPasswordDTO studentPasswordDTO)
+        {
+            bool updated = await _StudentPassword.UpdateStudentPassword(studentNumber, studentPasswordDTO);
+
+            if (!updated)
+            {
+                return BadRequest("Password update failed. Incorrect old password or student not found.");
+            }
+
+            return Ok("Password updated successfully.");
+        }
 
 
 
