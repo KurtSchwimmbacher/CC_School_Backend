@@ -22,6 +22,6 @@ public interface IStudentAuth
 
     public Task<string> LoginStudent(string password, string email);
 
-    public Task<bool> ValidatePassword(Student student, string password);    
+    public Task<bool> ValidatePassword(Student student, string password);
 
 }

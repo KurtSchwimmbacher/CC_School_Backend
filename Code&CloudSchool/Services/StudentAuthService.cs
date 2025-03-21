@@ -28,30 +28,23 @@ public class StudentAuthService : IStudentAuth
         return Task.FromResult(studentNumber + "@codecloudschool.com");
     }
 
-public async Task<string> GenerateStudentNumber(Student student)
-{
-    string studentNumber = "3";
-    string year = DateTime.UtcNow.Year.ToString().Substring(2);
-
-    // Ensure student.Id is populated
-    if (student.Id == 0) 
+    public Task<string> GenerateStudentNumber(Student student)
     {
-        await _context.Students.AddAsync(student);
-        await _context.SaveChangesAsync(); // Save to get the assigned ID
+        string studentNumber = "3";
+        string year = DateTime.UtcNow.Year.ToString().Substring(2);
+        studentNumber += year;
+        string userID = student.Id.ToString();
+
+        for (int i = 0; i < 4 - userID.Length; i++)
+        {
+            studentNumber += "0";
+        }
+
+        studentNumber += userID;
+
+        return Task.FromResult(studentNumber);
+
     }
-
-    string userID = student.Id.ToString();
-
-    for (int i = 0; i < 4 - userID.Length; i++)
-    {
-        studentNumber += "0";
-    }
-
-    studentNumber += userID;
-
-    return studentNumber;
-}
-
 
 
     public Task<string> HashPassword(string password)
@@ -60,24 +53,33 @@ public async Task<string> GenerateStudentNumber(Student student)
         return Task.FromResult(HashedPassword);
     }
 
-    public Task<bool> RegisterStudent(Student student)
+    public async Task<bool> RegisterStudent(Student student)
     {
         Student? doesStudentExist = EmailExists(student.Email).Result;
         if (doesStudentExist != null)
         {
-            return Task.FromResult(false);
+            return false;
         }
 
         // if student doesnt exist yet
-        student.StudentNumber = GenerateStudentNumber(student).Result;
-        student.Email = GenerateEmailAddress(student.StudentNumber).Result;
+
+        // hash password 
         student.Password = HashPassword(student.Password).Result;
 
-        // adding user to DB
+        // Step 1: Save the base User first
         _context.Students.Add(student);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync(); // Ensures the User ID is generated
 
-        return Task.FromResult(true);
+        // step 2:  generate student number using newly assigned UserID
+        student.StudentNumber = GenerateStudentNumber(student).Result;
+        student.Email = GenerateEmailAddress(student.StudentNumber).Result;
+
+
+        // adding user to DB
+        _context.Students.Update(student);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
 
