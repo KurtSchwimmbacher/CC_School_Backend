@@ -28,23 +28,30 @@ public class StudentAuthService : IStudentAuth
         return Task.FromResult(studentNumber + "@codecloudschool.com");
     }
 
-    public Task<string> GenerateStudentNumber(Student student)
+public async Task<string> GenerateStudentNumber(Student student)
+{
+    string studentNumber = "3";
+    string year = DateTime.UtcNow.Year.ToString().Substring(2);
+
+    // Ensure student.Id is populated
+    if (student.Id == 0) 
     {
-        string studentNumber = "3";
-        string year = DateTime.UtcNow.Year.ToString().Substring(2);
-        studentNumber += year;
-        string userID = student.Id.ToString();
-
-        for (int i = 0; i < 4 - userID.Length; i++)
-        {
-            studentNumber += "0";
-        }
-
-        studentNumber += userID;
-
-        return Task.FromResult(studentNumber);
-
+        await _context.Students.AddAsync(student);
+        await _context.SaveChangesAsync(); // Save to get the assigned ID
     }
+
+    string userID = student.Id.ToString();
+
+    for (int i = 0; i < 4 - userID.Length; i++)
+    {
+        studentNumber += "0";
+    }
+
+    studentNumber += userID;
+
+    return studentNumber;
+}
+
 
 
     public Task<string> HashPassword(string password)
