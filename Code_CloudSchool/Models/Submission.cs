@@ -7,30 +7,30 @@ namespace Code_CloudSchool.Models
 {
     public class Submission
     {
-        [Key] // Marks this property as the primary key in the database.
-        public int Id { get; set; }
+        [Key] // This is the primary key for the Submission table.
+        public int Submission_ID { get; set; }
 
-        [Required(ErrorMessage = "Assignment ID is required.")] // Ensures the AssignmentId property is not null.
-        [ForeignKey("Assignment")] // Specifies that AssignmentId is a foreign key for the Assignment navigation property.
-        public int AssignmentId { get; set; }
+        [Required] // The Assignment_ID field is required and cannot be null.
+        [ForeignKey("Assignment")] // This is a foreign key linking to the Assignment table.
+        public int Assignment_ID { get; set; }
 
-        // Navigation property to the Assignment being submitted.
+        [Required] // The Student_ID field is required and cannot be null.
+        [ForeignKey("Student")] // This is a foreign key linking to the Student table.
+        public int Student_ID { get; set; }
+
+        [Required] // The FilePath field is required and cannot be null.
+        public string FilePath { get; set; } // Path to the submitted file.
+
+        [Required] // The SubmissionDate field is required and cannot be null.
+        public DateTime SubmissionDate { get; set; } // Date and time of submission.
+
+        // Navigation property to the Assignment this submission belongs to.
         public Assignment Assignment { get; set; }
 
-        [Required(ErrorMessage = "Student ID is required.")] // Ensures the StudentId property is not null.
-        [ForeignKey("Student")] // Specifies that StudentId is a foreign key for the Student navigation property.
-        public int StudentId { get; set; }
-
-        // Navigation property to the Student who submitted the assignment.
+        // Navigation property to the Student who made this submission.
         public Student Student { get; set; }
 
-        [Required(ErrorMessage = "File path is required.")] // Ensures the FilePath property is not null or empty.
-        public string FilePath { get; set; }
-
-        [Required(ErrorMessage = "Submission date is required.")] // Ensures the SubmissionDate property is not null.
-        public DateTime SubmissionDate { get; set; }
-
-        // Navigation property to the Grade (if the submission has been graded).
+        // Navigation property to the Grade for this submission (if graded).
         public Grade Grade { get; set; }
     }
 }

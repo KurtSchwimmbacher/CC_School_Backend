@@ -8,25 +8,22 @@ namespace Code_CloudSchool.Models
 {
     public class Assignment
     {
-        [Key] // Marks this property as the primary key in the database.
-        public int Id { get; set; }
+        [Key] // This is the primary key for the Assignment table.
+        public int Assignment_ID { get; set; }
 
-        [Required] // Ensures the Title property is not null or empty.
-        [StringLength(100)] // Limits the Title to 100 characters.
+        [Required] // The Title field is required and cannot be null.
         public string Title { get; set; }
 
-        [Required] // Ensures the Description property is not null or empty.
-        public string Description { get; set; }
+        public string Description { get; set; } // Optional description for the assignment.
 
-        [Required] // Ensures the DueDate property is not null.
+        [Required] // The DueDate field is required and cannot be null.
         public DateTime DueDate { get; set; }
 
-        [Required] // Ensures the LecturerId property is not null.
-        [ForeignKey("Lecturer")] // Specifies that LecturerId is a foreign key for the Lecturer navigation property.
-        public int LecturerId { get; set; }
+        [ForeignKey("Class")] // This is a foreign key linking to the Class table.
+        public int Class_ID { get; set; }
 
-        // Navigation property to the Lecturer who created this assignment.
-        public Lecturer Lecturer { get; set; }
+        // Navigation property to the Class this assignment belongs to.
+        public Class Class { get; set; }
 
         // Navigation property to the list of submissions for this assignment.
         public ICollection<Submission> Submissions { get; set; }
