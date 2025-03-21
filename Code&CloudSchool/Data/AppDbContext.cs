@@ -17,6 +17,8 @@ public class AppDbContext : DbContext
     public DbSet<User> User { get; set; }
     public DbSet<Student> Students { get; set; }
 
+    public DbSet<Admin> Admins {get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -24,9 +26,13 @@ public class AppDbContext : DbContext
         // Configure TPT: Separate tables for User and Student
         modelBuilder.Entity<User>().ToTable("Users");
         modelBuilder.Entity<Student>().ToTable("Students");
+        modelBuilder.Entity<Admin>().ToTable("Admins");
 
         // Unique constraint for StudentNumber
         modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
+
+        // unique constraint for AdminID
+        modelBuilder.Entity<Admin>().HasIndex(a => a.AdminId).IsUnique();
     }
 
 
