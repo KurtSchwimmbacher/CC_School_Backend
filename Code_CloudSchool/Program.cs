@@ -11,9 +11,10 @@ builder.Services.AddControllers(); // Add support for controllers.
 builder.Services.AddEndpointsApiExplorer(); // Add support for API exploration.
 builder.Services.AddSwaggerGen(); // Add support for Swagger documentation.
 
-// Register DbContext with the connection string from appsettings.json.
+// Register DbContext with the PostgreSQL connection string from appsettings.json.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString)); // Use Npgsql for PostgreSQL.
 
 // Register services for dependency injection.
 builder.Services.AddScoped<IAssignmentService, AssignmentService>();

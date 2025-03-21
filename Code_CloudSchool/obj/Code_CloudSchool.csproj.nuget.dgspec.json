@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code&CloudSchool/Code_CloudSchool.csproj": {}
+    "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code_CloudSchool/Code_CloudSchool.csproj": {}
   },
   "projects": {
-    "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code&CloudSchool/Code_CloudSchool.csproj": {
+    "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code_CloudSchool/Code_CloudSchool.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
+        "projectUniqueName": "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code_CloudSchool/Code_CloudSchool.csproj",
         "projectName": "Code_CloudSchool",
-        "projectPath": "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
+        "projectPath": "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code_CloudSchool/Code_CloudSchool.csproj",
         "packagesPath": "/Users/ngoziojukwu/.nuget/packages/",
-        "outputPath": "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code&CloudSchool/obj/",
+        "outputPath": "/Users/ngoziojukwu/Documents/OW/Third Year/DV300/Semester 1/CC_School/Code_CloudSchool/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/ngoziojukwu/.nuget/NuGet/NuGet.Config"
