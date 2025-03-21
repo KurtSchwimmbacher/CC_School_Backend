@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers(); // Add support for controllers.
+builder.Services.dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design ⁠(); // Add support for controllers.
 builder.Services.AddEndpointsApiExplorer(); // Add support for API exploration.
 builder.Services.AddSwaggerGen(); // Add support for Swagger documentation.
 
