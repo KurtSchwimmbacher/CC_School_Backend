@@ -21,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();
+builder.Services.AddScoped<IStudentReEnroll, StudentReEnrollService>();
 
 
 

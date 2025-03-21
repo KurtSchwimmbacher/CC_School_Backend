@@ -22,11 +22,14 @@ namespace Code_CloudSchool.Controllers
 
         private readonly IStudentStatus _StudentStatus;
 
-        public StudentController(AppDbContext context, IStudentAuth studentAuth, IStudentStatus studentStatus)
+        private readonly IStudentReEnroll _StudentReEnroll;
+
+        public StudentController(AppDbContext context, IStudentAuth studentAuth, IStudentStatus studentStatus, IStudentReEnroll studentReEnroll)
         {
             _context = context;
             _StudentAuth = studentAuth;
             _StudentStatus = studentStatus;
+            _StudentReEnroll = studentReEnroll;
         }
 
 
@@ -132,6 +135,26 @@ namespace Code_CloudSchool.Controllers
 
             return Ok("Student Status updated successfully");
         }
+
+        /// <summary>
+        /// Update the year level of a student who has re-enrolled
+        /// </summary>
+        /// <param name="studentNumber"></param>
+        /// <returns></returns>
+        [HttpPut("{studentNumber}/enroll")]
+        public async Task<ActionResult> StudentReEnroll(string studentNumber, StudentReEnrollDTO studentReEnrollDTO)
+        {
+            bool updated = await _StudentReEnroll.UpdateStudentYearLevel(studentNumber, studentReEnrollDTO);
+
+            if (!updated)
+            {
+                return NotFound("Student update failed or student not found");
+            }
+
+            return Ok("Student Year Level updated Successfully");
+        }
+
+
 
 
         // DELETE: api/Student/5
