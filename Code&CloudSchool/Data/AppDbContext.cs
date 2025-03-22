@@ -12,5 +12,5 @@ using Code_CloudSchool.Models;
         {
         }
 
-        public DbSet<Code_CloudSchool.Models.Announcements> Announcements { get; set; } = default!;
+        public DbSet<Announcements> Announcements { get; set; } = default!;
     }
