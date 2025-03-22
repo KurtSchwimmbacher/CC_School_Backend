@@ -16,6 +16,10 @@ public class AppDbContext : DbContext
     // list the tables / relationships
     public DbSet<User> User { get; set; }
     public DbSet<Student> Students { get; set; }
+    public DbSet<Assignment> Assignments { get; set; }
+    public DbSet<Submission> Submissions { get; set; }
+    public DbSet<Grade> Grades { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,6 +31,20 @@ public class AppDbContext : DbContext
 
         // Unique constraint for StudentNumber
         modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
+
+        // Configure the one-to-many relationship between Assignment and Submission.
+            modelBuilder.Entity<Assignment>()
+                .HasMany(a => a.Submissions) // An Assignment can have many Submissions.
+                .WithOne(s => s.Assignment) // A Submission belongs to one Assignment.
+                .HasForeignKey(s => s.Assignment_ID) // Foreign key in the Submission table.
+                .OnDelete(DeleteBehavior.Cascade); // If an Assignment is deleted, its Submissions are also deleted.
+
+            // Configure the one-to-one relationship between Submission and Grade.
+            modelBuilder.Entity<Submission>()
+                .HasOne(s => s.Grade) // A Submission can have one Grade.
+                .WithOne(g => g.Submission) // A Grade belongs to one Submission.
+                .HasForeignKey<Grade>(g => g.Submission_ID) // Foreign key in the Grade table.
+                .OnDelete(DeleteBehavior.Cascade); // If a Submission is deleted, its Grade is also deleted.
     }
 
 
