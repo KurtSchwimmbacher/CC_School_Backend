@@ -40,5 +40,3 @@ app.UseHttpsRedirection();
 // controller based api endpoints
 app.MapControllers();
 app.Run();
-
-
