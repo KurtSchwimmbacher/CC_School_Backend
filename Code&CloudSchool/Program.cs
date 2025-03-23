@@ -1,5 +1,6 @@
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.Models;
 using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();
 builder.Services.AddScoped<IStudentReEnroll, StudentReEnrollService>();
 builder.Services.AddScoped<IUpdateStudentPassword, StudentPasswordService>();
-
+builder.Services.AddScoped<IAdminAuth, AdminAuthService>();
 
 
 var app = builder.Build();

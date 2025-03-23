@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
+using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.DTOs;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -16,10 +18,61 @@ namespace Code_CloudSchool.Controllers
     {
         private readonly AppDbContext _context;
 
-        public AdminController(AppDbContext context)
+        private readonly IAdminAuth _adminAuth;
+
+        public AdminController(AppDbContext context, IAdminAuth adminAuth)
         {
             _context = context;
+            _adminAuth = adminAuth;
         }
+
+
+
+
+
+        // register admin
+        [HttpPost("register")]
+        public async Task<ActionResult<bool>> RegisterAdmin(AdminRegisterDTO adminRegisterDTO)
+        {
+            //map AdminRegisterDTO to Admin model
+            Admin admin = new Admin
+            {
+                Name = adminRegisterDTO.FName,
+                LastName = adminRegisterDTO.LName,
+                Password = adminRegisterDTO.Password,
+                AdminRole = adminRegisterDTO.AdminRole,
+                AssignedDepartments = adminRegisterDTO.Department
+            };
+
+            bool isRegistered = await _adminAuth.RegisterAdmin(admin);
+
+            if (!isRegistered)
+            {
+                return BadRequest("Admin already exists");
+            }
+
+            return Ok("Admin Registered Successfully");
+        }
+
+        // login admin
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> LoginAdmin(LoginDTO admin)
+        {
+            string msg = await _adminAuth.LoginAdmin(admin.Password, admin.Password);
+            if (msg == "Login Successful")
+            {
+                return Ok(msg);
+            }
+            else
+            {
+                return BadRequest(msg);
+            }
+        }
+
+
+
+
+
 
         // GET: api/Admin
         [HttpGet]
@@ -42,36 +95,7 @@ namespace Code_CloudSchool.Controllers
             return admin;
         }
 
-        // PUT: api/Admin/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
-        {
-            if (id != admin.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(admin).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AdminExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/Admin
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -81,7 +105,7 @@ namespace Code_CloudSchool.Controllers
             _context.Admins.Add(admin);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.Id }, admin);
+            return CreatedAtAction("GetAdmin", new { id = admin.AdminId }, admin);
         }
 
         // DELETE: api/Admin/5
@@ -102,7 +126,7 @@ namespace Code_CloudSchool.Controllers
 
         private bool AdminExists(int id)
         {
-            return _context.Admins.Any(e => e.Id == id);
+            return _context.Admins.Any(e => e.AdminId == id);
         }
     }
 }
