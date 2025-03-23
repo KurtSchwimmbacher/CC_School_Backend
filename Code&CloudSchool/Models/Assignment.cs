@@ -22,7 +22,7 @@ public class Assignment
     public int LecturerId { get; set; }  // <--- Add this property
 
     [ForeignKey("LecturerId")]
-    public required Lecturer Lecturer { get; set; }  // <--- Navigation property
+    public  Lecturer? Lecturer { get; set; }  // <--- Navigation property
 
     // Navigation property to the list of submissions for this assignment.
     public ICollection<Submission> Submissions { get; set; } = new List<Submission>();

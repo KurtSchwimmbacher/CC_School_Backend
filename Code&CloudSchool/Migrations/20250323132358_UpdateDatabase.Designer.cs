@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250321163648_AddAssignmentsAndSubmissions")]
-    partial class AddAssignmentsAndSubmissions
+    [Migration("20250323132358_UpdateDatabase")]
+    partial class UpdateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,11 +39,16 @@ namespace Code_CloudSchool.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("LecturerId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Assignment_ID");
+
+                    b.HasIndex("LecturerId");
 
                     b.ToTable("Assignments");
                 });
@@ -71,6 +76,23 @@ namespace Code_CloudSchool.Migrations
                         .IsUnique();
 
                     b.ToTable("Grades");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Lecturer", b =>
+                {
+                    b.Property<int>("LecturerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LecturerId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("LecturerId");
+
+                    b.ToTable("Lecturer");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Submission", b =>
@@ -174,6 +196,17 @@ namespace Code_CloudSchool.Migrations
                         .IsUnique();
 
                     b.ToTable("Students", (string)null);
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
+                {
+                    b.HasOne("Code_CloudSchool.Models.Lecturer", "Lecturer")
+                        .WithMany()
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lecturer");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Grade", b =>
