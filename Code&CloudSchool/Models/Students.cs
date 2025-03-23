@@ -8,5 +8,7 @@ public class Students
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int StudentNumber { get; set; }
+
+    //TODO: Add more properties here 
 }

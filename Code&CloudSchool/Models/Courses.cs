@@ -8,7 +8,7 @@ public class Courses
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int courseId { get; set; }
 
     [Required]
     public string courseName { get; set; }
@@ -17,4 +17,7 @@ public class Courses
     public int courseCode { get; set; }
 
     public string? courseDescription { get; set; }
+
+    public List<Majors> Majors { get; set; } = [];
+    public List<Students> Students { get; set; } = [];
 }

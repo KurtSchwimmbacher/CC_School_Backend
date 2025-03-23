@@ -8,7 +8,7 @@ public class Majors
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int majorId { get; set; }
 
     [Required]
     public string MajorName { get; set; }
@@ -18,7 +18,20 @@ public class Majors
 
     [Required]
     public int CreditsRequired { get; set; }
-    public List<Courses> Courses { get; set; }
-    public List<Students> Students { get; set; }
+
+    public List<Courses> Courses { get; set; } = [];
+    public List<Students> Students { get; set; } = [];
 
 }
+
+//---
+//sojfeo: [
+//   "Id": 1,
+//   "MajorName": "Software Engineering",
+//   "MajorCode": "SWE",
+//   "MajorDescription": "Learn how to build software applications",
+//   "CreditsRequired": 120, 
+//   "Courses": [ 
+//     {    }
+//   ],
+//   "Students": [
