@@ -86,8 +86,8 @@ public class AdminAuthService : IAdminAuth
 
         // make admin email
         admin.AdminEmail = GenerateAdminEmail(admin.Name, admin.LastName, admin.AdminRole).Result;
-
-        _context.Admins.Add(admin);
+        
+        _context.Admins.Update(admin);
         await _context.SaveChangesAsync();
 
         return true;

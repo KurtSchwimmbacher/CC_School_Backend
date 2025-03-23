@@ -7,7 +7,6 @@ namespace Code_CloudSchool.Models;
 
 public class Admin : User
 {
-    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // auto generate the value
     public int AdminId { get; set; }
 

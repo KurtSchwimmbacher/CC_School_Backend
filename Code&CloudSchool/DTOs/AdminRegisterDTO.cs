@@ -15,6 +15,8 @@ public class AdminRegisterDTO
     [Required]
     public required string Password { get; set; }
 
+    public string phoneNumber {get; set; }
+
     [Required]
     public required string AdminRole { get; set; }
 

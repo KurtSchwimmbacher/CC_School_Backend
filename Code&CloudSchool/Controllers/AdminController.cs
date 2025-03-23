@@ -40,6 +40,7 @@ namespace Code_CloudSchool.Controllers
                 Name = adminRegisterDTO.FName,
                 LastName = adminRegisterDTO.LName,
                 Password = adminRegisterDTO.Password,
+                PhoneNumber = adminRegisterDTO.phoneNumber,
                 AdminRole = adminRegisterDTO.AdminRole,
                 AssignedDepartments = adminRegisterDTO.Department
             };
@@ -58,7 +59,7 @@ namespace Code_CloudSchool.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<string>> LoginAdmin(LoginDTO admin)
         {
-            string msg = await _adminAuth.LoginAdmin(admin.Password, admin.Password);
+            string msg = await _adminAuth.LoginAdmin(admin.Password, admin.Email);
             if (msg == "Login Successful")
             {
                 return Ok(msg);
