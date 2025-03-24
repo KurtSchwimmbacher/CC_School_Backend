@@ -1,12 +1,17 @@
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.Data2;
+using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.LectInterface;
 using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<ILAuthService, LAuthService>();
 
 builder.Services.AddControllers();
 
@@ -17,7 +22,7 @@ builder.Services.AddSwaggerGen();
 // connection to DB String here
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // add db context to services 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();
@@ -33,7 +38,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI();  
 }
 
 app.UseHttpsRedirection();
@@ -42,5 +47,3 @@ app.UseHttpsRedirection();
 // controller based api endpoints
 app.MapControllers();
 app.Run();
-
-
