@@ -38,7 +38,7 @@ namespace Code_CloudSchool.Controllers
         {
             try
             {
-                var assignments = await _assignmentService.GetAssignmentByLecturer(lecturerId); // Call the service method.
+                var assignments = await _assignmentService.GetAssignmentsByLecturer(lecturerId); // Call the service method.
                 return Ok(assignments); // Return the list of assignments with a 200 OK status.
             }
             catch (Exception ex)

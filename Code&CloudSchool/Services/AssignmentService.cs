@@ -80,10 +80,6 @@ public class AssignmentService : IAssignmentService
             return await query.ToListAsync();
         }
 
-    public Task<List<Assignment>> GetAssignmentByLecturer(int lecturerId)
-    {
-        throw new NotImplementedException();
-    }
 
     public Task<List<Assignment>> GetAssignmentByFilter(DateTime? dueDate, bool? isComplete)
     {

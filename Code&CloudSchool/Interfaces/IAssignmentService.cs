@@ -10,8 +10,8 @@ namespace Code_CloudSchool.Interfaces
         // Create a new assignment.
         Task<Assignment> CreateAssignment(Assignment assignment);
 
-        // Get all assignments for a specific lecture.
-        Task<List<Assignment>> GetAssignmentByLecturer(int lecturerId);
+        // Get all assignments for a specific lecturer.
+        Task<List<Assignment>> GetAssignmentsByLecturer(int lecturerId);
 
         // Get a specific assignment by its ID.
         Task<Assignment> GetAssignmentById(int id);
