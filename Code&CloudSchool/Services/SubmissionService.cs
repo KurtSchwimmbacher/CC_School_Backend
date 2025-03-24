@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Code_CloudSchool.Data;
+using Code_CloudSchool.DTOs;
 using Code_CloudSchool.Interfaces;
 using Code_CloudSchool.Models;
 using Microsoft.EntityFrameworkCore;
@@ -75,4 +76,13 @@ public class SubmissionService : ISubmissionService
                 .AnyAsync(s => s.Student.Id == studentId && s.Assignment.Assignment_ID == assignmentId); // Use Assignment navigation property
         }
 
+    public Task<Submission> SubmitAssignment(CreateSubmissionDTO submissionDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Submission> UpdateSubmission(UpdateSubmissionDTO submissionDto)
+    {
+        throw new NotImplementedException();
+    }
 }
