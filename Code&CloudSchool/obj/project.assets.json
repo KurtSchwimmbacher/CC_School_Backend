@@ -8245,19 +8245,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/brilubokaba/.nuget/packages/": {}
+    "C:\\Users\\Kurts\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
+      "projectUniqueName": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj",
       "projectName": "Code_CloudSchool",
-      "projectPath": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
-      "packagesPath": "/Users/brilubokaba/.nuget/packages/",
-      "outputPath": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/obj/",
+      "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj",
+      "packagesPath": "C:\\Users\\Kurts\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/brilubokaba/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Kurts\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -8347,7 +8347,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
