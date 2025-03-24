@@ -13,4 +13,5 @@ using Code_CloudSchool.Models;
         }
 
         public DbSet<Announcements> Announcements { get; set; } = default!;
+        public DbSet<LecturerReg> LecturerReg { get; set; } = default!;
     }
