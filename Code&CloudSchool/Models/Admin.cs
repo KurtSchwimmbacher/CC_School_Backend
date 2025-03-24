@@ -17,4 +17,10 @@ public class Admin : User
     public String AdminRole { get; set; } = "Moderator"; //super admin / faculty head / moderator
 
     public String? AssignedDepartments { get; set; } = String.Empty; // IT / HR / Lecturer
+
+
+    public Admin()
+    {
+        Role = "Admin";
+    }
 }
