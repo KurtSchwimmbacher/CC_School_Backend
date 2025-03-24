@@ -24,44 +24,31 @@ namespace Code_CloudSchool.Controllers
             _context = context; // Initialize the DbContext
         }
 
-        [HttpPost] // HTTP POST method to grade a submission.
-        public async Task<ActionResult<Grade>> GradeSubmission(CreateGradeDto gradeDto)
-        {
-            // First validate the submission exists by checking the database
-            var submission = await _context.Submissions
-                .Include(s => s.Assignment) // Include related assignment data if needed
-                .FirstOrDefaultAsync(s => s.Submission_ID == gradeDto.SubmissionId);
-            
-            if (submission == null)
-            {
-                return NotFound($"Submission with ID {gradeDto.SubmissionId} not found"); // Return 404 if submission doesn't exist
-            }
-
-            // Create a new Grade object from the DTO
-            var grade = new Grade
-            {
-                Submission_ID = gradeDto.SubmissionId,
-                Score = gradeDto.Score,
-                Feedback = gradeDto.Feedback,
-                Submission = submission // Set the navigation property
-            };
-
-            try
-            {
-                var result = await _gradeService.GradeSubmission(grade); // Call the service method.
-                
-                // Return 201 Created status with location header pointing to the new resource
-                return CreatedAtAction(
-                    nameof(GetGradeBySubmissionId), 
-                    new { submissionId = result.Submission_ID }, 
-                    result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
-            }
-        }
-
+[HttpPost] // HTTP POST method to grade a submission.
+public async Task<ActionResult<Grade>> GradeSubmission(CreateGradeDto gradeDto)
+{
+    try
+    {
+        // Pass the DTO directly to the service which handles validation and grade creation
+        var result = await _gradeService.GradeSubmission(gradeDto);
+        
+        // Return 201 Created status with location header pointing to the new resource
+        return CreatedAtAction(
+            nameof(GetGradeBySubmissionId), 
+            new { submissionId = result.Submission_ID }, 
+            result);
+    }
+    catch (ArgumentException ex)
+    {
+        // Handle case where submission wasn't found (thrown by service layer)
+        return NotFound(ex.Message);
+    }
+    catch (Exception ex)
+    {
+        // Handle all other unexpected errors
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
         /* The rest of your controller methods remain exactly the same */
         [HttpGet("submission/{submissionId}")] // HTTP GET method to get a grade by submission ID.
         public async Task<ActionResult<Grade>> GetGradeBySubmissionId(int submissionId)
