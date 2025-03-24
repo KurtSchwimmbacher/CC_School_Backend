@@ -1,11 +1,12 @@
 using System;
-using Code_CloudSchool.Interfaces;
 using Code_CloudSchool.Models;
 
-namespace Code_CloudSchool.LectInterface;
+namespace Code_CloudSchool.Interfaces;
 
-public interface AuthLectService
+public interface ILecturerAuth
 {
+    public Task<string> GenerateEmailAdress(string LectName);
+
     public Task<bool> RegisterLecturer(LecturerReg lecturer);
 
     public Task<string> HashPassword(string password);
@@ -16,5 +17,5 @@ public interface AuthLectService
 
     public Task<LecturerReg?> GetLecturerByEmail(string email);
 
-     
+
 }

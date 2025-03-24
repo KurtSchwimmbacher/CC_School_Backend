@@ -1,21 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Code_CloudSchool.Data;
+using Code_CloudSchool.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Code_CloudSchool.Models;
 
 namespace Code_CloudSchool.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LecturerRegController : ControllerBase
+    public class LecturerController : ControllerBase
     {
-        private readonly AppContext _context;
 
-        public LecturerRegController(AppContext context)
+        private readonly AppDbContext _context;
+
+        public LecturerController(AppDbContext context)
         {
             _context = context;
         }
@@ -24,14 +22,14 @@ namespace Code_CloudSchool.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LecturerReg>>> GetLecturerReg()
         {
-            return await _context.LecturerReg.ToListAsync();
+            return await _context.Lecturer.ToListAsync();
         }
 
         // GET: api/LecturerReg/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LecturerReg>> GetLecturerReg(int id)
         {
-            var lecturerReg = await _context.LecturerReg.FindAsync(id);
+            var lecturerReg = await _context.Lecturer.FindAsync(id);
 
             if (lecturerReg == null)
             {
@@ -77,31 +75,37 @@ namespace Code_CloudSchool.Controllers
         [HttpPost]
         public async Task<ActionResult<LecturerReg>> PostLecturerReg(LecturerReg lecturerReg)
         {
-            _context.LecturerReg.Add(lecturerReg);
+            _context.Lecturer.Add(lecturerReg);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.Id }, lecturerReg);
         }
 
-        // DELETE: api/LecturerReg/5
+
+                // DELETE: api/LecturerReg/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLecturerReg(int id)
         {
-            var lecturerReg = await _context.LecturerReg.FindAsync(id);
+            var lecturerReg = await _context.Lecturer.FindAsync(id);
             if (lecturerReg == null)
             {
                 return NotFound();
             }
 
-            _context.LecturerReg.Remove(lecturerReg);
+            _context.Lecturer.Remove(lecturerReg);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
+
+
+
         private bool LecturerRegExists(int id)
         {
-            return _context.LecturerReg.Any(e => e.Id == id);
+            return _context.Lecturer.Any(e => e.Id == id);
         }
+
+
     }
 }

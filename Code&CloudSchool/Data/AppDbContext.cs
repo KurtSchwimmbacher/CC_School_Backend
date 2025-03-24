@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     // list the tables / relationships
     public DbSet<User> User { get; set; }
     public DbSet<Student> Students { get; set; }
+    public DbSet<LecturerReg> Lecturer { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
