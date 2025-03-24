@@ -110,7 +110,7 @@ namespace Code_CloudSchool.Controllers
         {
             try
             {
-                var assignments = await _assignmentService.GetAssignmentByFilter(dueDate, isCompleted); // Call the service method.
+                var assignments = await _assignmentService.GetAssignmentsByFilter(dueDate, isCompleted); // Call the service method.
                 return Ok(assignments); // Return the filtered assignments with a 200 OK status.
             }
             catch (Exception ex)
