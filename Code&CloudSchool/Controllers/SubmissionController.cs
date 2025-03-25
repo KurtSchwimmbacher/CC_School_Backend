@@ -11,12 +11,12 @@ namespace Code_CloudSchool.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubmissionController : ControllerBase
+    public class SubmissionsController : ControllerBase
     {
                 private readonly ISubmissionService _submissionService;
         private readonly AppDbContext _context;
 
-        public SubmissionController(ISubmissionService submissionService, AppDbContext context)
+        public SubmissionsController(ISubmissionService submissionService, AppDbContext context)
         {
             _submissionService = submissionService;
             _context = context;
