@@ -535,3 +535,4 @@ C:/Users/Kurts/OneDrive/Desktop/Code&CloudSchool/Code&CloudSchool/bin/Debug/net9
 /Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/obj/Debug/net9.0/Code_CloudSchool.pdb
 /Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/obj/Debug/net9.0/Code_CloudSchool.genruntimeconfig.cache
 /Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/obj/Debug/net9.0/ref/Code_CloudSchool.dll
+/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/bin/Debug/net9.0/BCrypt.Net-Next.dll

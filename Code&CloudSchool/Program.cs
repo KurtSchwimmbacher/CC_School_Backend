@@ -17,6 +17,11 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//connection to the database 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
 builder.Services.AddScoped<IAuthAnnouncement, AnnounceServices>();
 builder.Services.AddScoped<ILAuthService, LAuthService>();
 
