@@ -8,19 +8,19 @@ public class Majors
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int majorId { get; set; }
+    public int Id { get; set; }
 
     [Required]
-    public string MajorName { get; set; }
+    public string? MajorName { get; set; }
     [Required]
-    public string MajorCode { get; set; }
-    public string MajorDescription { get; set; }
+    public string? MajorCode { get; set; }
+    public string MajorDescription { get; set; } = string.Empty; //this is a nullable field
 
     [Required]
-    public int CreditsRequired { get; set; }
+    public int? CreditsRequired { get; set; }
 
-    public List<Courses> Courses { get; set; } = [];
-    public List<Students> Students { get; set; } = [];
+    public List<Courses> Courses { get; set; } = []; // this is a list of courses that the major has
+    public List<Students> Students { get; set; } = []; // this is a list of students that are in the major 
 
 }
 

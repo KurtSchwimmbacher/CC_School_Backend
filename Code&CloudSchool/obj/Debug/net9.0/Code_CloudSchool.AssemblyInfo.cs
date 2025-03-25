@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Code_CloudSchool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+adc8b3daaa144c18143847a810aacbf02fb3a40e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cd3769bab80f743f6cd59372b768a313e86c77a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Code_CloudSchool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Code_CloudSchool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

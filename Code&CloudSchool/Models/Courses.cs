@@ -8,16 +8,16 @@ public class Courses
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int courseId { get; set; }
+    public int Id { get; set; }
 
     [Required]
-    public string courseName { get; set; }
+    public string courseName { get; set; } = string.Empty;
 
     [Required]
     public int courseCode { get; set; }
 
-    public string? courseDescription { get; set; }
+    public string? courseDescription { get; set; } //this is a nullable field
 
-    public List<Majors> Majors { get; set; } = [];
-    public List<Students> Students { get; set; } = [];
+    public List<Majors> Majors { get; set; } = []; // this is a list of majors that the course belongs to
+    public List<Students> Students { get; set; } = []; // this is a list of students that are taking the course 
 }
