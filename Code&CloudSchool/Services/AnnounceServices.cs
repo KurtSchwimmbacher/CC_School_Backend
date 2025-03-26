@@ -4,25 +4,34 @@ using Code_CloudSchool.Models;
 
 namespace Code_CloudSchool.Services;
 
+// This class implements the IAuthAnnouncement interface and provides services related to announcements
 public class AnnounceServices : IAuthAnnouncement
 {
-
+    // Private field to hold the database context
     private readonly AppDbContext _context;
 
+    // Constructor that injects the database context
     public AnnounceServices(AppDbContext context)
     {
         _context = context;
     }
+
+    // Method to create a new announcement asynchronously and save it to the database
     public async Task<Announcements> CreateAnnouncementAsync(Announcements announcements)
     {
-       var newAnnouncement = _context.Announcements.Add(announcements);
-       await _context.SaveChangesAsync();
-       
-       return newAnnouncement.Entity;
+        // Add the new announcement to the database
+        var newAnnouncement = _context.Announcements.Add(announcements);
+        
+        // Save the changes asynchronously
+        await _context.SaveChangesAsync();
+        
+        // Return the newly created announcement entity
+        return newAnnouncement.Entity;
     }
 
+    // Method to retrieve an announcement by its ID (not yet implemented)
     public Task<Announcements> GetAnnouncementsAsync(Guid id)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(); // Placeholder for future implementation
     }
 }
