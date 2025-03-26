@@ -17,6 +17,8 @@ public class Classes
     public DateTime? classTime { get; set; } //this is the time the class is scheduled to start
     public DateTime? classEndTime { get; set; } //this is the time the class is scheduled to end 
     public List<Students> Students { get; set; } = []; // this is a list of students that are in the class
-    public List<Courses> Courses { get; set; } = []; // this is a list of courses for that the class belongs to 
     public List<Lecturers> Lecturers { get; set; } = []; // this is a list of lecturers that are teaching the class
+
+    public int CourseId { get; set; } //this is the foreign key that is going to be used to link the two tables together
+    public Courses? Courses { get; set; } // this shows the relationship between the class and the course that is being taught 
 }

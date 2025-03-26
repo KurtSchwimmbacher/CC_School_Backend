@@ -10,4 +10,6 @@ public class Lecturers
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int lecturersId { get; set; }
 
+    public List<Classes> Classes { get; set; } //this is a list of classes that the lecturer is teaching 
+
 }
