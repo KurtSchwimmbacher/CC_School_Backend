@@ -18,12 +18,15 @@ namespace Code_CloudSchool.Controllers
     {
         private readonly AppDbContext _context;
 
+        private readonly IUpdateAdminPassword _passwordService;
+
         private readonly IAdminAuth _adminAuth;
 
-        public AdminController(AppDbContext context, IAdminAuth adminAuth)
+        public AdminController(AppDbContext context, IAdminAuth adminAuth, IUpdateAdminPassword passwordService)
         {
             _context = context;
             _adminAuth = adminAuth;
+            _passwordService = passwordService;
         }
 
 
@@ -71,7 +74,18 @@ namespace Code_CloudSchool.Controllers
         }
 
 
+        [HttpPut("{studentNumber}/updatePassword")]
+        public async Task<IActionResult> UpdateAdminPassword(string AdminEmail, StudentPasswordDTO PasswordDTO)
+        {
+            bool updated = await _passwordService.UpdateAdminPassword(AdminEmail, PasswordDTO);
 
+            if (!updated)
+            {
+                return BadRequest("Password update failed. Incorrect old password or admin not found.");
+            }
+
+            return Ok("Password updated successfully.");
+        }
 
 
 
