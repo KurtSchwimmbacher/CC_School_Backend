@@ -8,10 +8,10 @@ namespace Code_CloudSchool.Services;
 public class AnnounceServices : IAuthAnnouncement
 {
     // Private field to hold the database context
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
     // Constructor that injects the database context
-    public AnnounceServices(AppDbContext context)
+    public AnnounceServices(AppDBContext context)
     {
         _context = context;
     }

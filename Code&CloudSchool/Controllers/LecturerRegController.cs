@@ -13,9 +13,9 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class LecturerRegController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDBContext _context;
 
-        public LecturerRegController(AppDbContext context)
+        public LecturerRegController(AppDBContext context)
         {
             _context = context;
         }

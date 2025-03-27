@@ -13,9 +13,9 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class AnnounceController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDBContext _context;
 
-        public AnnounceController(AppDbContext context)
+        public AnnounceController(AppDBContext context)
         {
             _context = context;
         }

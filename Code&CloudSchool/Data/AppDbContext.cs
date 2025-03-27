@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Models;
 
 // Define the application's database context, inheriting from DbContext
-public class AppDbContext : DbContext
+public class AppDBContext : DbContext
 {
     // Constructor that accepts DbContext options and passes them to the base DbContext class
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    public AppDBContext(DbContextOptions<AppDBContext> options)
         : base(options)
     {
     }
