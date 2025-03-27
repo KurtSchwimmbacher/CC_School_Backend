@@ -3,6 +3,7 @@ using System;
 using Code_CloudSchool.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250326104427_UpdateStudentsTempTbl")]
+    partial class UpdateStudentsTempTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,36 +25,6 @@ namespace Code_CloudSchool.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ClassesLecturers", b =>
-                {
-                    b.Property<int>("ClassesclassID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("lecturersId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClassesclassID", "lecturersId");
-
-                    b.HasIndex("lecturersId");
-
-                    b.ToTable("ClassLecturers", (string)null);
-                });
-
-            modelBuilder.Entity("ClassesStudents", b =>
-                {
-                    b.Property<int>("ClassesclassID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentsStudentNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClassesclassID", "StudentsStudentNumber");
-
-                    b.HasIndex("StudentsStudentNumber");
-
-                    b.ToTable("ClassStudents", (string)null);
-                });
-
             modelBuilder.Entity("Code_CloudSchool.Models.Classes", b =>
                 {
                     b.Property<int>("classID")
@@ -59,9 +32,6 @@ namespace Code_CloudSchool.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("classID"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("classDescription")
                         .IsRequired()
@@ -79,8 +49,6 @@ namespace Code_CloudSchool.Migrations
 
                     b.HasKey("classID");
 
-                    b.HasIndex("CourseId");
-
                     b.ToTable("Classes");
                 });
 
@@ -91,6 +59,9 @@ namespace Code_CloudSchool.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ClassesclassID")
+                        .HasColumnType("integer");
 
                     b.Property<int>("courseCode")
                         .HasColumnType("integer");
@@ -104,6 +75,8 @@ namespace Code_CloudSchool.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClassesclassID");
+
                     b.ToTable("Courses");
                 });
 
@@ -115,7 +88,12 @@ namespace Code_CloudSchool.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("lecturersId"));
 
+                    b.Property<int?>("ClassesclassID")
+                        .HasColumnType("integer");
+
                     b.HasKey("lecturersId");
+
+                    b.HasIndex("ClassesclassID");
 
                     b.ToTable("Lecturers");
                 });
@@ -156,10 +134,20 @@ namespace Code_CloudSchool.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StudentNumber"));
 
+                    b.Property<int?>("ClassesclassID")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("CoursesId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("MajorsId")
                         .HasColumnType("integer");
 
                     b.HasKey("StudentNumber");
+
+                    b.HasIndex("ClassesclassID");
+
+                    b.HasIndex("CoursesId");
 
                     b.HasIndex("MajorsId");
 
@@ -181,64 +169,30 @@ namespace Code_CloudSchool.Migrations
                     b.ToTable("MajorCourses", (string)null);
                 });
 
-            modelBuilder.Entity("CoursesStudents", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentsStudentNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CoursesId", "StudentsStudentNumber");
-
-                    b.HasIndex("StudentsStudentNumber");
-
-                    b.ToTable("CourseStudents", (string)null);
-                });
-
-            modelBuilder.Entity("ClassesLecturers", b =>
+            modelBuilder.Entity("Code_CloudSchool.Models.Courses", b =>
                 {
                     b.HasOne("Code_CloudSchool.Models.Classes", null)
-                        .WithMany()
-                        .HasForeignKey("ClassesclassID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Code_CloudSchool.Models.Lecturers", null)
-                        .WithMany()
-                        .HasForeignKey("lecturersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Courses")
+                        .HasForeignKey("ClassesclassID");
                 });
 
-            modelBuilder.Entity("ClassesStudents", b =>
+            modelBuilder.Entity("Code_CloudSchool.Models.Lecturers", b =>
                 {
                     b.HasOne("Code_CloudSchool.Models.Classes", null)
-                        .WithMany()
-                        .HasForeignKey("ClassesclassID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Code_CloudSchool.Models.Students", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsStudentNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Code_CloudSchool.Models.Classes", b =>
-                {
-                    b.HasOne("Code_CloudSchool.Models.Courses", "Courses")
-                        .WithMany("Classes")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Courses");
+                        .WithMany("Lecturers")
+                        .HasForeignKey("ClassesclassID");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Students", b =>
                 {
+                    b.HasOne("Code_CloudSchool.Models.Classes", null)
+                        .WithMany("Students")
+                        .HasForeignKey("ClassesclassID");
+
+                    b.HasOne("Code_CloudSchool.Models.Courses", null)
+                        .WithMany("Students")
+                        .HasForeignKey("CoursesId");
+
                     b.HasOne("Code_CloudSchool.Models.Majors", null)
                         .WithMany("Students")
                         .HasForeignKey("MajorsId");
@@ -259,24 +213,18 @@ namespace Code_CloudSchool.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CoursesStudents", b =>
+            modelBuilder.Entity("Code_CloudSchool.Models.Classes", b =>
                 {
-                    b.HasOne("Code_CloudSchool.Models.Courses", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Courses");
 
-                    b.HasOne("Code_CloudSchool.Models.Students", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsStudentNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Lecturers");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Courses", b =>
                 {
-                    b.Navigation("Classes");
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Majors", b =>

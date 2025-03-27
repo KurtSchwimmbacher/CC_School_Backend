@@ -9,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddControllers();
-
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve; //adds a check in ef to avoid any object loops
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -36,12 +39,12 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI();  
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
 
-// controller based api endpoints
-app.MapControllers();
+app.MapControllers(); //controller based on api endpoints -> so that we can use the controller to get the data from the db
+
 app.Run();
