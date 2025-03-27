@@ -29,16 +29,21 @@ namespace Code_CloudSchool.Controllers
 
         // GET: api/LecturerReg/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LecturerReg>> GetLecturerReg(int id)
+        public IActionResult GetLecturer(int id)
         {
-            var lecturerReg = await _context.LecturerReg.FindAsync(id);
-
-            if (lecturerReg == null)
+            var lecturer = new LecturerDTO
             {
-                return NotFound();
-            }
+                Id = id,
+                LectName = "John",
+                LecLastName = "Doe",
+                LecEmail = "john.doe@example.com",
+                PhoneNumber = "123-456-7890",
+                Department = "Computer Science",
+                DateOfJoining = DateTime.Now,
+                IsActive = true
+            };
 
-            return lecturerReg;
+            return Ok(lecturer);  // Return the DTO as the response
         }
 
         // PUT: api/LecturerReg/5
@@ -103,6 +108,18 @@ namespace Code_CloudSchool.Controllers
         {
             return _context.LecturerReg.Any(e => e.Id == id);
         }
+    }
+
+    internal class LecturerDTO
+    {
+        public int Id { get; set; }
+        public string LectName { get; set; }
+        public string LecLastName { get; set; }
+        public string LecEmail { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Department { get; set; }
+        public DateTime DateOfJoining { get; set; }
+        public bool IsActive { get; set; }
     }
 }
 
