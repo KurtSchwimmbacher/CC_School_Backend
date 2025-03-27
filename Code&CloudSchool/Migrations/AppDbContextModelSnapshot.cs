@@ -22,71 +22,6 @@ namespace Code_CloudSchool.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-<<<<<<< HEAD
-            modelBuilder.Entity("ClassesLecturers", b =>
-                {
-                    b.Property<int>("ClassesclassID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("lecturersId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClassesclassID", "lecturersId");
-
-                    b.HasIndex("lecturersId");
-
-                    b.ToTable("ClassLecturers", (string)null);
-                });
-
-            modelBuilder.Entity("ClassesStudents", b =>
-                {
-                    b.Property<int>("ClassesclassID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentsStudentNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClassesclassID", "StudentsStudentNumber");
-
-                    b.HasIndex("StudentsStudentNumber");
-
-                    b.ToTable("ClassStudents", (string)null);
-                });
-
-            modelBuilder.Entity("Code_CloudSchool.Models.Classes", b =>
-                {
-                    b.Property<int>("classID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("classID"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("classDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("classEndTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("className")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("classTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("classID");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("Classes");
-                });
-
-            modelBuilder.Entity("Code_CloudSchool.Models.Courses", b =>
-=======
             modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
                 {
                     b.Property<int>("Assignment_ID")
@@ -188,7 +123,6 @@ namespace Code_CloudSchool.Migrations
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.User", b =>
->>>>>>> Ngozi-Assignments01
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,9 +158,6 @@ namespace Code_CloudSchool.Migrations
                     b.ToTable("Lecturers");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("Code_CloudSchool.Models.Majors", b =>
-=======
             modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
                 {
                     b.HasOne("Code_CloudSchool.Models.Lecturer", "Lecturer")
@@ -269,7 +200,6 @@ namespace Code_CloudSchool.Migrations
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Student", b =>
->>>>>>> Ngozi-Assignments01
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

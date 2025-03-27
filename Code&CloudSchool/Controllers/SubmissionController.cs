@@ -13,10 +13,10 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class SubmissionsController : ControllerBase
     {
-                private readonly ISubmissionService _submissionService;
-        private readonly AppDbContext _context;
+        private readonly ISubmissionService _submissionService;
+        private readonly AppDBContext _context;
 
-        public SubmissionsController(ISubmissionService submissionService, AppDbContext context)
+        public SubmissionsController(ISubmissionService submissionService, AppDBContext context)
         {
             _submissionService = submissionService;
             _context = context;

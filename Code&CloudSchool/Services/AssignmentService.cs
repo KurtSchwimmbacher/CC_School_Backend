@@ -38,7 +38,8 @@ public class AssignmentService : IAssignmentService
         // Get a specific assignment by its ID.
         public async Task<Assignment> GetAssignmentById(int id)
         {
-            return await _context.Assignments.FindAsync(id);
+            Assignment? assignment = await _context.Assignments.FindAsync(id);
+            return assignment;
         }
 
         // Update an existing assignment.
