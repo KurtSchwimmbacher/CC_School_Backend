@@ -8245,25 +8245,41 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\kuret\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+=======
+    "/Users/ngoziojukwu/.nuget/packages/": {}
+>>>>>>> Ngozi-Assignments01
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "D:\\DV300\\CC_School_Backend\\Code&CloudSchool\\Code_CloudSchool.csproj",
       "projectName": "Code_CloudSchool",
       "projectPath": "D:\\DV300\\CC_School_Backend\\Code&CloudSchool\\Code_CloudSchool.csproj",
       "packagesPath": "C:\\Users\\kuret\\.nuget\\packages\\",
       "outputPath": "D:\\DV300\\CC_School_Backend\\Code&CloudSchool\\obj\\",
+=======
+      "projectUniqueName": "/Users/ngoziojukwu/Documents/OW/Third_Year/DV300/Semester1/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
+      "projectName": "Code_CloudSchool",
+      "projectPath": "/Users/ngoziojukwu/Documents/OW/Third_Year/DV300/Semester1/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
+      "packagesPath": "/Users/ngoziojukwu/.nuget/packages/",
+      "outputPath": "/Users/ngoziojukwu/Documents/OW/Third_Year/DV300/Semester1/CC_School/Code&CloudSchool/obj/",
+>>>>>>> Ngozi-Assignments01
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\kuret\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+=======
+        "/Users/ngoziojukwu/.nuget/NuGet/NuGet.Config"
+>>>>>>> Ngozi-Assignments01
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -8354,7 +8370,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+=======
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+>>>>>>> Ngozi-Assignments01
       }
     }
   },

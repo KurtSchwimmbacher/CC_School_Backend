@@ -22,6 +22,7 @@ namespace Code_CloudSchool.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+<<<<<<< HEAD
             modelBuilder.Entity("ClassesLecturers", b =>
                 {
                     b.Property<int>("ClassesclassID")
@@ -85,6 +86,109 @@ namespace Code_CloudSchool.Migrations
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Courses", b =>
+=======
+            modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
+                {
+                    b.Property<int>("Assignment_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Assignment_ID"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("LecturerId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Assignment_ID");
+
+                    b.HasIndex("LecturerId");
+
+                    b.ToTable("Assignments");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Grade", b =>
+                {
+                    b.Property<int>("Grade_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Grade_ID"));
+
+                    b.Property<string>("Feedback")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Score")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Submission_ID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Grade_ID");
+
+                    b.HasIndex("Submission_ID")
+                        .IsUnique();
+
+                    b.ToTable("Grades");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Lecturer", b =>
+                {
+                    b.Property<int>("LecturerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LecturerId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("LecturerId");
+
+                    b.ToTable("Lecturers");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Submission", b =>
+                {
+                    b.Property<int>("Submission_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Submission_ID"));
+
+                    b.Property<int>("Assignment_ID")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Student_ID")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("SubmissionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Submission_ID");
+
+                    b.HasIndex("Assignment_ID");
+
+                    b.HasIndex("Student_ID");
+
+                    b.ToTable("Submissions");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.User", b =>
+>>>>>>> Ngozi-Assignments01
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,7 +224,52 @@ namespace Code_CloudSchool.Migrations
                     b.ToTable("Lecturers");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Code_CloudSchool.Models.Majors", b =>
+=======
+            modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
+                {
+                    b.HasOne("Code_CloudSchool.Models.Lecturer", "Lecturer")
+                        .WithMany()
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Lecturer");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Grade", b =>
+                {
+                    b.HasOne("Code_CloudSchool.Models.Submission", "Submission")
+                        .WithOne("Grade")
+                        .HasForeignKey("Code_CloudSchool.Models.Grade", "Submission_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Submission");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Submission", b =>
+                {
+                    b.HasOne("Code_CloudSchool.Models.Assignment", "Assignment")
+                        .WithMany("Submissions")
+                        .HasForeignKey("Assignment_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Code_CloudSchool.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("Student_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assignment");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Student", b =>
+>>>>>>> Ngozi-Assignments01
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -282,6 +431,17 @@ namespace Code_CloudSchool.Migrations
             modelBuilder.Entity("Code_CloudSchool.Models.Majors", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
+                {
+                    b.Navigation("Submissions");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.Submission", b =>
+                {
+                    b.Navigation("Grade")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -29,6 +29,9 @@ builder.Services.AddScoped<IStudentReEnroll, StudentReEnrollService>();
 builder.Services.AddScoped<IUpdateStudentPassword, StudentPasswordService>();
 builder.Services.AddScoped<ILecturerAuth, LecturerAuthService>();
 
+builder.Services.AddScoped<IAssignmentService, AssignmentService>();
+builder.Services.AddScoped<ISubmissionService, SubmissionService>();
+builder.Services.AddScoped<IGradeService, GradeService>();
 
 
 
