@@ -13,7 +13,7 @@ namespace Code_CloudSchool.Migrations
 {
     [DbContext(typeof(AppDBContext))]
     [Migration("20250324192920_lecturers")]
-    partial class lecturers
+    partial class Lecturers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

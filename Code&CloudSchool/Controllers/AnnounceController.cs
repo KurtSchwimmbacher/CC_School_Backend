@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Models;
+using Code_CloudSchool.Data;
 
 namespace Code_CloudSchool.Controllers
 {

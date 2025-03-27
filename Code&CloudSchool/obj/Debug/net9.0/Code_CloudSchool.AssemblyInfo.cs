@@ -13,11 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Code_CloudSchool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b1b6623a7027eb129b8fd7da84f6862ae3eab380")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e7dcd8d37bd2c74fd6505c84670d1991d7f58ef")]
->>>>>>> Brilu-Announcement
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f44a4936aa765166753b24186446ca89ba3902a1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Code_CloudSchool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Code_CloudSchool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

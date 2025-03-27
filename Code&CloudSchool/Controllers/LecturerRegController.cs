@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Models;
+using Code_CloudSchool.Data;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -24,7 +25,7 @@ namespace Code_CloudSchool.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LecturerReg>>> GetLecturerReg()
         {
-            return await _context.LecturerReg.ToListAsync();
+            return await _context.Lecturers.ToListAsync();
         }
 
         // GET: api/LecturerReg/5
@@ -82,7 +83,7 @@ namespace Code_CloudSchool.Controllers
         [HttpPost]
         public async Task<ActionResult<LecturerReg>> PostLecturerReg(LecturerReg lecturerReg)
         {
-            _context.LecturerReg.Add(lecturerReg);
+            _context.Lecturers.Add(lecturerReg);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.Id }, lecturerReg);
@@ -92,13 +93,13 @@ namespace Code_CloudSchool.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLecturerReg(int id)
         {
-            var lecturerReg = await _context.LecturerReg.FindAsync(id);
+            var lecturerReg = await _context.Lecturers.FindAsync(id);
             if (lecturerReg == null)
             {
                 return NotFound();
             }
 
-            _context.LecturerReg.Remove(lecturerReg);
+            _context.Lecturers.Remove(lecturerReg);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -106,7 +107,7 @@ namespace Code_CloudSchool.Controllers
 
         private bool LecturerRegExists(int id)
         {
-            return _context.LecturerReg.Any(e => e.Id == id);
+            return _context.Lecturers.Any(e => e.Id == id);
         }
     }
 

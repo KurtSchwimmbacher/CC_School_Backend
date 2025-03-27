@@ -17,7 +17,6 @@ public class AppDBContext : DbContext
     public DbSet<LecturerReg> Lecturers { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Assignment> Assignments { get; set; }
-  
     public DbSet<Submission> Submissions { get; set; }
     public DbSet<Grade> Grades { get; set; }
 
