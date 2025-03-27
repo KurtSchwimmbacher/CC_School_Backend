@@ -5,6 +5,9 @@ using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+//Avien .env loader 
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -20,7 +23,9 @@ builder.Services.AddSwaggerGen();
 
 
 // connection to DB String here
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+//local connection string --> var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 // add db context to services 
 builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
 

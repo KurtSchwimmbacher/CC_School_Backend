@@ -3,8 +3,10 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
-# dotenv files
+# Environment files
 .env
+.env.*
+!.env.example
 
 # User-specific files
 *.rsuser
@@ -15,6 +17,16 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+
+# Ignore auto-generated AssemblyInfo.cs files
+*/obj/*/AssemblyInfo.cs
+
+# Ignore auto-generated cache files
+*/obj/*.cache
+*/obj//.cache
+
+# Ignore all files inside the obj directory
+obj/
 
 # Mono auto generated files
 mono_crash.*
