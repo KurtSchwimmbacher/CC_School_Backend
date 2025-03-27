@@ -12,9 +12,9 @@ namespace Code_CloudSchool.Services;
 
 public class AssignmentService : IAssignmentService
 {
-            private readonly AppDbContext _context;
+            private readonly AppDBContext _context;
 
-        public AssignmentService(AppDbContext context)
+        public AssignmentService(AppDBContext context)
         {
             _context = context;
         }

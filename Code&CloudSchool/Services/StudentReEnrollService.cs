@@ -10,9 +10,9 @@ namespace Code_CloudSchool.Services;
 public class StudentReEnrollService : IStudentReEnroll
 {
 
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-    public StudentReEnrollService(AppDbContext context)
+    public StudentReEnrollService(AppDBContext context)
     {
         _context = context;
     }

@@ -15,10 +15,10 @@ namespace Code_CloudSchool.Controllers
     public class GradesController : ControllerBase
     {
         private readonly IGradeService _gradeService; // Dependency injection for GradeService.
-        private readonly AppDbContext _context; // Added for direct database access when needed
+        private readonly AppDBContext _context; // Added for direct database access when needed
 
         // Constructor to inject the GradeService and AppDbContext.
-        public GradesController(IGradeService gradeService, AppDbContext context)
+        public GradesController(IGradeService gradeService, AppDBContext context)
         {
             _gradeService = gradeService;
             _context = context; // Initialize the DbContext

@@ -12,9 +12,9 @@ namespace Code_CloudSchool.Services;
 
 public class SubmissionService : ISubmissionService
 {
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-    public SubmissionService(AppDbContext context)
+    public SubmissionService(AppDBContext context)
     {
         _context = context;
     }

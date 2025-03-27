@@ -11,9 +11,9 @@ namespace Code_CloudSchool.Services;
 public class StudentStatusService : IStudentStatus
 {
 
-     private readonly AppDbContext _context;
+     private readonly AppDBContext _context;
 
-        public StudentStatusService(AppDbContext context)
+        public StudentStatusService(AppDBContext context)
         {
             _context = context;
         }

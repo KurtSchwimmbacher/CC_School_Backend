@@ -12,9 +12,9 @@ namespace Code_CloudSchool.Services;
 
 public class GradeService : IGradeService
 {
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-    public GradeService(AppDbContext context)
+    public GradeService(AppDBContext context)
     {
         _context = context;
     }

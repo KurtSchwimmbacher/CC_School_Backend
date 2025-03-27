@@ -17,7 +17,7 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDBContext _context;
         private readonly IStudentAuth _StudentAuth;
 
         private readonly IStudentStatus _StudentStatus;
@@ -26,7 +26,7 @@ namespace Code_CloudSchool.Controllers
 
         private readonly IUpdateStudentPassword _StudentPassword;
 
-        public StudentController(AppDbContext context, IStudentAuth studentAuth, IStudentStatus studentStatus, IStudentReEnroll studentReEnroll, IUpdateStudentPassword studentPassword)
+        public StudentController(AppDBContext context, IStudentAuth studentAuth, IStudentStatus studentStatus, IStudentReEnroll studentReEnroll, IUpdateStudentPassword studentPassword)
         {
             _context = context;
             _StudentAuth = studentAuth;
