@@ -33,7 +33,8 @@ builder.Services.AddScoped<IAssignmentService, AssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 
-
+builder.Services.AddScoped<IAuthAnnouncement, AnnounceServices>();
+builder.Services.AddScoped<ILAuthService, LAuthService>();
 
 var app = builder.Build();
 

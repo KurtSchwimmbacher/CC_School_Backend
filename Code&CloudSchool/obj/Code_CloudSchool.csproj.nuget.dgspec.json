@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "/Users/ngoziojukwu/Documents/OW/Third_Year/DV300/Semester1/CC_School/Code&CloudSchool/Code_CloudSchool.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/ngoziojukwu/.nuget/NuGet/NuGet.Config"
+=======
+    "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code_CloudSchool.csproj": {}
+  },
+  "projects": {
+    "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code_CloudSchool.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
+        "projectName": "Code_CloudSchool",
+        "projectPath": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code_CloudSchool.csproj",
+        "packagesPath": "/Users/brilubokaba/.nuget/packages/",
+        "outputPath": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/brilubokaba/.nuget/NuGet/NuGet.Config"
+>>>>>>> Brilu-Announcement
         ],
         "originalTargetFrameworks": [
           "net9.0"
