@@ -20,7 +20,7 @@ public class Majors
     public int? CreditsRequired { get; set; }
 
     public List<Courses> Courses { get; set; } = []; // this is a list of courses that the major has
-    public List<Students> Students { get; set; } = []; // this is a list of students that are in the major 
+    public List<Student> Students { get; set; } = []; // this is a list of students that are in the major 
 
 }
 

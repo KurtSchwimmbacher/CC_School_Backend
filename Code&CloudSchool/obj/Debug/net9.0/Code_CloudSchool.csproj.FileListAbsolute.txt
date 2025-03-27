@@ -269,6 +269,7 @@ C:\Users\Kurts\OneDrive\Desktop\Code&CloudSchool\Code&CloudSchool\bin\Debug\net9
 <<<<<<< HEAD
 C:\Users\Kurts\OneDrive\Desktop\Code&CloudSchool\Code&CloudSchool\bin\Debug\net9.0\BCrypt.Net-Next.dll
 =======
+>>>>>>> Mwape-Courses
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\appsettings.Development.json
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\appsettings.json
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Code_CloudSchool.staticwebassets.endpoints.json
@@ -279,6 +280,7 @@ D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Code_CloudSchool.dl
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Code_CloudSchool.pdb
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Azure.Core.dll
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Azure.Identity.dll
+D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\BCrypt.Net-Next.dll
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Humanizer.dll
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 D:\DV300\CC_School_Backend\Code&CloudSchool\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
@@ -546,4 +548,3 @@ D:\DV300\CC_School_Backend\Code&CloudSchool\obj\Debug\net9.0\refint\Code_CloudSc
 D:\DV300\CC_School_Backend\Code&CloudSchool\obj\Debug\net9.0\Code_CloudSchool.pdb
 D:\DV300\CC_School_Backend\Code&CloudSchool\obj\Debug\net9.0\Code_CloudSchool.genruntimeconfig.cache
 D:\DV300\CC_School_Backend\Code&CloudSchool\obj\Debug\net9.0\ref\Code_CloudSchool.dll
->>>>>>> Mwape-Courses

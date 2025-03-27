@@ -9,9 +9,9 @@ namespace Code_CloudSchool.Services;
 public class StudentAuthService : IStudentAuth
 {
 
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-    public StudentAuthService(AppDbContext context)
+    public StudentAuthService(AppDBContext context)
     {
         _context = context;
     }

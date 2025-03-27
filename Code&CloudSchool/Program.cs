@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 // connection to DB String here
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // add db context to services 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();

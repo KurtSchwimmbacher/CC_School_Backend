@@ -11,9 +11,9 @@ namespace Code_CloudSchool.Controllers
     public class LecturerController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly AppDBContext _context;
 
-        public LecturerController(AppDbContext context)
+        public LecturerController(AppDBContext context)
         {
             _context = context;
         }
@@ -22,14 +22,14 @@ namespace Code_CloudSchool.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LecturerReg>>> GetLecturerReg()
         {
-            return await _context.Lecturer.ToListAsync();
+            return await _context.Lecturers.ToListAsync();
         }
 
         // GET: api/LecturerReg/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LecturerReg>> GetLecturerReg(int id)
         {
-            var lecturerReg = await _context.Lecturer.FindAsync(id);
+            var lecturerReg = await _context.Lecturers.FindAsync(id);
 
             if (lecturerReg == null)
             {
@@ -75,24 +75,24 @@ namespace Code_CloudSchool.Controllers
         [HttpPost]
         public async Task<ActionResult<LecturerReg>> PostLecturerReg(LecturerReg lecturerReg)
         {
-            _context.Lecturer.Add(lecturerReg);
+            _context.Lecturers.Add(lecturerReg);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.Id }, lecturerReg);
         }
 
 
-                // DELETE: api/LecturerReg/5
+        // DELETE: api/LecturerReg/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLecturerReg(int id)
         {
-            var lecturerReg = await _context.Lecturer.FindAsync(id);
+            var lecturerReg = await _context.Lecturers.FindAsync(id);
             if (lecturerReg == null)
             {
                 return NotFound();
             }
 
-            _context.Lecturer.Remove(lecturerReg);
+            _context.Lecturers.Remove(lecturerReg);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -103,7 +103,7 @@ namespace Code_CloudSchool.Controllers
 
         private bool LecturerRegExists(int id)
         {
-            return _context.Lecturer.Any(e => e.Id == id);
+            return _context.Lecturers.Any(e => e.Id == id);
         }
 
 

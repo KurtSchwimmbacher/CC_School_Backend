@@ -11,7 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Code_CloudSchool.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(AppDBContext))]
+    [DbContext(typeof(AppDBContext))]
     [Migration("20250320101715_studentAuthEndpoint")]
     partial class studentAuthEndpoint
     {

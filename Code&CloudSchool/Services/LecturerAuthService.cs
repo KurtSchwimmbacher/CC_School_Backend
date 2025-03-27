@@ -9,9 +9,9 @@ namespace Code_CloudSchool.Services;
 public class LecturerAuthService : ILecturerAuth
 {
 
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-    public LecturerAuthService(AppDbContext context)
+    public LecturerAuthService(AppDBContext context)
     {
         _context = context;
     }
@@ -20,9 +20,9 @@ public class LecturerAuthService : ILecturerAuth
     {
         //checking if the email exists in our DB
         //go find the fist user where their email matches the email we are looking for
-        LecturerReg? lecturerFromDB = await  _context.Lecturer.FirstOrDefaultAsync(lectInDB => lectInDB.LecEmail == email);
+        LecturerReg? lecturerFromDB = await _context.Lecturers.FirstOrDefaultAsync(lectInDB => lectInDB.LecEmail == email);
         return lecturerFromDB; // if null, email not in use, if User, means User already exists 
-    
+
     }
 
 
@@ -65,7 +65,7 @@ public class LecturerAuthService : ILecturerAuth
 
 
         //Adding the lecturer to our DB
-        _context.Lecturer.Add(lecturer);
+        _context.Lecturers.Add(lecturer);
         _context.SaveChanges();
 
         return Task.FromResult(true); //returning true if the user was added successfully

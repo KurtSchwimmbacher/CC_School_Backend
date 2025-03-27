@@ -31,4 +31,8 @@ public class Student : User
     {
         Role = "Student";
     }
+
+    //for relationships
+    public List<Courses> Courses { get; set; } //this is a list of courses that the student is taking
+    public List<Classes> Classes { get; set; } //this is a list of classes that the student is taking 
 }

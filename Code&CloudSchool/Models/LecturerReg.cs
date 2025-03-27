@@ -24,4 +24,7 @@ public class LecturerReg : User
         Role = "Lecturer";
     }
 
+    public List<Classes> Classes { get; set; } //this is a list of classes that the lecturer is teaching 
+
+
 }

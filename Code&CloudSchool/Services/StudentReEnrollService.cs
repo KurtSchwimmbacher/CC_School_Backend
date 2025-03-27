@@ -10,9 +10,9 @@ namespace Code_CloudSchool.Services;
 public class StudentReEnrollService : IStudentReEnroll
 {
 
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-    public StudentReEnrollService(AppDbContext context)
+    public StudentReEnrollService(AppDBContext context)
     {
         _context = context;
     }
@@ -21,16 +21,16 @@ public class StudentReEnrollService : IStudentReEnroll
     {
         Student? student = await _context.Students.FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
 
-         if(student == null)
-            {
-                return false;
-            }
+        if (student == null)
+        {
+            return false;
+        }
 
-            // if student is found
-            student.YearLevel = studentReEnrollDTO.YearLevel;
+        // if student is found
+        student.YearLevel = studentReEnrollDTO.YearLevel;
 
 
-            await _context.SaveChangesAsync();
-            return true;
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

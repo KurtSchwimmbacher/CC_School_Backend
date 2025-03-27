@@ -11,26 +11,26 @@ namespace Code_CloudSchool.Services;
 public class StudentStatusService : IStudentStatus
 {
 
-     private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-        public StudentStatusService(AppDbContext context)
+    public StudentStatusService(AppDBContext context)
+    {
+        _context = context;
+    }
+
+
+    public async Task<bool> UpdateStudentStatus(string studentNumber, UpdateStudentStatusDTO statusDTO)
+    {
+        Student? student = await _context.Students.FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
+
+        if (student == null)
         {
-            _context = context;
+            return false;
         }
 
-
-        public async Task<bool> UpdateStudentStatus(string studentNumber, UpdateStudentStatusDTO statusDTO)
-        {
-            Student? student = await _context.Students.FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
-
-            if(student == null)
-            {
-                return false;
-            }
-
-            // if student is fine
-            student.Status = statusDTO.Status;
-            await _context.SaveChangesAsync();
-            return true;
-        }
+        // if student is fine
+        student.Status = statusDTO.Status;
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

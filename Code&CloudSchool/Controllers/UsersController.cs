@@ -14,9 +14,9 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDBContext _context;
 
-        public UsersController(AppDbContext context)
+        public UsersController(AppDBContext context)
         {
             _context = context;
         }
