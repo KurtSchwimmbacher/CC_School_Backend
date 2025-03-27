@@ -3,6 +3,18 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+
+# Ignore auto-generated AssemblyInfo.cs files
+**/obj/**/AssemblyInfo.cs
+
+# Ignore auto-generated cache files
+**/obj/**.cache
+**/obj/**/*.cache
+
+# Ignore all files inside the obj directory
+obj/
+
+
 # dotenv files
 .env
 
