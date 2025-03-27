@@ -22,3 +22,5 @@ public class Classes
     public int CourseId { get; set; } //this is the foreign key that is going to be used to link the two tables together
     public Courses? Courses { get; set; } // this shows the relationship between the class and the course that is being taught 
 }
+
+//one class can have many assignments but one assignment cannot belong to many classes
