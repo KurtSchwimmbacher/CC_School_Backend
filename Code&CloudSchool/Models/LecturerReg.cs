@@ -7,11 +7,13 @@ namespace Code_CloudSchool.Models;
 public class LecturerReg : User
 {
 
-// Define the LecturerReg class representing the lecturer registration table in the database
+    // Define the LecturerReg class representing the lecturer registration table in the database
     // Mark Id as the primary key
-    [Key]
+    //[Key]
     // Configure the database to auto-generate the value for Id
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Required]
+    [StringLength(12)]
     public int LecturerId { get; set; }
 
     // Lecturer's first name, required with a maximum length of 50 characters

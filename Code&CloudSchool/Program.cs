@@ -5,8 +5,7 @@ using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-//Avien .env loader 
-DotNetEnv.Env.Load();
+
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -21,6 +20,8 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Avien .env loader 
+DotNetEnv.Env.Load();
 
 // connection to DB String here
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
