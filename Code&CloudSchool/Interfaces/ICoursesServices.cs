@@ -13,4 +13,24 @@ public interface ICourseServices
     public Task<Courses> UpdateCourse(Courses course);
     public Task<bool> DeleteCourse(int courseId);
 
+    //TODO: 
+    /*
+        GET, POST, PUT, DELETE -> Courses 
+
+        Get Course Details
+        Get Course description 
+        Get Course code 
+        Get Course Major 
+        Get Course Classes 
+        Get Course Students 
+        Update Courses classes 
+        Uppdate Curse Details
+        Update Course Description 
+        Update Course Code 
+        
+        addClass to course
+        remove class from course 
+        
+    */
+
 }
