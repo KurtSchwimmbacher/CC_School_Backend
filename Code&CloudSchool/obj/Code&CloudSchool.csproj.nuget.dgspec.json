@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< Updated upstream
     "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code&CloudSchool.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Kurts\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+    "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code&CloudSchool.csproj": {}
+  },
+  "projects": {
+    "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code&CloudSchool.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code&CloudSchool.csproj",
+        "projectName": "Code&CloudSchool",
+        "projectPath": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/Code&CloudSchool.csproj",
+        "packagesPath": "/Users/brilubokaba/.nuget/packages/",
+        "outputPath": "/Users/brilubokaba/Documents/GitHub/CC_School/Code&CloudSchool/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/brilubokaba/.nuget/NuGet/NuGet.Config"
+>>>>>>> Stashed changes
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -68,7 +85,11 @@
               "privateAssets": "all"
             }
           },
+<<<<<<< Updated upstream
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+=======
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+>>>>>>> Stashed changes
         }
       }
     }

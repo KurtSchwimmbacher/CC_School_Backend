@@ -13,7 +13,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Code&CloudSchool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< Updated upstream
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+50401fb91097d2b68febfed6af4afbf4e5e6a23a")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9d84bdc42ba589e6a807b8bded95df834c388be2")]
+>>>>>>> Stashed changes
 [assembly: System.Reflection.AssemblyProductAttribute("Code&CloudSchool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Code&CloudSchool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
