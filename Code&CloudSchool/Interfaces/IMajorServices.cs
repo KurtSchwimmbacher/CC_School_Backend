@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Code_CloudSchool.DTOs;
 using Code_CloudSchool.Models;
 
@@ -9,18 +10,23 @@ public interface IMajorServices
 {
     //listing functionality that this service should be able to do
 
-    public Task<Majors> GetMajorDetails(int majorId, MajorDetailsDTO majorDetailsDTO);
+    //Major Details 
+    public Task<MajorDetailsDTO> GetMajorDetails(int majorId);
 
     // returns true if update correct
-    public Task<bool> UpdateMajorDetails(int majorId, MajorDetailsDTO majorDetailsDTO);
+    public Task<bool> UpdateMajorDetailsAsync(int majorId, MajorDetailsDTO majorDetailsDTO);
 
-    public Task<int> GetMajorCredits(int majorId, MajorCreditsDTO majorCredits);
+    // major credits
+    public Task<int> GetMajorCreditsAsync(int majorId);
 
-    public Task<bool> UpdateMajorCredits(int majorId, MajorCreditsDTO majorCredits);
+    public Task<bool> UpdateMajorCreditsAsync(int majorId, MajorCreditsDTO majorCredits);
 
-    public Task<Courses> GetCoursesByMajor(int majorId);
+    //courses 
+    public Task<List<Courses>> GetCoursesByMajorAsync(int majorId);
 
-    public Task<Student> GetStudentsByMajor(int majorId);
+    public Task<List<Student>> GetStudentsByMajorAsync(int majorId);
+
+    public Task<Majors> CreateMajorAsync(MajorDetailsDTO majorCreateDTO);
 
     //TODO: 
     /*
