@@ -55,20 +55,62 @@ public class MajorServices : IMajorServices
 
         if (major == null)
         {
-            throw new KeyNotFoundException($"Majorr with this ID: {majorId}, does not exist");
+            throw new KeyNotFoundException($"Major with this ID: {majorId}, does not exist");
         }
 
         return major.CreditsRequired ?? throw new InvalidOperationException($"No credits defined for major {major.MajorName}");
     }
 
-    public Task<bool> UpdateMajorCreditsAsync(int majorId, MajorCreditsDTO majorCredits)
+    public async Task<bool> UpdateMajorCreditsAsync(int majorId, MajorCreditsDTO majorCredits)
     {
-        throw new NotImplementedException();
+        var major = await _context.Majors.FirstOrDefaultAsync(m => m.Id == majorId);
+
+        if (major == null)
+        {
+            throw new KeyNotFoundException($"Major with ID {majorId} not found");
+        }
+
+        major.CreditsRequired = majorCredits.CreditsRequired;
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> UpdateMajorDetailsAsync(int majorId, MajorDetailsDTO majorDetailsDTO)
+    public async Task<bool> UpdateMajorDetailsAsync(int majorId, MajorDetailsDTO majorDetailsDTO)
     {
-        throw new NotImplementedException();
+
+
+        if (majorDetailsDTO == null)
+        {
+            throw new ArgumentNullException(nameof(MajorDetailsDTO)); //making sure dto is not null otherwise it produces an error 
+        }
+
+
+        var major = await _context.Majors.FirstOrDefaultAsync(m => m.Id == majorId) ?? throw new KeyNotFoundException($"Major with the ID: {majorId} was not found");
+
+        if (major.MajorName != majorDetailsDTO.MajorName)
+        {
+            major.MajorName = majorDetailsDTO.MajorName;
+        }
+        if (major.MajorCode != majorDetailsDTO.MajorCode)
+        {
+            major.MajorCode = majorDetailsDTO.MajorCode;
+        }
+        if (major.MajorDescription != majorDetailsDTO.MajorDescription)
+        {
+            major.MajorDescription = majorDetailsDTO.MajorDescription;
+        }
+        if (major.CreditsRequired != majorDetailsDTO.CreditsRequired)
+        {
+            major.CreditsRequired = majorDetailsDTO.CreditsRequired;
+        }
+        //the above only updates the fields actually changed. 
+
+        await _context.SaveChangesAsync();
+
+        return true;
+
     }
 
     async Task<List<Courses>> IMajorServices.GetCoursesByMajorAsync(int majorId)

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
+using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.DTOs;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -15,10 +17,12 @@ namespace Code_CloudSchool.Controllers
     public class MajorsController : ControllerBase
     {
         private readonly AppDBContext _context;
+        private readonly IMajorServices _majorServices;
 
-        public MajorsController(AppDBContext context)
+        public MajorsController(AppDBContext context, IMajorServices majorServices)
         {
             _context = context;
+            _majorServices = majorServices;
         }
 
         // GET: api/Majors
@@ -40,6 +44,59 @@ namespace Code_CloudSchool.Controllers
             }
 
             return majors;
+        }
+
+        [HttpGet("getMajorDetails/{id}")]
+        public async Task<ActionResult<MajorDetailsDTO>> GetMajorDetails(int id)
+        {
+            var majorDetails = await _majorServices.GetMajorDetails(id);
+
+            if (majorDetails == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(majorDetails);
+        }
+
+        [HttpGet("getCredits/{id}")]
+        public async Task<ActionResult<MajorCreditsDTO>> GetMajorCreditsAsync(int id)
+        {
+            var majorCredits = await _majorServices.GetMajorCreditsAsync(id);
+
+            if (majorCredits == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(majorCredits);
+        }
+
+        [HttpGet("getCoursesByMajor/{id}")]
+
+        public async Task<ActionResult> GetCoursesByMajorAsync(int id)
+        {
+            var coursesByMajors = await _majorServices.GetCoursesByMajorAsync(id);
+
+            if (coursesByMajors == null || !coursesByMajors.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(coursesByMajors);
+        }
+        [HttpGet("getStudentsByMajor/{id}")]
+
+        public async Task<ActionResult> GetStudentsByMajorAsync(int id)
+        {
+            var studentsByMajors = await _majorServices.GetCoursesByMajorAsync(id);
+
+            if (studentsByMajors == null || !studentsByMajors.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(studentsByMajors);
         }
 
         // PUT: api/Majors/5
@@ -68,6 +125,32 @@ namespace Code_CloudSchool.Controllers
                 {
                     throw;
                 }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("updateMajorDetails/{id}")]
+        public async Task<ActionResult> UpdateMajorDetailsAsync(int id, MajorDetailsDTO detailsDTO)
+        {
+            var result = await _majorServices.UpdateMajorDetailsAsync(id, detailsDTO);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("updateMajorCredits/{id}")]
+        public async Task<IActionResult> UpdateMajorCreditsAsync(int id, MajorCreditsDTO creditsDTO)
+        {
+            var result = await _majorServices.UpdateMajorCreditsAsync(id, creditsDTO);
+
+            if (!result)
+            {
+                return NotFound();
             }
 
             return NoContent();
