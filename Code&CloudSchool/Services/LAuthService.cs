@@ -61,7 +61,7 @@ public class LAuthService : ILAuthService
     {
         // Search for the first lecturer where their email matches the given email
         LecturerReg? userFromDB = await _context.LecturerReg.FirstOrDefaultAsync(userInDB => userInDB.LecEmail == email);
-        
+        7
         // Return the lecturer record if found, otherwise return null
         return userFromDB; // If null, email is not in use; if not null, the user already exists 
 
@@ -79,6 +79,10 @@ public class LAuthService : ILAuthService
     {
         throw new NotImplementedException();
     }
+}
+
+internal class AppDbContext
+{
 }
 
 // Incorrect interface definition (this should be an interface, not a class)
