@@ -21,7 +21,7 @@ public class AppDBContext : DbContext
     public DbSet<Grade> Grades { get; set; }
 
     // Define a DbSet for Announcements, representing a table in the database
-    public DbSet<Announcements> Announcements { get; set; } = default!;
+    public virtual DbSet<Announcements> Announcements { get; set; } = default!;
 
 
     //Add Relationships below 

@@ -22,16 +22,16 @@ public class AnnounceServices : IAuthAnnouncement
     {
         // Add the new announcement to the database
         var newAnnouncement = _context.Announcements.Add(announcements);
-        
+
         // Save the changes asynchronously
         await _context.SaveChangesAsync();
-        
+
         // Return the newly created announcement entity
         return newAnnouncement.Entity;
     }
 
     // Method to retrieve an announcement by its ID (not yet implemented)
-    public Task<Announcements> GetAnnouncementsAsync(Guid id)
+    public Task<Announcements> GetAnnouncementsAsync(Announcements announcements)
     {
         throw new NotImplementedException(); // Placeholder for future implementation
     }
