@@ -16,7 +16,7 @@ public class AnnounceServicesTest
     {
         // use in memory db for testing
         var options = new DbContextOptionsBuilder<AppDBContext>()
-            .UseInMemoryDatabase(databaseName: "TestDB")
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
         var context = new AppDBContext(options);
@@ -84,7 +84,7 @@ public class AnnounceServicesTest
 
         var newAnnouncement = new Announcements
         {
-            AnnouncementId = 3,
+            AnnouncementId = 4,
             Title = "Test",
             Description = "test content"
         };
