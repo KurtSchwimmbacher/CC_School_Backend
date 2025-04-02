@@ -63,6 +63,18 @@ namespace Code_CloudSchool.Controllers
             return Ok(courseDetails);
         }
 
+        [HttpGet("getClassesInCourse/{id}")]
+        public async Task<ActionResult> GetClassesForCourseAsync(int id)
+        {
+            var classesInCourse = await _courseServices.GetCourseDetailsAsync(id);
+
+            if (classesInCourse == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(classesInCourse);
+        }
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
