@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code_CloudSchool", "Code&CloudSchool\Code_CloudSchool.csproj", "{D60DD962-2470-453F-948E-79ED895367E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code_CloudSchool.Tests", "Code_CloudSchool.Tests\Code_CloudSchool.Tests.csproj", "{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{D60DD962-2470-453F-948E-79ED895367E4}.Release|x64.Build.0 = Release|Any CPU
 		{D60DD962-2470-453F-948E-79ED895367E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{D60DD962-2470-453F-948E-79ED895367E4}.Release|x86.Build.0 = Release|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Debug|x64.Build.0 = Debug|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Debug|x86.Build.0 = Debug|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Release|x64.ActiveCfg = Release|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Release|x64.Build.0 = Release|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Release|x86.ActiveCfg = Release|Any CPU
+		{60743E1D-EECF-4FFB-BE2D-10D12DD2BF44}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
