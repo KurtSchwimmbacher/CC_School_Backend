@@ -3,6 +3,14 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore config files
+appsettings*.json
+.env
+
 # Environment files
 .env
 .env.*
