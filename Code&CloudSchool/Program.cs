@@ -24,7 +24,8 @@ builder.Services.AddSwaggerGen();
 DotNetEnv.Env.Load();
 
 // connection to DB String here
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 //local connection string --> var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // add db context to services 
