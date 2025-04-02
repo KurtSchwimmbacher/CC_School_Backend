@@ -103,39 +103,165 @@ public class CoursesServices : ICourseServices
             .ToListAsync();
     }
 
-    public Task<bool> RemoveClassesCourseAsync(int courseId)
+
+    public async Task<bool> RemoveClassCourseAsync(int courseId, ClassDetailsDTO classDTO)
     {
-        throw new NotImplementedException();
+        if (courseId <= 0 || classDTO == null)
+        {
+            throw new ArgumentException("Invalid input parameters");
+        }
+
+        var course = await _context.Courses
+            .Include(c => c.Classes)
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+
+        var existingClass = course.Classes.FirstOrDefault(c => c.classID == classDTO.ClassId);
+
+        if (existingClass == null)
+        {
+            throw new KeyNotFoundException($"Class with Id {classDTO.ClassId} does not exist in the course");
+        }
+
+        existingClass.className = classDTO.ClassName;
+        existingClass.classDescription = classDTO.classDescription;
+
+        _context.Classes.Remove(existingClass);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> RemoveMajorsForCourseAsync(int courseId)
+    public async Task<bool> RemoveMajorForCourseAsync(int courseId, MajorDetailsDTO majorDetails)
     {
-        throw new NotImplementedException();
+        if (courseId <= 0 || majorDetails == null)
+        {
+            throw new ArgumentException("Invalid input parameters");
+        }
+
+        var course = await _context.Courses
+            .Include(c => c.Majors)
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+
+        var existingMajor = course.Majors.FirstOrDefault(c => c.Id == majorDetails.MajorId);
+
+        if (existingMajor == null)
+        {
+            throw new KeyNotFoundException($"Class with Id {majorDetails.MajorId} does not exist in the course");
+        }
+
+        existingMajor.MajorName = majorDetails.MajorName;
+        existingMajor.MajorDescription = existingMajor.MajorDescription;
+
+
+        _context.Majors.Remove(existingMajor);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> RemoveStudentsInCourseAsync(int courseId)
+
+    public async Task<bool> UpdateClassForCourseAsync(int courseId, ClassDetailsDTO classDTO)
     {
-        throw new NotImplementedException();
+        if (courseId <= 0 || classDTO == null)
+        {
+            throw new ArgumentException("Invalid input parameters");
+        }
+
+        var course = await _context.Courses
+            .Include(c => c.Classes)
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+
+        var existingClass = course.Classes.FirstOrDefault(c => c.classID == classDTO.ClassId);
+
+        if (existingClass == null)
+        {
+            throw new KeyNotFoundException($"Class with Id {classDTO.ClassId} does not exist in the course");
+        }
+
+        existingClass.className = classDTO.ClassName;
+        existingClass.classDescription = classDTO.classDescription;
+
+        _context.Classes.Update(existingClass);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> UpdateClassesForCourseAsync(int courseId)
+
+    public async Task<bool> UpdateCourseDetailsAsync(int courseId, CourseDetailsDTO courseDetailsDTO)
     {
-        throw new NotImplementedException();
+        if (courseDetailsDTO == null)
+        {
+            throw new ArgumentNullException(nameof(courseDetailsDTO));
+        }
+
+        var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == courseId) ?? throw new KeyNotFoundException($"Course with the following Id: {courseId} was not found");
+
+        if (course.courseName != courseDetailsDTO.CourseName)
+        {
+            course.courseName = courseDetailsDTO.CourseName;
+        }
+        if (course.courseCode != courseDetailsDTO.CourseCode)
+        {
+            course.courseCode = courseDetailsDTO.CourseCode;
+        }
+        if (course.courseDescription != courseDetailsDTO.CourseDescription)
+        {
+            course.courseDescription = courseDetailsDTO.CourseDescription;
+        }
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> UpdateCourseDetailsAsync(int courseId, CourseDetailsDTO courseDetailsDTO)
+    public async Task<bool> UpdateMajorForCourseAsync(int courseId, MajorDetailsDTO majorDetails)
     {
-        throw new NotImplementedException();
+        if (courseId <= 0 || majorDetails == null)
+        {
+            throw new ArgumentException("Invalid input parameters");
+        }
+
+        var course = await _context.Courses
+            .Include(c => c.Majors)
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+
+        var existingMajor = course.Majors.FirstOrDefault(c => c.Id == majorDetails.MajorId);
+
+        if (existingMajor == null)
+        {
+            throw new KeyNotFoundException($"Class with Id {majorDetails.MajorId} does not exist in the course");
+        }
+
+        existingMajor.MajorName = majorDetails.MajorName;
+        existingMajor.MajorDescription = existingMajor.MajorDescription;
+
+
+        _context.Majors.Update(existingMajor);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> UpdateMajorsForCourseAsync(int courseId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdateStudentsInCourseAsync(int courseId)
-    {
-        throw new NotImplementedException();
-    }
 
 }

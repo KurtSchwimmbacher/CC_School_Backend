@@ -13,17 +13,20 @@ public interface ICourseServices
 
     //majors 
     public Task<List<Majors>> GetMajorsForCourseAsync(int courseId);
-    public Task<bool> UpdateMajorsForCourseAsync(int courseId);
-    public Task<bool> RemoveMajorsForCourseAsync(int courseId);
+    public Task<bool> UpdateMajorForCourseAsync(int courseId, MajorDetailsDTO majorDetails);
+    public Task<bool> RemoveMajorForCourseAsync(int courseId, MajorDetailsDTO majorDetails);
 
     //students 
-    public Task<List<Students>> GetStudentsInCourseAsync(int courseId);
-    public Task<bool> UpdateStudentsInCourseAsync(int courseId);
-    public Task<bool> RemoveStudentsInCourseAsync(int courseId);
+    // public Task<List<Students>> GetStudentsInCourseAsync(int courseId);
+    // public Task<bool> UpdateStudentInCourseAsync(int courseId, int studentId);
+    // public Task<bool> RemoveStudentInCourseAsync(int courseId, int studentId);
 
     //classes 
     public Task<List<Classes>> GetClassesForCourseAsync(int courseId);
-    public Task<bool> UpdateClassesForCourseAsync(int courseId);
-    public Task<bool> RemoveClassesCourseAsync(int courseId);
+    public Task<bool> UpdateClassForCourseAsync(int courseId, ClassDetailsDTO classDTO);
+    public Task<bool> RemoveClassCourseAsync(int courseId, ClassDetailsDTO classDTO);
+
+    //Class Time 
+
 
 }
