@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
+using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.DTOs;
 
 /// <summary>
 /// Courses Controller
@@ -18,10 +20,13 @@ namespace Code_CloudSchool.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly AppDBContext _context;
+        private readonly ICourseServices _courseServices;
 
-        public CoursesController(AppDBContext context)
+        public CoursesController(AppDBContext context, ICourseServices courseServices)
         {
             _context = context;
+
+            _courseServices = courseServices;
         }
 
         // GET: api/Courses
@@ -43,6 +48,19 @@ namespace Code_CloudSchool.Controllers
             }
 
             return courses;
+        }
+
+        [HttpGet("courseDetails/{id}")]
+        public async Task<ActionResult<CourseDetailsDTO>> GetCourseDetails(int id)
+        {
+            var courseDetails = await _courseServices.GetCourseDetailsAsync(id);
+
+            if (courseDetails == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(courseDetails);
         }
 
         // PUT: api/Courses/5
