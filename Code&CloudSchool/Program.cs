@@ -21,7 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Avien .env loader 
-DotNetEnv.Env.Load();
+//DotNetEnv.Env.Load();
 
 // connection to DB String here
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
