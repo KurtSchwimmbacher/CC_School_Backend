@@ -4,6 +4,7 @@ using Code_CloudSchool.DTOs;
 using Code_CloudSchool.Models;
 using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Code_CloudSchool.Tests;
 
@@ -22,37 +23,38 @@ public class GradeServiceTest
         var context = new AppDBContext(options);
 
         // Seed the in-memory database
-        context.Submissions.Add(new Submission
+        var student = new Student
+        {
+            StudentNumber = "12345",
+            Name = "test",
+            Gender = "Male"
+        };
+
+        var assignment = new Assignment
+        {
+            Assignment_ID = 1,
+            Title = "Test Assignment",
+            Description = "This is a test assignment"
+        };
+
+        var submission = new Submission
         {
             Submission_ID = 1,
             FilePath = "test-file-path.txt",
-            Assignment = new Assignment
-            {
-                Assignment_ID = 1,
-                Title = "Test Assignment",
-                Description = "This is a test assignment",
-            },
+            Student = student, // Properly associate the student
+            Assignment = assignment, // Properly associate the assignment
             Grade = new Grade
             {
                 Score = 0,
                 Feedback = "None"
             }
-        });
+        };
 
-        context.Submissions.Add(new Submission
-        {
-            Submission_ID = 50,
-            FilePath = "test-file-path.txt",
-            // Assignment = new Assignment
-            // {
-            //     Assignment_ID = 10,
-            //     Title = "Test Assignment",
-            //     Description = "This is a test assignment",
-            // }
-        });
+        context.Students.Add(student); // Add the student to the database
+        context.Assignments.Add(assignment); // Add the assignment to the database
+        context.Submissions.Add(submission); // Add the submission to the database
 
         context.SaveChanges();
-
 
         // Initialize the GradeService with the in-memory context
         _service = new GradeService(context);
@@ -139,5 +141,107 @@ public class GradeServiceTest
 
         // Assert
         Assert.Null(fetchedGrade);
+    }
+
+
+    // Test Case 5: UpdateGrade -> update and return the modified grade
+    [Fact]
+    public async Task UpdateGrade_UpdateSuccessful_ReturnsGrade()
+    {
+        // Arrange
+        var gradeDTO = new CreateGradeDto
+        {
+            SubmissionId = 1,
+            Score = 70
+        };
+
+        // Retrieve existing grade
+        var oldGrade = await _service.GetGradeBySubmissionId(gradeDTO.SubmissionId);
+        Assert.NotNull(oldGrade);
+
+        // update the grade
+        oldGrade.Score = gradeDTO.Score;
+
+        // Act
+        var grade = await _service.UpdateGrade(oldGrade);
+
+        // Assert 
+        Assert.NotNull(grade);
+        Assert.Equal(gradeDTO.Score, grade.Score);
+    }
+
+
+    // Test Case 6: DeleteGrade -> should delete the grade and return true
+    [Fact]
+    public async Task DeleteGrade_GradeExists_ReturnsTrue()
+    {
+        // Arrange
+        var gradeId = 1;
+
+        // Act
+        var result = await _service.DeleteGrade(gradeId);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    // Test Case 7: DeleteGrade -> should return false when grade doesnt exist
+    [Fact]
+    public async Task DeleteGrade_GradeDoesntExist_ReturnsFalse()
+    {
+        // Arrange
+        var gradeId = 999; // Non-existent grade ID
+
+        // Act
+        var result = await _service.DeleteGrade(gradeId);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    // Test Case 8: GetGradesForAssignment -> should return a list of grades for the assignment
+    [Fact]
+    public async Task GetGradesForAssignment_AssignmentExists_ReturnsGrades()
+    {
+        // Arrange 
+        // should be existing
+        var assignmentId = 1;
+
+        // Act
+        var grades = await _service.GetGradesForAssignment(assignmentId);
+
+        // Assert 
+        Assert.NotNull(grades);
+
+    }
+
+    // Test Case 9: GetGradesForAssignment -> AssignmentDoesntExist_ReturnsEmptyList
+    [Fact]
+    public async Task GetGradesForAssignment_AssignmentDoesntExist_ReturnsEmptyList()
+    {
+        // Arrange 
+        var assignmentId = 999; // Non-existent assignment ID
+
+        // Act
+        var grades = await _service.GetGradesForAssignment(assignmentId);
+
+        // Assert
+        Assert.NotNull(grades);
+        Assert.Empty(grades);
+    }
+
+    // Test Case 10: GetGradesByStudent -> should return a list of grades for the student
+    [Fact]
+    public async Task GetGradesByStudent_StudentExists_ReturnsGrades()
+    {
+        // Arrange
+        var studentId = "12345"; //existing student ID
+
+        // Act
+        var grades = await _service.GetGradesByStudent(studentId);
+
+        // Assert
+        Assert.NotNull(grades);
+        Assert.NotEmpty(grades);
     }
 }

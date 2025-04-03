@@ -109,7 +109,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpGet("student/{studentId}")] // HTTP GET method to get all grades for a specific student.
-        public async Task<ActionResult<List<Grade>>> GetGradesByStudent(int studentId)
+        public async Task<ActionResult<List<Grade>>> GetGradesByStudent(string studentId)
         {
             try
             {

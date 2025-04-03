@@ -88,11 +88,11 @@ public class GradeService : IGradeService
     }
 
     // Get all grades for a specific student.
-    public async Task<List<Grade>> GetGradesByStudent(int studentId)
+    public async Task<List<Grade>> GetGradesByStudent(string studentId)
     {
         return await _context.Grades
             .Include(g => g.Submission)
-            .Where(g => g.Submission.Student.Id == studentId)
+            .Where(g => g.Submission.Student.StudentNumber == studentId)
             .ToListAsync();
     }
 
