@@ -63,7 +63,7 @@ namespace Code_CloudSchool.Controllers
             return Ok(courseDetails);
         }
 
-        [HttpGet("getClassesInCourse/{id}")]
+        [HttpGet("courses/classes/{id}")]
         public async Task<ActionResult> GetClassesForCourseAsync(int id)
         {
             var classesInCourse = await _courseServices.GetCourseDetailsAsync(id);
@@ -75,6 +75,35 @@ namespace Code_CloudSchool.Controllers
 
             return Ok(classesInCourse);
         }
+
+        [HttpGet("courses/majors/{id}")]
+        public async Task<ActionResult>
+        GetMajorsForCourseAsync(int id)
+        {
+            var majorsInCourse = await _courseServices.GetMajorsForCourseAsync(id);
+
+            if (majorsInCourse == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(majorsInCourse);
+        }
+
+        [HttpGet("students/{id}")]
+        public async Task<ActionResult> GetStudentsInCourseAsync(int id)
+        {
+            var studentsByMajors = await _courseServices.GetMajorsForCourseAsync(id);
+
+            if (studentsByMajors == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(studentsByMajors);
+        }
+
+
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -103,6 +132,180 @@ namespace Code_CloudSchool.Controllers
                 }
             }
 
+            return NoContent();
+        }
+
+        [HttpPut("courseDetails/{id}")]
+        public async Task<ActionResult> UpdateCourseDetails(int id, [FromBody] CourseDetailsDTO courseDetails)
+        {
+            if (id <= 0 || courseDetails == null)
+            {
+                return BadRequest("invalid input");
+            }
+
+            var courseToUpdate = await _context.Courses.FindAsync(id);
+
+            if (courseToUpdate == null)
+            {
+                return NotFound($"The Course with ID: {id} does not exist");
+            }
+
+            bool hasChanged = false;
+
+            if (courseToUpdate.courseName != courseDetails.CourseName)
+            {
+                courseToUpdate.courseName = courseDetails.CourseName;
+
+                hasChanged = true;
+            }
+
+            if (courseToUpdate.courseCode != courseDetails.CourseCode)
+            {
+                courseToUpdate.courseCode = courseDetails.CourseCode;
+
+                hasChanged = true;
+            }
+
+            if (courseToUpdate.courseDescription != courseDetails.CourseDescription)
+            {
+                courseToUpdate.courseDescription = courseDetails.CourseDescription;
+
+                hasChanged = true;
+            }
+
+            if (hasChanged)
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    return StatusCode(500, "An error occured saving these changes");
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("courses/{courseId}/classes/{classId}")]
+        public async Task<ActionResult> UpdateClassInCourse(int classId, int courseId, [FromBody] ClassDetailsDTO classDetails) //fetches the Id's from the http request 
+        {
+
+            if (courseId <= 0 || classDetails == null)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            //fetching the course/ searching for the course
+            var course = await _context.Courses
+                .Include(c => c.Classes)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                return NotFound($"Course with the ID: {courseId} does not exist or was not found");
+            }
+
+            //searching for the class 
+            var classToUpdate = course.Classes.FirstOrDefault(c => c.classID == classDetails.ClassId);
+
+            if (classToUpdate == null)
+            {
+                return NotFound($"Class with the ID:{classDetails.ClassId} does not exist in the course");
+            }
+
+            bool hasChanged = false;
+
+            if (classToUpdate.className != classDetails.ClassName)
+            {
+                classToUpdate.className = classDetails.ClassName;
+                hasChanged = true;
+            }
+            if (classToUpdate.classDescription != classDetails.classDescription)
+            {
+                classToUpdate.classDescription = classDetails.classDescription;
+                hasChanged = true;
+            }
+
+            if (hasChanged)
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    return StatusCode(500, "An error occured whilst attempting to save the changes made.");
+                }
+            }
+            return NoContent();
+        }
+
+        [HttpPut("courses/{courseId}/major/{majorId}")]
+        public async Task<ActionResult> UpdateMajorInCourse(int majorId, int courseId, [FromBody] MajorDetailsDTO majorDetails)
+        {
+            if (courseId <= 0 || majorDetails == null)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            //fetching the course/ searching for the course
+            var course = await _context.Courses
+                .Include(c => c.Majors)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                return NotFound($"Course with the ID: {courseId} does not exist or was not found");
+            }
+
+            //searching for the class 
+            var majorToUpdate = course.Majors.FirstOrDefault(m => m.Id == majorDetails.MajorId);
+
+            if (majorToUpdate == null)
+            {
+                return NotFound($"Class with the ID:{majorDetails.MajorId} does not exist in the course");
+            }
+
+            bool hasChanged = false;
+
+            if (majorToUpdate.MajorName != majorDetails.MajorName)
+            {
+                majorToUpdate.MajorName = majorDetails.MajorName;
+
+                hasChanged = true;
+            }
+            if (majorToUpdate.MajorCode != majorDetails.MajorCode)
+            {
+                majorToUpdate.MajorCode = majorDetails.MajorCode;
+
+                hasChanged = true;
+            }
+            if (majorToUpdate.MajorDescription != majorDetails.MajorDescription)
+            {
+                majorToUpdate.MajorDescription = majorDetails.MajorDescription;
+
+                hasChanged = true;
+            }
+            if (majorToUpdate.CreditsRequired != majorDetails.CreditsRequired)
+            {
+                majorToUpdate.CreditsRequired = majorDetails.CreditsRequired;
+
+                hasChanged = true;
+            }
+
+            if (hasChanged)
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    return StatusCode(500, "An error occured whilst attempting to save the changes made.");
+                }
+            }
             return NoContent();
         }
 
@@ -136,6 +339,66 @@ namespace Code_CloudSchool.Controllers
         private bool CoursesExists(int id)
         {
             return _context.Courses.Any(e => e.Id == id);
+        }
+
+        [HttpDelete("courses/{courseId}/major/{majorId}")]
+        public async Task<ActionResult> RemoveMajorForCourse(int courseId, int majorId)
+        {
+            if (courseId <= 0 || majorId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            var course = await _context.Courses
+                .Include(c => c.Majors)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                return NotFound($"Course with the ID: {courseId} does not exist or was not found");
+            }
+
+            var majorToRemove = course.Majors.FirstOrDefault(m => m.Id == majorId);
+
+            if (majorToRemove == null)
+            {
+                return NotFound($"Major with the ID:{majorId} does not exist in the course");
+            }
+
+            _context.Majors.Remove(majorToRemove);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("courses/{courseId}/classes/{classesId}")]
+        public async Task<ActionResult> RemoveClassFromCourse(int courseId, int classesId)
+        {
+            if (courseId <= 0 || classesId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            var course = await _context.Courses
+                .Include(c => c.Classes)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                return NotFound($"Course with the ID: {courseId} does not exist or was not found");
+            }
+
+            var classToRemove = course.Classes.FirstOrDefault(c => c.classID == classesId);
+
+            if (classToRemove == null)
+            {
+                return NotFound($"Class with the ID:{classesId} does not exist in the course");
+            }
+
+            _context.Classes.Remove(classToRemove);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

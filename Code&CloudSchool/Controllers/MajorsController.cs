@@ -131,13 +131,55 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpPut("updateMajorDetails/{id}")]
-        public async Task<ActionResult> UpdateMajorDetailsAsync(int id, MajorDetailsDTO detailsDTO)
+        public async Task<ActionResult> UpdateMajorDetailsAsync(int id, [FromBody] MajorDetailsDTO detailsDTO)
         {
-            var result = await _majorServices.UpdateMajorDetailsAsync(id, detailsDTO);
 
-            if (!result)
+            if (id <= 0 || detailsDTO == null)
             {
-                return NotFound();
+                return BadRequest("Invalid input parameters");
+            }
+
+            var existingMajor = await _context.Majors.FindAsync(id);
+
+            if (existingMajor == null)
+            {
+                return NotFound($"major with Id: {id} does not exist");
+            }
+
+            bool hasChanged = false;
+
+            if (existingMajor.MajorName != detailsDTO.MajorName)
+            {
+                existingMajor.MajorName = detailsDTO.MajorName;
+
+                hasChanged = true;
+            }
+
+            if (existingMajor.MajorCode != detailsDTO.MajorCode)
+            {
+                existingMajor.MajorCode = detailsDTO.MajorCode;
+
+                hasChanged = true;
+            }
+
+            if (existingMajor.MajorDescription != detailsDTO.MajorDescription)
+            {
+                existingMajor.MajorDescription = detailsDTO.MajorDescription;
+
+                hasChanged = true;
+            }
+
+            if (hasChanged)
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+
+                    return StatusCode(500, "an error occured while updating the major");
+                }
             }
 
             return NoContent();

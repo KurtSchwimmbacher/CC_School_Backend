@@ -36,15 +36,15 @@ public class AppDBContext : DbContext
             .UsingEntity(joinTbl => joinTbl.ToTable("MajorCourses")); // this is the name of the join table used to handle the many to many relationship
 
 
-        //one course has many studdents and one student can take many courses 
+        //one course has many students and one student can take many courses 
         modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Students)
+            .HasMany(c => c.Student)
             .WithMany(s => s.Courses)
             .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
 
         // one class can have many students and one student can take many classes 
         modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Students)
+            .HasMany(cl => cl.Student)
             .WithMany(s => s.Classes)
             .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
 

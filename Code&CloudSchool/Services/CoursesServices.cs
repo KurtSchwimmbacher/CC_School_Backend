@@ -99,7 +99,7 @@ public class CoursesServices : ICourseServices
 
         return await _context.Courses
             .Where(c => c.Id == courseId)
-            .SelectMany(c => c.Students)
+            .SelectMany(c => c.Student)
             .ToListAsync();
     }
 
