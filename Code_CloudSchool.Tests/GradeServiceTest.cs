@@ -244,4 +244,32 @@ public class GradeServiceTest
         Assert.NotNull(grades);
         Assert.NotEmpty(grades);
     }
+
+    // Test Case 11: HasSubmissionBeenGraded -> should return true if the submission has been graded
+    [Fact]
+    public async Task HasSubmissionBeenGraded_SubmissionGraded_ReturnsTrue()
+    {
+        // Arrange
+        var submissionId = 1;
+
+        // Act
+        var result = await _service.HasSubmissionBeenGraded(submissionId);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    // Test Case 12: HasSubmissionBeenGraded -> should return false if the submission has not been graded
+    [Fact]
+    public async Task HasSubmissionBeenGraded_SubmissionNotGraded_ReturnsFalse()
+    {
+        // Arrange
+        var submissionId = 999; // Non-existent submission ID
+
+        // Act
+        var result = await _service.HasSubmissionBeenGraded(submissionId);
+
+        // Assert
+        Assert.False(result);
+    }
 }
