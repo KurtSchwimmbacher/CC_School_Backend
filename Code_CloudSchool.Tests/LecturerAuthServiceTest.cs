@@ -11,7 +11,6 @@ public class LecturerAuthServiceTest
 {
 
     private readonly LecturerAuthService _service;
-    private readonly LAuthService _authService;
 
     public LecturerAuthServiceTest()
     {
@@ -36,7 +35,6 @@ public class LecturerAuthServiceTest
 
         // Initialize the LecturerAuthService with the in-memory context
         _service = new LecturerAuthService(context);
-        _authService = new LAuthService(context);
     }
 
     // Test Case 1: RegisterLecturer -> creates lecturer 
@@ -114,6 +112,7 @@ public class LecturerAuthServiceTest
         var lecturer = await _service.EmailExists(lecturerTest.LecEmail);
 
         // Assert
+        Assert.NotNull(lecturer);
         Assert.Equal(lecturerTest.Name, lecturer.Name);
 
     }
