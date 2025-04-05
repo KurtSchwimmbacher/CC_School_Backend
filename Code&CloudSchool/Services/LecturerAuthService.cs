@@ -70,4 +70,5 @@ public class LecturerAuthService : ILecturerAuth
 
         return Task.FromResult(true); //returning true if the user was added successfully
     }
+    
 }
