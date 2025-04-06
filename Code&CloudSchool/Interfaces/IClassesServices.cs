@@ -1,4 +1,5 @@
 using System;
+using Code_CloudSchool.DTOs;
 using Code_CloudSchool.Models;
 
 namespace Code_CloudSchool.Interfaces;
@@ -8,26 +9,38 @@ namespace Code_CloudSchool.Interfaces;
 /// </summary>
 public interface IClassesServices
 {
+    public Task<ClassDetailsDTO> GetClassDetailsAsync(int classId);
+    public Task<Classes> GetClassTimeAsync(int classId);
+    public Task<Classes> GetClassLecturersAsync(int classId);
+    public Task<Classes> GetClassStudentsAsync(int classId);
+    public Task<Classes> GetClassCourseAsync(int classId);
+
+
+    public Task<Classes> UpdateClassDetailsAsync(int classId, Classes classes);
+    public Task<Classes> UpdateClassTimeAsync(int classId, Classes classes);
+
+    public Task<bool> RemoveStudentFromClassAsync(int classId, int studentId);
+    public Task<bool> RemoveLecturerFromClassAsync(int classId, int lecturerId);
+
     //TODO: 
     /*
         GET, POST, PUT, DELETE -> Courses 
         
-        Get Course Details
-        Get Course description 
-        Get Course code 
-        Get Course Major 
-        Get Course Classes 
-        Get Course Students 
-        Update Courses classes 
-        Update Course Students 
-        Uppdate Curse Details
-        Update Course Description 
-        Update Course Code 
-        
-        addClass to course
-        addStudent to course
+        Get Class Details
+        Get Class Time 
+        Get Class Lecturers 
+        Get Course the class is under 
+        Get Class Students 
+
+        Update Class Details 
+        Update Class Time 
+        Update Class Students 
+        Update Class Lecturers 
+        Update Class Course 
+
+        remove student from class
+        remove Lectuer from class 
         remove class from course 
-        remove student from course 
         
     */
 }

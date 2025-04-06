@@ -6,7 +6,7 @@ using Code_CloudSchool.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Code_CloudSchool.Services;
-
+//
 public class MajorServices : IMajorServices
 {
     private readonly AppDBContext _context;

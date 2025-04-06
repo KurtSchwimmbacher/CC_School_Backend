@@ -83,7 +83,7 @@ public class CoursesServices : ICourseServices
             .ToListAsync();
     }
 
-    public async Task<List<Students>> GetStudentsInCourseAsync(int courseId)
+    public async Task<List<Student>> GetStudentsInCourseAsync(int courseId)
     {
         if (courseId <= 0)
         {
