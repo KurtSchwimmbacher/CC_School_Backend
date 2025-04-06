@@ -22,6 +22,13 @@ public class AssignmentService : IAssignmentService
         // Create a new assignment.
         public async Task<Assignment> CreateAssignment(Assignment assignment)
         {
+            // Verify lecturer exists using User.Id (not LecturerId)
+            var lecturerExists = await _context.Lecturers
+                .AnyAsync(l => l.Id == assignment.LecturerUserId);
+            
+            if (!lecturerExists)
+                throw new Exception($"Lecturer with User ID {assignment.LecturerUserId} not found");
+                
             _context.Assignments.Add(assignment);
             await _context.SaveChangesAsync();
             return assignment;
@@ -31,7 +38,7 @@ public class AssignmentService : IAssignmentService
         public async Task<List<Assignment>> GetAssignmentsByLecturer(int lecturerId)
         {
             return await _context.Assignments
-                .Where(a => a.LecturerId == lecturerId)
+                .Where(a => a.LecturerUserId == lecturerId)
                 .ToListAsync();
         }
 

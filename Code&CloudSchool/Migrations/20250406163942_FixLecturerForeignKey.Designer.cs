@@ -3,6 +3,7 @@ using System;
 using Code_CloudSchool.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250406163942_FixLecturerForeignKey")]
+    partial class FixLecturerForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +96,7 @@ namespace Code_CloudSchool.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("LecturerUserId")
+                    b.Property<int>("LecturerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -101,8 +104,6 @@ namespace Code_CloudSchool.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Assignment_ID");
-
-                    b.HasIndex("LecturerUserId");
 
                     b.ToTable("Assignments");
                 });
@@ -429,7 +430,7 @@ namespace Code_CloudSchool.Migrations
                 {
                     b.HasOne("Code_CloudSchool.Models.LecturerReg", "Lecturer")
                         .WithMany()
-                        .HasForeignKey("LecturerUserId")
+                        .HasForeignKey("LecturerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -463,6 +464,7 @@ namespace Code_CloudSchool.Migrations
                     b.HasOne("Code_CloudSchool.Models.Assignment", "Assignment")
                         .WithMany("Submissions")
                         .HasForeignKey("Assignment_ID")
+                        .HasPrincipalKey("LecturerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

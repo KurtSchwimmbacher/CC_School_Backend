@@ -81,7 +81,8 @@ public class AppDBContext : DbContext
         modelBuilder.Entity<Assignment>()
             .HasOne(a => a.Lecturer) // An Assignment has one Lecturer.
             .WithMany() // A Lecturer can have many Assignments.
-            .HasForeignKey(a => a.LecturerId) // Foreign key in the Assignment table.
+            .HasForeignKey(a => a.LecturerUserId) // Foreign key in the Assignment table.
+            .HasPrincipalKey(l => l.Id)  // Reference User.Id (base class)
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete (optional: change to Cascade if needed).
 
         // Configure the relationship between Submission and Student

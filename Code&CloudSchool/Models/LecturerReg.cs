@@ -13,7 +13,6 @@ public class LecturerReg : User
     // Configure the database to auto-generate the value for Id
     //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Required]
-    [StringLength(12)]
     public int LecturerId { get; set; }
 
     // Lecturer's first name, required with a maximum length of 50 characters

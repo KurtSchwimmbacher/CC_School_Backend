@@ -5,8 +5,6 @@ using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -28,9 +26,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 //local connection string --> var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// add db context to services 
-builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
+// add db context to services with enhanced debugging (development only)
+builder.Services.AddDbContext<AppDBContext>(options => 
+    options.UseNpgsql(connectionString)
+           .EnableDetailedErrors()       // ← Shows detailed database errors in development
+           .EnableSensitiveDataLogging() // ← Shows parameter values in logs (remove in production)
+);
 
+// Register application services
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();
 builder.Services.AddScoped<IStudentReEnroll, StudentReEnrollService>();
@@ -55,7 +58,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.MapControllers(); //controller based on api endpoints -> so that we can use the controller to get the data from the db
 
