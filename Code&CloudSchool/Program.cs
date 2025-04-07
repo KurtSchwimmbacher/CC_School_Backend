@@ -46,6 +46,10 @@ builder.Services.AddScoped<IAuthAnnouncement, AnnounceServices>();
 builder.Services.AddScoped<ILAuthService, LAuthService>();
 builder.Services.AddScoped<IUpdateAdminPassword, AdminPasswordService>();
 
+builder.Services.AddScoped<IMajorServices, MajorServices>();
+builder.Services.AddScoped<ICourseServices, CoursesServices>();
+builder.Services.AddScoped<IClassesServices, ClassesServices>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -37,6 +37,30 @@ public class AppDBContext : DbContext
         modelBuilder.Entity<Student>().ToTable("Students");
         modelBuilder.Entity<Admin>().ToTable("Admins");
 
+        //one course has many students and one student can take many courses 
+        modelBuilder.Entity<Courses>()
+            .HasMany(c => c.Student)
+            .WithMany(s => s.Courses)
+            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
+
+        // one class can have many students and one student can take many classes 
+        modelBuilder.Entity<Classes>()
+            .HasMany(cl => cl.Student)
+            .WithMany(s => s.Classes)
+            .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
+
+        // one lecturer teaches many classes and one class can have many lecturers 
+        modelBuilder.Entity<Classes>()
+            .HasMany(cl => cl.Lecturers)
+            .WithMany(l => l.Classes)
+            .UsingEntity(joinTbl => joinTbl.ToTable("ClassLecturers"));
+
+        // one course can have many classes and many classes can have one courses
+        modelBuilder.Entity<Courses>()
+            .HasMany(c => c.Classes)
+            .WithOne(cl => cl.Courses)
+            .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
+
         // Unique constraint for StudentNumber
         modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
 
