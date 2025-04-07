@@ -8,10 +8,10 @@ public class AppDBContext : DbContext
 {
     public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
 
-    //below are the tables that we are going to be working with
-
+    // Below are the tables that we are going to be working with
     public DbSet<User> User { get; set; }
-    public DbSet<Majors> Majors { get; set; } //adding majors to the database so that we can use it in the database and in our application
+    
+    public DbSet<Majors> Majors { get; set; } // Adding majors to the database so that we can use it in the database and in our application
     public DbSet<Courses> Courses { get; set; }
     public DbSet<Classes> Classes { get; set; }
     public DbSet<LecturerReg> Lecturers { get; set; }
@@ -23,42 +23,49 @@ public class AppDBContext : DbContext
     // Define a DbSet for Announcements, representing a table in the database
     public DbSet<Announcements> Announcements { get; set; } = default!;
 
-
-    //Add Relationships below 
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder) //this is a method that is called when the model is being created
+    // Add Relationships below 
+    protected override void OnModelCreating(ModelBuilder modelBuilder) // This is a method that is called when the model is being created
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Majors>() //this is the entity that we are going to be working with
-            .HasMany(m => m.Courses) // a major has many courses
-            .WithMany(c => c.Majors) // a course has many majors
-            .UsingEntity(joinTbl => joinTbl.ToTable("MajorCourses")); // this is the name of the join table used to handle the many to many relationship
+        // Configure inheritance FIRST
+        modelBuilder.Entity<LecturerReg>()
+            .HasBaseType<User>()
+            .ToTable("LecturerReg");
 
+        // Configure auto-increment for LecturerId without making it a key
+        modelBuilder.Entity<LecturerReg>()
+            .Property(l => l.LecturerId)
+            .ValueGeneratedOnAdd();
 
-        //one course has many studdents and one student can take many courses 
+        modelBuilder.Entity<Majors>() // This is the entity that we are going to be working with
+            .HasMany(m => m.Courses) // A major has many courses
+            .WithMany(c => c.Majors) // A course has many majors
+            .UsingEntity(joinTbl => joinTbl.ToTable("MajorCourses")); // This is the name of the join table used to handle the many-to-many relationship
+
+        // One course has many students and one student can take many courses 
         modelBuilder.Entity<Courses>()
             .HasMany(c => c.Students)
             .WithMany(s => s.Courses)
             .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
 
-        // one class can have many students and one student can take many classes 
+        // One class can have many students and one student can take many classes 
         modelBuilder.Entity<Classes>()
             .HasMany(cl => cl.Students)
             .WithMany(s => s.Classes)
             .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
 
-        // one lecturer teaches many classes and one class can have many lecturers 
+        // One lecturer teaches many classes and one class can have many lecturers 
         modelBuilder.Entity<Classes>()
             .HasMany(cl => cl.Lecturers)
             .WithMany(l => l.Classes)
             .UsingEntity(joinTbl => joinTbl.ToTable("ClassLecturers"));
 
-        // one course can have many classes and many classes can have one courses
+        // One course can have many classes and many classes can have one course
         modelBuilder.Entity<Courses>()
             .HasMany(c => c.Classes)
             .WithOne(cl => cl.Courses)
-            .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
+            .HasForeignKey(cl => cl.CourseId); // This is the foreign key that is going to be used to link the two tables together 
 
         // Unique constraint for StudentNumber
         modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
@@ -79,11 +86,11 @@ public class AppDBContext : DbContext
 
         // Configure the relationship between Assignment and Lecturer
         modelBuilder.Entity<Assignment>()
-            .HasOne(a => a.Lecturer) // An Assignment has one Lecturer.
-            .WithMany() // A Lecturer can have many Assignments.
-            .HasForeignKey(a => a.LecturerUserId) // Foreign key in the Assignment table.
-            .HasPrincipalKey(l => l.Id)  // Reference User.Id (base class)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete (optional: change to Cascade if needed).
+            .HasOne(a => a.LecturerUser) // An Assignment has one Lecturer.
+            .WithMany()
+            .HasForeignKey(a => a.LecturerUser_Id)// Foreign key in the Assignment table.
+            .HasPrincipalKey(u => u.Id)  // Explicitly point to User.Id
+            .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of User if there are assignments linked to it
 
         // Configure the relationship between Submission and Student
         modelBuilder.Entity<Submission>()

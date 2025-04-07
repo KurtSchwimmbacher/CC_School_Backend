@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     /// <inheritdoc />
-    public partial class FixInheritance : Migration
+    public partial class FixAssignmentLecturerRelationshipV1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,6 +60,24 @@ namespace Code_CloudSchool.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    Discriminator = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Classes",
                 columns: table => new
                 {
@@ -107,41 +125,58 @@ namespace Code_CloudSchool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "LecturerReg",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    LecturerId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    Password = table.Column<string>(type: "text", nullable: false),
-                    Role = table.Column<string>(type: "text", nullable: false),
-                    Discriminator = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
-                    LecturerId = table.Column<int>(type: "integer", maxLength: 12, nullable: true),
-                    LectName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    LecLastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    LecEmail = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
-                    Department = table.Column<string>(type: "text", nullable: true),
-                    DateOfJoining = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: true),
-                    StudentNumber = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    Gender = table.Column<string>(type: "text", nullable: true),
+                    LectName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LecLastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LecEmail = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Department = table.Column<string>(type: "text", nullable: false),
+                    DateOfJoining = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LecturerReg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LecturerReg_User_Id",
+                        column: x => x.Id,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    StudentNumber = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Gender = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: true),
-                    EnrollmentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    YearLevel = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    EnrollmentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    YearLevel = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     MajorsId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_User_Majors_MajorsId",
+                        name: "FK_Students_Majors_MajorsId",
                         column: x => x.MajorsId,
                         principalTable: "Majors",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Students_User_Id",
+                        column: x => x.Id,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,14 +188,20 @@ namespace Code_CloudSchool.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LecturerId = table.Column<int>(type: "integer", nullable: false)
+                    LecturerUser_Id = table.Column<int>(type: "integer", nullable: false),
+                    LecturerRegId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Assignments", x => x.Assignment_ID);
                     table.ForeignKey(
-                        name: "FK_Assignments_User_LecturerId",
-                        column: x => x.LecturerId,
+                        name: "FK_Assignments_LecturerReg_LecturerRegId",
+                        column: x => x.LecturerRegId,
+                        principalTable: "LecturerReg",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Assignments_User_LecturerUser_Id",
+                        column: x => x.LecturerUser_Id,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -183,9 +224,9 @@ namespace Code_CloudSchool.Migrations
                         principalColumn: "classID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassLecturers_User_LecturersId",
+                        name: "FK_ClassLecturers_LecturerReg_LecturersId",
                         column: x => x.LecturersId,
-                        principalTable: "User",
+                        principalTable: "LecturerReg",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -207,9 +248,9 @@ namespace Code_CloudSchool.Migrations
                         principalColumn: "classID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassStudents_User_StudentsId",
+                        name: "FK_ClassStudents_Students_StudentsId",
                         column: x => x.StudentsId,
-                        principalTable: "User",
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -231,9 +272,9 @@ namespace Code_CloudSchool.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseStudents_User_StudentsId",
+                        name: "FK_CourseStudents_Students_StudentsId",
                         column: x => x.StudentsId,
-                        principalTable: "User",
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -259,9 +300,9 @@ namespace Code_CloudSchool.Migrations
                         principalColumn: "Assignment_ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Submissions_User_Student_ID",
+                        name: "FK_Submissions_Students_Student_ID",
                         column: x => x.Student_ID,
-                        principalTable: "User",
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -288,9 +329,14 @@ namespace Code_CloudSchool.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignments_LecturerId",
+                name: "IX_Assignments_LecturerRegId",
                 table: "Assignments",
-                column: "LecturerId");
+                column: "LecturerRegId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assignments_LecturerUser_Id",
+                table: "Assignments",
+                column: "LecturerUser_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Classes_CourseId",
@@ -324,6 +370,17 @@ namespace Code_CloudSchool.Migrations
                 column: "MajorsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_MajorsId",
+                table: "Students",
+                column: "MajorsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_StudentNumber",
+                table: "Students",
+                column: "StudentNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Submissions_Assignment_ID",
                 table: "Submissions",
                 column: "Assignment_ID");
@@ -332,17 +389,6 @@ namespace Code_CloudSchool.Migrations
                 name: "IX_Submissions_Student_ID",
                 table: "Submissions",
                 column: "Student_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_MajorsId",
-                table: "User",
-                column: "MajorsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_StudentNumber",
-                table: "User",
-                column: "StudentNumber",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -379,10 +425,16 @@ namespace Code_CloudSchool.Migrations
                 name: "Assignments");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "LecturerReg");
 
             migrationBuilder.DropTable(
                 name: "Majors");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

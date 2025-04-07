@@ -24,11 +24,17 @@ namespace Code_CloudSchool.Controllers
         {
             try
             {
+                // Debug: Log incoming request details
+                Console.WriteLine($"Received assignment: {System.Text.Json.JsonSerializer.Serialize(assignment)}");
+                Console.WriteLine($"LecturerUser_Id: {assignment.LecturerUser_Id}");
+
                 var result = await _assignmentService.CreateAssignment(assignment); // Call the service method.
                 return Ok(result); // Return the created assignment with a 200 OK status.
             }
             catch (Exception ex)
             {
+                // Debug: Log full error details
+                Console.WriteLine($"FULL ERROR: {ex.ToString()}");
                 return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
             }
         }

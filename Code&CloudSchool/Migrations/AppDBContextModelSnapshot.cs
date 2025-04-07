@@ -93,7 +93,10 @@ namespace Code_CloudSchool.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("LecturerUserId")
+                    b.Property<int?>("LecturerRegId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LecturerUser_Id")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -102,7 +105,9 @@ namespace Code_CloudSchool.Migrations
 
                     b.HasKey("Assignment_ID");
 
-                    b.HasIndex("LecturerUserId");
+                    b.HasIndex("LecturerRegId");
+
+                    b.HasIndex("LecturerUser_Id");
 
                     b.ToTable("Assignments");
                 });
@@ -254,7 +259,6 @@ namespace Code_CloudSchool.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("character varying(13)");
 
@@ -281,9 +285,7 @@ namespace Code_CloudSchool.Migrations
 
                     b.ToTable("User");
 
-                    b.HasDiscriminator().HasValue("User");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("CoursesMajors", b =>
@@ -346,9 +348,12 @@ namespace Code_CloudSchool.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<int>("LecturerId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.HasDiscriminator().HasValue("LecturerReg");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LecturerId"));
+
+                    b.ToTable("LecturerReg", (string)null);
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Student", b =>
@@ -392,7 +397,7 @@ namespace Code_CloudSchool.Migrations
                     b.HasIndex("StudentNumber")
                         .IsUnique();
 
-                    b.HasDiscriminator().HasValue("Student");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("ClassesLecturerReg", b =>
@@ -427,13 +432,17 @@ namespace Code_CloudSchool.Migrations
 
             modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
                 {
-                    b.HasOne("Code_CloudSchool.Models.LecturerReg", "Lecturer")
+                    b.HasOne("Code_CloudSchool.Models.LecturerReg", null)
+                        .WithMany("Assignments")
+                        .HasForeignKey("LecturerRegId");
+
+                    b.HasOne("Code_CloudSchool.Models.User", "LecturerUser")
                         .WithMany()
-                        .HasForeignKey("LecturerUserId")
+                        .HasForeignKey("LecturerUser_Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Lecturer");
+                    b.Navigation("LecturerUser");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Classes", b =>
@@ -507,8 +516,23 @@ namespace Code_CloudSchool.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Code_CloudSchool.Models.LecturerReg", b =>
+                {
+                    b.HasOne("Code_CloudSchool.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("Code_CloudSchool.Models.LecturerReg", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Code_CloudSchool.Models.Student", b =>
                 {
+                    b.HasOne("Code_CloudSchool.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("Code_CloudSchool.Models.Student", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Code_CloudSchool.Models.Majors", null)
                         .WithMany("Students")
                         .HasForeignKey("MajorsId");
@@ -533,6 +557,11 @@ namespace Code_CloudSchool.Migrations
                 {
                     b.Navigation("Grade")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.LecturerReg", b =>
+                {
+                    b.Navigation("Assignments");
                 });
 #pragma warning restore 612, 618
         }

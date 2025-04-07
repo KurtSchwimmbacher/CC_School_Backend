@@ -22,23 +22,37 @@ public class AssignmentService : IAssignmentService
         // Create a new assignment.
         public async Task<Assignment> CreateAssignment(Assignment assignment)
         {
-            // Verify lecturer exists using User.Id (not LecturerId)
-            var lecturerExists = await _context.Lecturers
-                .AnyAsync(l => l.Id == assignment.LecturerUserId);
-            
-            if (!lecturerExists)
-                throw new Exception($"Lecturer with User ID {assignment.LecturerUserId} not found");
-                
-            _context.Assignments.Add(assignment);
-            await _context.SaveChangesAsync();
-            return assignment;
+            try 
+            {
+                // Debug: Verify lecturer exists as a User AND LecturerReg
+                var lecturerUser = await _context.User // Note plural "Users" instead of "User"
+                    .OfType<LecturerReg>() // Ensures we only get LecturerReg records
+                    .Include(l => l.Assignments)
+                    .FirstOrDefaultAsync(l => l.Id == assignment.LecturerUser_Id);
+
+                if (lecturerUser == null)
+                    throw new Exception($"User {assignment.LecturerUser_Id} not found");
+
+                if (lecturerUser.Discriminator != "LecturerReg")
+                    throw new Exception($"User {assignment.LecturerUser_Id} is not a lecturer");
+
+                _context.Assignments.Add(assignment);
+                await _context.SaveChangesAsync();
+                return assignment;
+            }
+            catch (Exception ex)
+            {
+                // Log the FULL error (critical for debugging)
+                Console.WriteLine($"FULL ERROR: {ex.ToString()}");
+                throw; // Re-throw to preserve stack trace
+            }
         }
 
         // Get all assignments for a specific lecturer.
         public async Task<List<Assignment>> GetAssignmentsByLecturer(int lecturerId)
         {
             return await _context.Assignments
-                .Where(a => a.LecturerUserId == lecturerId)
+                .Where(a => a.LecturerUser_Id == lecturerId)
                 .ToListAsync();
         }
 

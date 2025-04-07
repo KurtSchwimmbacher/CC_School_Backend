@@ -5,7 +5,7 @@
 namespace Code_CloudSchool.Migrations
 {
     /// <inheritdoc />
-    public partial class FixLecturerIdType : Migration
+    public partial class CleanStart : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -23,5 +23,6 @@ public class User
     public string Password { get; set; } = string.Empty;
 
     [Required]
-    public virtual string Role { get; set; } = "User"; 
+    public virtual string Role { get; set; } = "User";
+    public string Discriminator { get; internal set; }
 }
