@@ -3,6 +3,7 @@ using System;
 using Code_CloudSchool.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250321102743_AdminTable")]
+    partial class AdminTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +27,11 @@ namespace Code_CloudSchool.Migrations
 
             modelBuilder.Entity("Code_CloudSchool.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -49,7 +52,7 @@ namespace Code_CloudSchool.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
 
@@ -60,15 +63,8 @@ namespace Code_CloudSchool.Migrations
                 {
                     b.HasBaseType("Code_CloudSchool.Models.User");
 
-                    b.Property<string>("AdminEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("AdminId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AdminId"));
 
                     b.Property<string>("AdminRole")
                         .IsRequired()
@@ -129,7 +125,7 @@ namespace Code_CloudSchool.Migrations
                 {
                     b.HasOne("Code_CloudSchool.Models.User", null)
                         .WithOne()
-                        .HasForeignKey("Code_CloudSchool.Models.Admin", "UserId")
+                        .HasForeignKey("Code_CloudSchool.Models.Admin", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -138,7 +134,7 @@ namespace Code_CloudSchool.Migrations
                 {
                     b.HasOne("Code_CloudSchool.Models.User", null)
                         .WithOne()
-                        .HasForeignKey("Code_CloudSchool.Models.Student", "UserId")
+                        .HasForeignKey("Code_CloudSchool.Models.Student", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

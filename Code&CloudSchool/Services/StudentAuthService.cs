@@ -33,7 +33,7 @@ public class StudentAuthService : IStudentAuth
         string studentNumber = "3";
         string year = DateTime.UtcNow.Year.ToString().Substring(2);
         studentNumber += year;
-        string userID = student.Id.ToString();
+        string userID = student.UserId.ToString();
 
         for (int i = 0; i < 4 - userID.Length; i++)
         {

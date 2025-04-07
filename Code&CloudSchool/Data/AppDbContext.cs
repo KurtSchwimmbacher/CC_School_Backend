@@ -59,6 +59,16 @@ public class AppDBContext : DbContext
             .HasMany(c => c.Classes)
             .WithOne(cl => cl.Courses)
             .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
+    public DbSet<Admin> Admins {get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Configure TPT: Separate tables for User and Student
+        modelBuilder.Entity<User>().ToTable("Users");
+        modelBuilder.Entity<Student>().ToTable("Students");
+        modelBuilder.Entity<Admin>().ToTable("Admins");
 
         // Unique constraint for StudentNumber
         modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
@@ -90,5 +100,7 @@ public class AppDBContext : DbContext
             .WithMany() // A Student can have many Submissions.
             .HasForeignKey(s => s.Student_ID) // Foreign key in the Submission table.
             .OnDelete(DeleteBehavior.Cascade); // If a Student is deleted, their Submissions are also deleted.
+        // unique constraint for AdminID
+        modelBuilder.Entity<Admin>().HasIndex(a => a.AdminId).IsUnique();
     }
 }

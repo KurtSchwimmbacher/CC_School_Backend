@@ -144,7 +144,7 @@ namespace Code_CloudSchool.Controllers
         /// </summary>
         /// <param name="studentNumber"></param>
         /// <returns></returns>
-        [HttpPut("{studentNumber}/  enroll")]
+        [HttpPut("{studentNumber}/enroll")]
         public async Task<ActionResult> StudentReEnroll(string studentNumber, StudentReEnrollDTO studentReEnrollDTO)
         {
             bool updated = await _StudentReEnroll.UpdateStudentYearLevel(studentNumber, studentReEnrollDTO);

@@ -1,6 +1,7 @@
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Interface;
 using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.Models;
 using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,7 @@ builder.Services.AddScoped<ILecturerAuth, LecturerAuthService>();
 builder.Services.AddScoped<IAssignmentService, AssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
+builder.Services.AddScoped<IAdminAuth, AdminAuthService>();
 
 builder.Services.AddScoped<IAuthAnnouncement, AnnounceServices>();
 builder.Services.AddScoped<ILAuthService, LAuthService>();
