@@ -280,6 +280,35 @@ namespace Code_CloudSchool.Migrations
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Admin", b =>
+                {
+                    b.HasBaseType("Code_CloudSchool.Models.User");
+
+                    b.Property<string>("AdminEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("AdminId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AdminId"));
+
+                    b.Property<string>("AdminRole")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AssignedDepartments")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("JoinedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasIndex("AdminId")
+                        .IsUnique();
+
+                    b.ToTable("Admins", (string)null);
+                });
+
             modelBuilder.Entity("CoursesMajors", b =>
                 {
                     b.Property<int>("CoursesId")
@@ -383,7 +412,7 @@ namespace Code_CloudSchool.Migrations
                 {
                     b.HasOne("Code_CloudSchool.Models.User", null)
                         .WithOne()
-                        .HasForeignKey("Code_CloudSchool.Models.Admin", "UserId")
+                        .HasForeignKey("Code_CloudSchool.Models.Admin", "UserId");
                     b.HasOne("Code_CloudSchool.Models.Classes", null)
                         .WithMany()
                         .HasForeignKey("ClassesclassID")

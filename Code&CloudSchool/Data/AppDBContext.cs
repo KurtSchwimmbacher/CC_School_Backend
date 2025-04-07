@@ -103,13 +103,13 @@ public class AppDBContext : DbContext
 
         //one course has many studdents and one student can take many courses 
         modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Students)
+            .HasMany(c => c.Student)
             .WithMany(s => s.Courses)
             .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
 
         // one class can have many students and one student can take many classes 
         modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Students)
+            .HasMany(cl => cl.Student)
             .WithMany(s => s.Classes)
             .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
 
