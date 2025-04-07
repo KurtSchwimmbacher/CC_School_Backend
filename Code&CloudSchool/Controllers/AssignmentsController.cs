@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace Code_CloudSchool.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class AssignmentsController : ControllerBase
+    [ApiController] public class AssignmentsController : ControllerBase
     {
                 private readonly IAssignmentService _assignmentService; // Dependency injection for AssignmentService.
 
