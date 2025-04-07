@@ -87,9 +87,9 @@ public class AppDBContext : DbContext
         // Configure the relationship between Assignment and Lecturer
         modelBuilder.Entity<Assignment>()
             .HasOne(a => a.LecturerUser) // An Assignment has one Lecturer.
-            .WithMany()
+            .WithMany(l => l.Assignments)
             .HasForeignKey(a => a.LecturerUser_Id)// Foreign key in the Assignment table.
-            .HasPrincipalKey(u => u.Id)  // Explicitly point to User.Id
+            // .HasPrincipalKey(u => u.Id)  // Explicitly point to User.Id
             .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of User if there are assignments linked to it
 
         // Configure the relationship between Submission and Student

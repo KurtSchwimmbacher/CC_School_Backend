@@ -25,10 +25,7 @@ public class AssignmentService : IAssignmentService
             try 
             {
                 // Debug: Verify lecturer exists as a User AND LecturerReg
-                var lecturerUser = await _context.User // Note plural "Users" instead of "User"
-                    .OfType<LecturerReg>() // Ensures we only get LecturerReg records
-                    .Include(l => l.Assignments)
-                    .FirstOrDefaultAsync(l => l.Id == assignment.LecturerUser_Id);
+                var lecturerUser = await _context.Lecturers.FirstOrDefaultAsync(l => l.LecturerId == assignment.LecturerUser_Id);
 
                 if (lecturerUser == null)
                     throw new Exception($"User {assignment.LecturerUser_Id} not found");
@@ -37,7 +34,7 @@ public class AssignmentService : IAssignmentService
                     throw new Exception($"User {assignment.LecturerUser_Id} is not a lecturer");
 
                 _context.Assignments.Add(assignment);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); 
                 return assignment;
             }
             catch (Exception ex)

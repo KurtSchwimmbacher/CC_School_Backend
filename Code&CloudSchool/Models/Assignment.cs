@@ -22,7 +22,7 @@ public class Assignment
     public int LecturerUser_Id { get; set; }
 
     [ForeignKey("LecturerUser_Id")]
-     public virtual User? LecturerUser { get; set; } // Navigation property to lecturer
+     public virtual LecturerReg? LecturerUser { get; set; } // Navigation property to lecturer
 
     // Navigation property to the list of submissions for this assignment.
     public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
