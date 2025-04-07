@@ -26,7 +26,10 @@ public interface ICourseServices
     public Task<bool> UpdateClassForCourseAsync(int courseId, ClassDetailsDTO classDTO);
     public Task<bool> RemoveClassCourseAsync(int courseId, ClassDetailsDTO classDTO);
 
-    //Class Time 
+    //Add
+
+    public Task<bool> AddMajorToCourseAsync(int courseId, MajorDetailsDTO majorDetails);
+    public Task<bool> AddStudentToCourseAsync(int courseId, int studentId);
 
 
 }

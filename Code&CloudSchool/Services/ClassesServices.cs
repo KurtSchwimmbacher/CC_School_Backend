@@ -84,24 +84,6 @@ public class ClassesServices : IClassesServices
             .FirstOrDefaultAsync(c => c.classID == classId) ?? throw new KeyNotFoundException($"Class with ID {classId} does not exist or was not found");
     }
 
-    async Task<Classes> IClassesServices.GetClassCourseAsync(int classId)
-    {
-        if (classId <= 0)
-        {
-            throw new ArgumentException("Invalid Id");
-        }
-        var classExists = _context.Classes.Any(c => c.classID == classId);
-
-        if (!classExists)
-        {
-            throw new KeyNotFoundException($"Class with Id {classId} does not exist");
-        }
-
-        return await _context.Classes
-            .Include(c => c.Courses)
-            .FirstOrDefaultAsync(c => c.classID == classId) ?? throw new KeyNotFoundException($"Class with ID {classId} does not exist or was not found");
-    }
-
     public Task<bool> RemoveLecturerFromClassAsync(int classId, int lecturerId)
     {
         if (classId <= 0 || lecturerId <= 0)
@@ -195,4 +177,35 @@ public class ClassesServices : IClassesServices
         return Task.FromResult(classes); // Assuming the operation is successful save changes from the context and return the updated class
     }
 
+    async Task<LecturerDTO> IClassesServices.GetClassLecturersAsync(int classId)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<Student> IClassesServices.GetClassStudentsAsync(int classId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<CourseDetailsDTO> GetClassCourseAsync(int classId)
+    {
+        if (classId <= 0)
+        {
+            throw new ArgumentException("Invalid Id");
+        }
+        var classExists = _context.Classes.Any(c => c.classID == classId);
+        if (!classExists)
+        {
+            throw new KeyNotFoundException($"Class with Id {classId} does not exist");
+        }
+        return await _context.Classes
+            .Where(c => c.classID == classId)
+            .Select(c => new CourseDetailsDTO
+            {
+                CourseId = c.Courses.Id,
+                CourseName = c.Courses.courseName,
+                CourseDescription = c.Courses.courseDescription
+            })
+            .FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Class with ID {classId} not found");
+    }
 }

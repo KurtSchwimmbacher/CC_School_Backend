@@ -29,7 +29,18 @@ namespace Code_CloudSchool.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Classes>>> GetClasses()
         {
-            return await _context.Classes.ToListAsync();
+            var classes = await _context.Classes
+                .Include(c => c.Courses)
+                .Include(c => c.Lecturers)
+                .Include(c => c.Student)
+                .ToListAsync();
+
+            if (classes == null || !classes.Any())
+            {
+                return NotFound();
+            }
+
+            return classes;
         }
 
         // GET: api/Classes/5
@@ -68,21 +79,21 @@ namespace Code_CloudSchool.Controllers
             return classDetails;
         }
 
-        [HttpGet("lecturers/{id}")]
-        public async Task<ActionResult<Classes>> GetClassLecturers(int id)
-        {
-            var classLecturers = await _classesServices.GetClassLecturersAsync(id);
+        // [HttpGet("getClasslecturers/{id}")]
+        // public async Task<ActionResult<LecturerDTO>> GetClassLecturers(int id)
+        // {
+        //     var classLecturers = await _classesServices.GetClassLecturersAsync(id);
 
-            if (classLecturers == null)
-            {
-                return NotFound();
-            }
+        //     if (classLecturers == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            return classLecturers;
-        }
+        //     return classLecturers;
+        // }
 
         [HttpGet("students/{id}")]
-        public async Task<ActionResult<Classes>> GetClassStudents(int id)
+        public async Task<ActionResult<Student>> GetClassStudents(int id)
         {
             var classStudents = await _classesServices.GetClassStudentsAsync(id);
 
@@ -108,7 +119,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpGet("classCourse/{id}")]
-        public async Task<ActionResult<Classes>> GetClassCourse(int id)
+        public async Task<ActionResult<CourseDetailsDTO>> GetClassCourse(int id)
         {
             var classCourse = await _classesServices.GetClassCourseAsync(id);
 

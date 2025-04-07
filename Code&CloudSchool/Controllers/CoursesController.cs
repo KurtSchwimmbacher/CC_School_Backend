@@ -265,7 +265,7 @@ namespace Code_CloudSchool.Controllers
 
             if (majorToUpdate == null)
             {
-                return NotFound($"Class with the ID:{majorDetails.MajorId} does not exist in the course");
+                return NotFound($"Major with the ID:{majorDetails.MajorId} does not exist in the course");
             }
 
             bool hasChanged = false;
@@ -318,6 +318,65 @@ namespace Code_CloudSchool.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCourses", new { id = courses.Id }, courses);
+        }
+
+        [HttpPost("addMajorToCourse/{courseId}/major/{majorId}")]
+        public async Task<ActionResult> AddMajorToCourse(int courseId, int majorId)
+        {
+            if (courseId <= 0 || majorId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            var course = await _context.Courses
+                .Include(c => c.Majors)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                return NotFound($"Course with the ID: {courseId} does not exist or was not found");
+            }
+
+            var majorToAdd = await _context.Majors.FindAsync(majorId);
+
+            if (majorToAdd == null)
+            {
+                return NotFound($"Major with the ID:{majorId} does not exist");
+            }
+
+            course.Majors.Add(majorToAdd);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        [HttpPost("addClassToCourse/{courseId}/class/{classId}")]
+        public async Task<ActionResult> AddClassToCourse(int courseId, int classId)
+        {
+            if (courseId <= 0 || classId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            var course = await _context.Courses
+                .Include(c => c.Classes)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                return NotFound($"Course with the ID: {courseId} does not exist or was not found");
+            }
+
+            var classToAdd = await _context.Classes.FindAsync(classId);
+
+            if (classToAdd == null)
+            {
+                return NotFound($"Class with the ID:{classId} does not exist");
+            }
+
+            course.Classes.Add(classToAdd);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         // DELETE: api/Courses/5

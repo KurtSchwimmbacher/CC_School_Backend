@@ -11,9 +11,9 @@ public interface IClassesServices
 {
     public Task<ClassDetailsDTO> GetClassDetailsAsync(int classId);
     public Task<Classes> GetClassTimeAsync(int classId);
-    public Task<Classes> GetClassLecturersAsync(int classId);
-    public Task<Classes> GetClassStudentsAsync(int classId);
-    public Task<Classes> GetClassCourseAsync(int classId);
+    public Task<LecturerDTO> GetClassLecturersAsync(int classId);
+    public Task<Student> GetClassStudentsAsync(int classId);
+    public Task<CourseDetailsDTO> GetClassCourseAsync(int classId);
 
 
     public Task<Classes> UpdateClassDetailsAsync(int classId, Classes classes);

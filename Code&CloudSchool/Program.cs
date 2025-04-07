@@ -45,6 +45,7 @@ builder.Services.AddScoped<ILAuthService, LAuthService>();
 
 builder.Services.AddScoped<IMajorServices, MajorServices>();
 builder.Services.AddScoped<ICourseServices, CoursesServices>();
+builder.Services.AddScoped<IClassesServices, ClassesServices>();
 
 var app = builder.Build();
 

@@ -15,6 +15,50 @@ public class CoursesServices : ICourseServices
     {
         _context = context;
     }
+
+    public async Task<bool> AddMajorToCourseAsync(int courseId, MajorDetailsDTO majorDetails)
+    {
+        var course = _context.Courses
+            .Include(c => c.Majors)
+            .FirstOrDefault(c => c.Id == courseId);
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+        var newMajor = new Majors
+        {
+            MajorName = majorDetails.MajorName,
+            MajorDescription = majorDetails.MajorDescription
+        };
+
+        await _context.SaveChangesAsync();
+
+        return true;
+
+
+    }
+
+    public async Task<bool> AddStudentToCourseAsync(int courseId, int studentId)
+    {
+        var course = _context.Courses
+            .Include(c => c.Student)
+            .FirstOrDefault(c => c.Id == courseId);
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+        var student = _context.Students
+            .FirstOrDefault(s => s.Id == studentId);
+        if (student == null)
+        {
+            throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
+        }
+        course.Student.Add(student);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+
     public async Task<Courses> CreateNewCourseAsync(CourseDetailsDTO courseDTO)
     {
         var newCourse = _context.Courses.Add(new Courses
