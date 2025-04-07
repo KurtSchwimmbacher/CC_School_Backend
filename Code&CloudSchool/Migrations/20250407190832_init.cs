@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     /// <inheritdoc />
-    public partial class FixAssignmentLecturerRelationshipV1 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -188,21 +188,15 @@ namespace Code_CloudSchool.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LecturerUser_Id = table.Column<int>(type: "integer", nullable: false),
-                    LecturerRegId = table.Column<int>(type: "integer", nullable: true)
+                    LecturerUser_Id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Assignments", x => x.Assignment_ID);
                     table.ForeignKey(
-                        name: "FK_Assignments_LecturerReg_LecturerRegId",
-                        column: x => x.LecturerRegId,
-                        principalTable: "LecturerReg",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Assignments_User_LecturerUser_Id",
+                        name: "FK_Assignments_LecturerReg_LecturerUser_Id",
                         column: x => x.LecturerUser_Id,
-                        principalTable: "User",
+                        principalTable: "LecturerReg",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -327,11 +321,6 @@ namespace Code_CloudSchool.Migrations
                         principalColumn: "Submission_ID",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Assignments_LecturerRegId",
-                table: "Assignments",
-                column: "LecturerRegId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assignments_LecturerUser_Id",

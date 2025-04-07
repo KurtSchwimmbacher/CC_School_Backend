@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250407053919_CleanStart")]
-    partial class CleanStart
+    [Migration("20250407190832_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,9 +96,6 @@ namespace Code_CloudSchool.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("LecturerRegId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("LecturerUser_Id")
                         .HasColumnType("integer");
 
@@ -107,8 +104,6 @@ namespace Code_CloudSchool.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Assignment_ID");
-
-                    b.HasIndex("LecturerRegId");
 
                     b.HasIndex("LecturerUser_Id");
 
@@ -435,12 +430,8 @@ namespace Code_CloudSchool.Migrations
 
             modelBuilder.Entity("Code_CloudSchool.Models.Assignment", b =>
                 {
-                    b.HasOne("Code_CloudSchool.Models.LecturerReg", null)
+                    b.HasOne("Code_CloudSchool.Models.LecturerReg", "LecturerUser")
                         .WithMany("Assignments")
-                        .HasForeignKey("LecturerRegId");
-
-                    b.HasOne("Code_CloudSchool.Models.User", "LecturerUser")
-                        .WithMany()
                         .HasForeignKey("LecturerUser_Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
