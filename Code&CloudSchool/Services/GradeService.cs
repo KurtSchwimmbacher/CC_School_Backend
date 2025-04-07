@@ -32,7 +32,7 @@ public class GradeService : IGradeService
         var submission = await _context.Submissions
             .Include(s => s.Assignment) // Include assignment data if needed
             .FirstOrDefaultAsync(s => s.Submission_ID == gradeDto.SubmissionId);
-        
+
         if (submission == null)
         {
             throw new ArgumentException($"Submission with ID {gradeDto.SubmissionId} not found");
@@ -53,10 +53,17 @@ public class GradeService : IGradeService
     }
 
     // Get a grade by its submission ID.
-    public async Task<Grade> GetGradeBySubmissionId(int submissionId)
+    public async Task<Grade?> GetGradeBySubmissionId(int submissionId)
     {
-        return await _context.Grades
+        var grade = await _context.Grades
             .FirstOrDefaultAsync(g => g.Submission_ID == submissionId);
+
+        if (grade == null)
+        {
+            throw new KeyNotFoundException($"Grade for submission ID {submissionId} not found");
+        }
+
+        return grade;
     }
 
     // Update an existing grade.
@@ -88,11 +95,11 @@ public class GradeService : IGradeService
     }
 
     // Get all grades for a specific student.
-    public async Task<List<Grade>> GetGradesByStudent(int studentId)
+    public async Task<List<Grade>> GetGradesByStudent(string studentId)
     {
         return await _context.Grades
             .Include(g => g.Submission)
-            .Where(g => g.Submission.Student.Id == studentId)
+            .Where(g => g.Submission.Student.StudentNumber == studentId)
             .ToListAsync();
     }
 
@@ -100,6 +107,6 @@ public class GradeService : IGradeService
     public async Task<bool> HasSubmissionBeenGraded(int submissionId)
     {
         return await _context.Grades
-            .AnyAsync(g => g.Submission_ID == submissionId); 
+            .AnyAsync(g => g.Submission_ID == submissionId);
     }
 }

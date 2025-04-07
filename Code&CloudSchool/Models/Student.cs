@@ -30,6 +30,8 @@ public class Student : User
     public Student()
     {
         Role = "Student";
+        Courses = new List<Courses>();
+        Classes = new List<Classes>();
     }
 
     //for relationships

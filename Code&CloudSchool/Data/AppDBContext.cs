@@ -16,6 +16,7 @@ public class AppDBContext : DbContext
     public DbSet<Classes> Classes { get; set; }
     public DbSet<LecturerReg> Lecturers { get; set; }
     public DbSet<Student> Students { get; set; }
+    public DbSet<Admin> Admins { get; set; }
     public DbSet<Assignment> Assignments { get; set; }
     public DbSet<Submission> Submissions { get; set; }
     public DbSet<Grade> Grades { get; set; }
@@ -30,40 +31,6 @@ public class AppDBContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Majors>() //this is the entity that we are going to be working with
-            .HasMany(m => m.Courses) // a major has many courses
-            .WithMany(c => c.Majors) // a course has many majors
-            .UsingEntity(joinTbl => joinTbl.ToTable("MajorCourses")); // this is the name of the join table used to handle the many to many relationship
-
-
-        //one course has many studdents and one student can take many courses 
-        modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Students)
-            .WithMany(s => s.Courses)
-            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
-
-        // one class can have many students and one student can take many classes 
-        modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Students)
-            .WithMany(s => s.Classes)
-            .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
-
-        // one lecturer teaches many classes and one class can have many lecturers 
-        modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Lecturers)
-            .WithMany(l => l.Classes)
-            .UsingEntity(joinTbl => joinTbl.ToTable("ClassLecturers"));
-
-        // one course can have many classes and many classes can have one courses
-        modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Classes)
-            .WithOne(cl => cl.Courses)
-            .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
-    public DbSet<Admin> Admins {get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
 
         // Configure TPT: Separate tables for User and Student
         modelBuilder.Entity<User>().ToTable("Users");
@@ -100,7 +67,40 @@ public class AppDBContext : DbContext
             .WithMany() // A Student can have many Submissions.
             .HasForeignKey(s => s.Student_ID) // Foreign key in the Submission table.
             .OnDelete(DeleteBehavior.Cascade); // If a Student is deleted, their Submissions are also deleted.
+
+
         // unique constraint for AdminID
         modelBuilder.Entity<Admin>().HasIndex(a => a.AdminId).IsUnique();
+
+        modelBuilder.Entity<Majors>() //this is the entity that we are going to be working with
+            .HasMany(m => m.Courses) // a major has many courses
+            .WithMany(c => c.Majors) // a course has many majors
+            .UsingEntity(joinTbl => joinTbl.ToTable("MajorCourses")); // this is the name of the join table used to handle the many to many relationship
+
+        //one course has many studdents and one student can take many courses 
+        modelBuilder.Entity<Courses>()
+            .HasMany(c => c.Students)
+            .WithMany(s => s.Courses)
+            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
+
+        // one class can have many students and one student can take many classes 
+        modelBuilder.Entity<Classes>()
+            .HasMany(cl => cl.Students)
+            .WithMany(s => s.Classes)
+            .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
+
+        // one lecturer teaches many classes and one class can have many lecturers 
+        modelBuilder.Entity<Classes>()
+            .HasMany(cl => cl.Lecturers)
+            .WithMany(l => l.Classes)
+            .UsingEntity(joinTbl => joinTbl.ToTable("ClassLecturers"));
+
+        // one course can have many classes and many classes can have one courses
+        modelBuilder.Entity<Courses>()
+            .HasMany(c => c.Classes)
+            .WithOne(cl => cl.Courses)
+            .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
+
+
     }
 }

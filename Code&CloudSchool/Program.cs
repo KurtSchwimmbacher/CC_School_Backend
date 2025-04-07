@@ -44,6 +44,7 @@ builder.Services.AddScoped<IAdminAuth, AdminAuthService>();
 
 builder.Services.AddScoped<IAuthAnnouncement, AnnounceServices>();
 builder.Services.AddScoped<ILAuthService, LAuthService>();
+builder.Services.AddScoped<IUpdateAdminPassword, AdminPasswordService>();
 
 var app = builder.Build();
 

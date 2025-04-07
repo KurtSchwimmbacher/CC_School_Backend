@@ -52,7 +52,7 @@ namespace Code_CloudSchool.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLecturerReg(int id, LecturerReg lecturerReg)
         {
-            if (id != lecturerReg.Id)
+            if (id != lecturerReg.LecturerId)
             {
                 return BadRequest();
             }
@@ -86,7 +86,7 @@ namespace Code_CloudSchool.Controllers
             _context.Lecturers.Add(lecturerReg);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.Id }, lecturerReg);
+            return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.LecturerId }, lecturerReg);
         }
 
         // DELETE: api/LecturerReg/5
@@ -107,18 +107,18 @@ namespace Code_CloudSchool.Controllers
 
         private bool LecturerRegExists(int id)
         {
-            return _context.Lecturers.Any(e => e.Id == id);
+            return _context.Lecturers.Any(e => e.LecturerId == id);
         }
     }
 
     internal class LecturerDTO
     {
         public int Id { get; set; }
-        public string LectName { get; set; }
-        public string LecLastName { get; set; }
-        public string LecEmail { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Department { get; set; }
+        public string? LectName { get; set; } = string.Empty;
+        public string? LecLastName { get; set; } = string.Empty;
+        public string? LecEmail { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; } = string.Empty;
+        public string? Department { get; set; } = string.Empty;
         public DateTime DateOfJoining { get; set; }
         public bool IsActive { get; set; }
     }

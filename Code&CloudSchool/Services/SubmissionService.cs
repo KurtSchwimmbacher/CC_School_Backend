@@ -24,11 +24,11 @@ public class SubmissionService : ISubmissionService
     {
         // Load required entities
         var assignment = await _context.Assignments
-            .FirstOrDefaultAsync(a => a.Assignment_ID == submissionDto.AssignmentId) 
+            .FirstOrDefaultAsync(a => a.Assignment_ID == submissionDto.AssignmentId)
             ?? throw new ArgumentException("Assignment not found");
 
         var student = await _context.Students
-            .FirstOrDefaultAsync(s => s.Id == submissionDto.StudentId) 
+            .FirstOrDefaultAsync(s => s.StudentNumber == submissionDto.StudentId)
             ?? throw new ArgumentException("Student not found");
 
         // Create submission - Grade will be auto-initialized by constructor
@@ -48,10 +48,10 @@ public class SubmissionService : ISubmissionService
 
         _context.Submissions.Add(submission);
         await _context.SaveChangesAsync();
-        
+
         return submission;
     }
-        
+
     // Submit a new assignment using existing model (legacy support)
     public async Task<Submission> SubmitAssignment(Submission submission)
     {
@@ -61,28 +61,38 @@ public class SubmissionService : ISubmissionService
     }
 
     // Get all submissions for a specific student with related data
-    public async Task<List<Submission>> GetSubmissionsByStudent(int studentId)
+    public async Task<List<Submission>> GetSubmissionsByStudent(string studentId)
     {
         return await _context.Submissions
             .Include(s => s.Assignment)
-            .Where(s => s.Student.Id == studentId)
+            .Where(s => s.Student.StudentNumber == studentId)
             .ToListAsync();
     }
 
     // Get a specific submission by ID with related data
     public async Task<Submission> GetSubmissionById(int id)
     {
-        return await _context.Submissions
+        var submission = await _context.Submissions
             .Include(s => s.Assignment)
             .Include(s => s.Student)
             .FirstOrDefaultAsync(s => s.Submission_ID == id);
+
+        if (submission == null)
+        {
+            throw new ArgumentException("Submission not found");
+        }
+
+        return submission;
     }
 
     // Update an existing submission using DTO
     public async Task<Submission> UpdateSubmission(UpdateSubmissionDTO submissionDto)
     {
         var submission = await _context.Submissions.FindAsync(submissionDto.SubmissionId);
-        if (submission == null) return null;
+        if (submission == null)
+        {
+            throw new ArgumentException("Submission not found");
+        }
 
         if (!string.IsNullOrEmpty(submissionDto.FilePath))
             submission.FilePath = submissionDto.FilePath;
@@ -123,10 +133,10 @@ public class SubmissionService : ISubmissionService
     }
 
     // Check if a student has already submitted a specific assignment
-    public async Task<bool> HasStudentSubmittedAssignment(int studentId, int assignmentId)
+    public async Task<bool> HasStudentSubmittedAssignment(string studentId, int assignmentId)
     {
         return await _context.Submissions
-            .AnyAsync(s => s.Student.Id == studentId && 
+            .AnyAsync(s => s.Student.StudentNumber == studentId &&
                           s.Assignment.Assignment_ID == assignmentId);
     }
 }

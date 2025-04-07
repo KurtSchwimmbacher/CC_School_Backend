@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Code_CloudSchool.Data; 
+using Code_CloudSchool.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Code_CloudSchool.Interfaces;
@@ -35,13 +35,13 @@ namespace Code_CloudSchool.Controllers
 
                 // Validate student exists
                 var studentExists = await _context.Students
-                    .AnyAsync(s => s.Id == submissionDto.StudentId);
+                    .AnyAsync(s => s.StudentNumber == submissionDto.StudentId);
                 if (!studentExists)
                     return BadRequest("Student does not exist");
 
                 var result = await _submissionService.SubmitAssignment(submissionDto);
-                return CreatedAtAction(nameof(GetSubmissionById), 
-                    new { id = result.Submission_ID }, 
+                return CreatedAtAction(nameof(GetSubmissionById),
+                    new { id = result.Submission_ID },
                     result);
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace Code_CloudSchool.Controllers
             try
             {
                 var submission = await _submissionService.GetSubmissionById(id);
-                if (submission == null) 
+                if (submission == null)
                     return NotFound($"Submission with ID {id} not found");
                 return Ok(submission);
             }
@@ -81,7 +81,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpGet("student/{studentId}")]
-        public async Task<ActionResult<List<Submission>>> GetSubmissionsByStudent(int studentId)
+        public async Task<ActionResult<List<Submission>>> GetSubmissionsByStudent(string studentId)
         {
             try
             {

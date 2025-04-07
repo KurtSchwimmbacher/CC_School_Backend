@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
 using Code_CloudSchool.Interfaces;
 using Code_CloudSchool.DTOs;
+using Code_CloudSchool.Data;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -16,21 +16,18 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDBContext _context;
 
         private readonly IUpdateAdminPassword _passwordService;
 
         private readonly IAdminAuth _adminAuth;
 
-        public AdminController(AppDbContext context, IAdminAuth adminAuth, IUpdateAdminPassword passwordService)
+        public AdminController(AppDBContext context, IAdminAuth adminAuth, IUpdateAdminPassword passwordService)
         {
             _context = context;
             _adminAuth = adminAuth;
             _passwordService = passwordService;
         }
-
-
-
 
 
         // register admin

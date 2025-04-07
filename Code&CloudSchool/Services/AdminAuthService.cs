@@ -10,10 +10,10 @@ public class AdminAuthService : IAdminAuth
 {
 
     // dependency inj
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
     // constructor
-    public AdminAuthService(AppDbContext context)
+    public AdminAuthService(AppDBContext context)
     {
         _context = context;
     }

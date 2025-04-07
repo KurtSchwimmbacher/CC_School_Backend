@@ -43,6 +43,7 @@ public class LecturerReg : User
     public LecturerReg()
     {
         Role = "Lecturer";
+        Classes = new List<Classes>();
     }
 
     public List<Classes> Classes { get; set; } //this is a list of classes that the lecturer is teaching 

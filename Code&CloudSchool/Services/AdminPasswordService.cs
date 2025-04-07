@@ -10,9 +10,9 @@ namespace Code_CloudSchool.Services;
 public class AdminPasswordService : IUpdateAdminPassword
 {
 
-    private readonly AppDbContext _context;
+    private readonly AppDBContext _context;
 
-    public AdminPasswordService(AppDbContext context)
+    public AdminPasswordService(AppDBContext context)
     {
         _context = context;
     }

@@ -15,7 +15,7 @@ public class Submission
 
     [Required] // The Student_ID field is required and cannot be null.
     [ForeignKey("Student")] // This is a foreign key linking to the Student table.
-    public int Student_ID { get; set; }
+    public string Student_ID { get; set; }
 
     [Required] // The FilePath field is required and cannot be null.
     public string? FilePath { get; set; } // Path to the submitted file.

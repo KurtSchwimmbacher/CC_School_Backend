@@ -16,7 +16,7 @@ public interface IGradeService
     Task<Grade> GradeSubmission(CreateGradeDto gradeDto); // Changed to use DTO
 
     // Get a grade by its submission ID.
-    Task<Grade> GetGradeBySubmissionId(int submissionId);
+    Task<Grade?> GetGradeBySubmissionId(int submissionId);
 
     // Update an existing grade (e.g., to correct a grade or add feedback).
     Task<Grade> UpdateGrade(Grade grade);
@@ -28,7 +28,7 @@ public interface IGradeService
     Task<List<Grade>> GetGradesForAssignment(int assignmentId);
 
     // Get all grades for a specific student (useful for students).
-    Task<List<Grade>> GetGradesByStudent(int studentId);
+    Task<List<Grade>> GetGradesByStudent(string studentId);
 
     // Check if a submission has been graded.
     Task<bool> HasSubmissionBeenGraded(int submissionId);

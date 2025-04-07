@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Code_CloudSchool.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(AppDBContext))]
     [Migration("20250323214626_updateAdminModel")]
     partial class updateAdminModel
     {
