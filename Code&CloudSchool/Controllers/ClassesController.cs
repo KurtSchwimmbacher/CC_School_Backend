@@ -67,7 +67,7 @@ namespace Code_CloudSchool.Controllers
                     ClassId = c.classID,
                     ClassName = c.className,
                     classDescription = c.classDescription,
-                    CourseName = c.Courses.courseName
+                    CourseName = c.Courses != null ? c.Courses.courseName : null
                 })
                 .FirstOrDefaultAsync();
 
@@ -149,8 +149,8 @@ namespace Code_CloudSchool.Controllers
                 return NotFound();
             }
 
-            classToUpdate.className = classDetailsDTO.ClassName;
-            classToUpdate.classDescription = classDetailsDTO.classDescription;
+            classToUpdate.className = classDetailsDTO.ClassName ?? string.Empty;
+            classToUpdate.classDescription = classDetailsDTO.classDescription ?? string.Empty;
 
             await _context.SaveChangesAsync();
 
@@ -221,7 +221,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpDelete("removeStudent/{classId}/{studentId}")]
-        public async Task<IActionResult> RemoveStudentFromClass(int classId, int studentId)
+        public async Task<IActionResult> RemoveStudentFromClass(int classId, string studentId)
         {
             var result = await _classesServices.RemoveStudentFromClassAsync(classId, studentId);
 

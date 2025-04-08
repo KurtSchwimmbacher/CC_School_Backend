@@ -25,7 +25,7 @@ public class ClassesServices : IClassesServices
                 ClassId = c.classID,
                 ClassName = c.className,
                 classDescription = c.classDescription,
-                CourseName = c.Courses.courseName
+                CourseName = c.Courses != null ? c.Courses.courseName : null
             })
             .FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Class with ID {classId} not found");
     }
@@ -48,7 +48,7 @@ public class ClassesServices : IClassesServices
             .FirstOrDefaultAsync(c => c.classID == classId) ?? throw new KeyNotFoundException($"Class with ID {classId} does not exist or was not found");
     }
 
-    public Task<Classes> GetClassStudentsAsync(int classId)
+    public Task<Classes?> GetClassStudentsAsync(int classId)
     {
         if (classId <= 0)
         {
@@ -93,44 +93,54 @@ public class ClassesServices : IClassesServices
 
         var classExists = _context.Classes.Any(c => c.classID == classId);
 
-        if (classExists == null)
+        if (!classExists)
         {
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
 
-        var lecturerExists = _context.Lecturers.Any(l => l.Id == lecturerId);
-        if (lecturerExists == null)
+        var lecturerExists = _context.Lecturers.Any(l => l.LecturerId == lecturerId);
+        if (!lecturerExists)
         {
             throw new KeyNotFoundException($"Lecturer with Id {lecturerId} does not exist");
         }
 
-        _context.Lecturers.Remove(_context.Lecturers.Find(lecturerId));
+        var lecturer = _context.Lecturers.Find(lecturerId);
+        if (lecturer == null)
+        {
+            throw new KeyNotFoundException($"Lecturer with Id {lecturerId} does not exist");
+        }
+        _context.Lecturers.Remove(lecturer);
         _context.SaveChanges();
 
         return Task.FromResult(true); // Assuming the operation is successful save changes from the context and return true
     }
 
-    public Task<bool> RemoveStudentFromClassAsync(int classId, int studentId)
+    public Task<bool> RemoveStudentFromClassAsync(int classId, string studentId)
     {
-        if (classId <= 0 || studentId <= 0)
+        if (classId <= 0 || studentId == null)
         {
             throw new ArgumentException("Invalid Id");
         }
 
         var classExists = _context.Classes.Any(c => c.classID == classId);
 
-        if (classExists == null)
+        if (!classExists)
         {
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
 
-        var studentExists = _context.Students.Any(s => s.Id == studentId);
-        if (studentExists == null)
+        var studentExists = _context.Students.Any(s => s.StudentNumber == studentId);
+        if (!studentExists)
         {
             throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
         }
 
-        _context.Students.Remove(_context.Students.Find(studentId));
+        var student = _context.Students.Find(studentId);
+        if (student == null)
+        {
+            throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
+        }
+        _context.Students.Remove(student);
         _context.SaveChanges();
 
         return Task.FromResult(true); // Assuming the operation is successful save changes from the context and return true
@@ -146,7 +156,7 @@ public class ClassesServices : IClassesServices
 
         var classExists = _context.Classes.Any(c => c.classID == classId);
 
-        if (classExists == null)
+        if (!classExists)
         {
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
@@ -166,7 +176,7 @@ public class ClassesServices : IClassesServices
 
         var classExists = _context.Classes.Any(c => c.classID == classId);
 
-        if (classExists == null)
+        if (!classExists)
         {
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
@@ -202,9 +212,9 @@ public class ClassesServices : IClassesServices
             .Where(c => c.classID == classId)
             .Select(c => new CourseDetailsDTO
             {
-                CourseId = c.Courses.Id,
-                CourseName = c.Courses.courseName,
-                CourseDescription = c.Courses.courseDescription
+                CourseId = c.Courses != null ? c.Courses.Id : 0,
+                CourseName = c.Courses != null ? c.Courses.courseName : null,
+                CourseDescription = c.Courses != null ? c.Courses.courseDescription : null
             })
             .FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Class with ID {classId} not found");
     }

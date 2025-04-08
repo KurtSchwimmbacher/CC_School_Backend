@@ -39,7 +39,7 @@ public class MajorServices : IMajorServices
         {
             MajorName = major.MajorName,
             MajorCode = major.MajorCode,
-            MajorDescription = major.MajorDescription,
+            MajorDescription = major.MajorDescription ?? string.Empty,
             CreditsRequired = major.CreditsRequired
         });
 
@@ -99,7 +99,7 @@ public class MajorServices : IMajorServices
         }
         if (major.MajorDescription != majorDetailsDTO.MajorDescription)
         {
-            major.MajorDescription = majorDetailsDTO.MajorDescription;
+            major.MajorDescription = majorDetailsDTO.MajorDescription ?? string.Empty;
         }
         if (major.CreditsRequired != majorDetailsDTO.CreditsRequired)
         {

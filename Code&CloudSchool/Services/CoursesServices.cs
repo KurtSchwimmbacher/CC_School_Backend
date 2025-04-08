@@ -28,7 +28,7 @@ public class CoursesServices : ICourseServices
         var newMajor = new Majors
         {
             MajorName = majorDetails.MajorName,
-            MajorDescription = majorDetails.MajorDescription
+            MajorDescription = majorDetails.MajorDescription ?? string.Empty
         };
 
         await _context.SaveChangesAsync();
@@ -38,7 +38,7 @@ public class CoursesServices : ICourseServices
 
     }
 
-    public async Task<bool> AddStudentToCourseAsync(int courseId, int studentId)
+    public async Task<bool> AddStudentToCourseAsync(int courseId, string studentId)
     {
         var course = _context.Courses
             .Include(c => c.Student)
@@ -48,7 +48,7 @@ public class CoursesServices : ICourseServices
             throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
         }
         var student = _context.Students
-            .FirstOrDefault(s => s.Id == studentId);
+            .FirstOrDefault(s => s.StudentNumber == studentId);
         if (student == null)
         {
             throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
@@ -63,7 +63,7 @@ public class CoursesServices : ICourseServices
     {
         var newCourse = _context.Courses.Add(new Courses
         {
-            courseName = courseDTO.CourseName,
+            courseName = courseDTO.CourseName ?? string.Empty,
             courseCode = courseDTO.CourseCode,
             courseDescription = courseDTO.CourseDescription
 
@@ -171,8 +171,8 @@ public class CoursesServices : ICourseServices
             throw new KeyNotFoundException($"Class with Id {classDTO.ClassId} does not exist in the course");
         }
 
-        existingClass.className = classDTO.ClassName;
-        existingClass.classDescription = classDTO.classDescription;
+        existingClass.className = classDTO.ClassName ?? string.Empty;
+        existingClass.classDescription = classDTO.classDescription ?? string.Empty;
 
         _context.Classes.Remove(existingClass);
         await _context.SaveChangesAsync();
@@ -237,8 +237,8 @@ public class CoursesServices : ICourseServices
             throw new KeyNotFoundException($"Class with Id {classDTO.ClassId} does not exist in the course");
         }
 
-        existingClass.className = classDTO.ClassName;
-        existingClass.classDescription = classDTO.classDescription;
+        existingClass.className = classDTO.ClassName ?? string.Empty;
+        existingClass.classDescription = classDTO.classDescription ?? string.Empty;
 
         _context.Classes.Update(existingClass);
         await _context.SaveChangesAsync();
@@ -258,7 +258,7 @@ public class CoursesServices : ICourseServices
 
         if (course.courseName != courseDetailsDTO.CourseName)
         {
-            course.courseName = courseDetailsDTO.CourseName;
+            course.courseName = courseDetailsDTO.CourseName ?? string.Empty;
         }
         if (course.courseCode != courseDetailsDTO.CourseCode)
         {

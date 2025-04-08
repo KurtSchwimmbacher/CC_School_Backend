@@ -39,6 +39,10 @@ public class AssignmentService : IAssignmentService
         public async Task<Assignment> GetAssignmentById(int id)
         {
             Assignment? assignment = await _context.Assignments.FindAsync(id);
+            if (assignment == null)
+            {
+                throw new KeyNotFoundException($"Assignment with ID {id} was not found.");
+            }
             return assignment;
         }
 

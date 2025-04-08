@@ -154,7 +154,10 @@ namespace Code_CloudSchool.Controllers
 
             if (courseToUpdate.courseName != courseDetails.CourseName)
             {
-                courseToUpdate.courseName = courseDetails.CourseName;
+                if (courseDetails.CourseName != null)
+                {
+                    courseToUpdate.courseName = courseDetails.CourseName;
+                }
 
                 hasChanged = true;
             }
@@ -219,12 +222,18 @@ namespace Code_CloudSchool.Controllers
 
             if (classToUpdate.className != classDetails.ClassName)
             {
-                classToUpdate.className = classDetails.ClassName;
+                if (classDetails.ClassName != null)
+                {
+                    classToUpdate.className = classDetails.ClassName;
+                }
                 hasChanged = true;
             }
             if (classToUpdate.classDescription != classDetails.classDescription)
             {
-                classToUpdate.classDescription = classDetails.classDescription;
+                if (classDetails.classDescription != null)
+                {
+                    classToUpdate.classDescription = classDetails.classDescription;
+                }
                 hasChanged = true;
             }
 
@@ -284,7 +293,10 @@ namespace Code_CloudSchool.Controllers
             }
             if (majorToUpdate.MajorDescription != majorDetails.MajorDescription)
             {
-                majorToUpdate.MajorDescription = majorDetails.MajorDescription;
+                if (majorDetails.MajorDescription != null)
+                {
+                    majorToUpdate.MajorDescription = majorDetails.MajorDescription;
+                }
 
                 hasChanged = true;
             }

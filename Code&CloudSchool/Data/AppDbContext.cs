@@ -37,6 +37,18 @@ public class AppDBContext : DbContext
         modelBuilder.Entity<Student>().ToTable("Students");
         modelBuilder.Entity<Admin>().ToTable("Admins");
 
+        // Explicitly map StudentNumber to the Students table
+        modelBuilder.Entity<Student>()
+            .Property(s => s.StudentNumber)
+            .HasMaxLength(12);
+
+        // Unique constraint for StudentNumber
+        modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
+
+        // Ensure StudentNumber is not mapped to the User table
+        modelBuilder.Entity<User>()
+        .Ignore(u => ((Student)u).StudentNumber);
+
         //one course has many students and one student can take many courses 
         modelBuilder.Entity<Courses>()
             .HasMany(c => c.Student)
@@ -61,8 +73,6 @@ public class AppDBContext : DbContext
             .WithOne(cl => cl.Courses)
             .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
 
-        // Unique constraint for StudentNumber
-        modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
 
         // Configure the one-to-many relationship between Assignment and Submission.
         modelBuilder.Entity<Assignment>()
@@ -89,7 +99,8 @@ public class AppDBContext : DbContext
         modelBuilder.Entity<Submission>()
             .HasOne(s => s.Student) // A Submission has one Student.
             .WithMany() // A Student can have many Submissions.
-            .HasForeignKey(s => s.Student_ID) // Foreign key in the Submission table.
+            .HasForeignKey(s => s.StudentNumber) // Foreign key in the Submission table.
+            .HasPrincipalKey(s => s.StudentNumber) //Map to the Student's studentNumber
             .OnDelete(DeleteBehavior.Cascade); // If a Student is deleted, their Submissions are also deleted.
 
 

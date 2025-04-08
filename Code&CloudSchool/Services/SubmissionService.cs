@@ -35,7 +35,8 @@ public class SubmissionService : ISubmissionService
         var submission = new Submission
         {
             Assignment_ID = submissionDto.AssignmentId,
-            Student_ID = submissionDto.StudentId,
+            StudentNumber = submissionDto.StudentId
+            ?? throw new ArgumentException("Student not found"), // Ensure StudentId is not null
             FilePath = submissionDto.FilePath,
             SubmissionDate = submissionDto.SubmissionDate,
             Assignment = assignment,
