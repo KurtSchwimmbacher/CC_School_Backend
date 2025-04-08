@@ -108,12 +108,12 @@ namespace Code_CloudSchool.Controllers
             }
         }
 
-        [HttpGet("student/{studentId}")] // HTTP GET method to get all grades for a specific student.
-        public async Task<ActionResult<List<Grade>>> GetGradesByStudent(int studentId)
+        [HttpGet("student/{studentNumber}")] // HTTP GET method to get all grades for a specific student.
+        public async Task<ActionResult<List<Grade>>> GetGradesByStudent(string studentNumber)
         {
             try
             {
-                var grades = await _gradeService.GetGradesByStudent(studentId); // Call the service method.
+                var grades = await _gradeService.GetGradesByStudent(studentNumber); // Call the service method.
                 return Ok(grades); // Return the list of grades with a 200 OK status.
             }
             catch (Exception ex)

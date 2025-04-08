@@ -31,17 +31,17 @@ public class GradeService : IGradeService
         // First validate the submission exists
         var submission = await _context.Submissions
             .Include(s => s.Assignment) // Include assignment data if needed
-            .FirstOrDefaultAsync(s => s.Submission_ID == gradeDto.SubmissionId);
+            .FirstOrDefaultAsync(s => s.Submission_ID == gradeDto.Submission_ID);
         
         if (submission == null)
         {
-            throw new ArgumentException($"Submission with ID {gradeDto.SubmissionId} not found");
+            throw new ArgumentException($"Submission with ID {gradeDto.Submission_ID} not found");
         }
 
         // Create new Grade entity from DTO
         var grade = new Grade
         {
-            Submission_ID = gradeDto.SubmissionId,
+            Submission_ID = gradeDto.Submission_ID,
             Score = gradeDto.Score,
             Feedback = gradeDto.Feedback,
             Submission = submission // Set navigation property
@@ -88,11 +88,12 @@ public class GradeService : IGradeService
     }
 
     // Get all grades for a specific student.
-    public async Task<List<Grade>> GetGradesByStudent(int studentId)
+    public async Task<List<Grade>> GetGradesByStudent(string studentNumber)
     {
         return await _context.Grades
             .Include(g => g.Submission)
-            .Where(g => g.Submission.Student.Id == studentId)
+                .ThenInclude(s => s.Student)
+            .Where(g => g.Submission.Student.StudentNumber == studentNumber)
             .ToListAsync();
     }
 
@@ -102,4 +103,6 @@ public class GradeService : IGradeService
         return await _context.Grades
             .AnyAsync(g => g.Submission_ID == submissionId); 
     }
+
+
 }

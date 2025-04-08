@@ -28,7 +28,7 @@ public interface IGradeService
     Task<List<Grade>> GetGradesForAssignment(int assignmentId);
 
     // Get all grades for a specific student (useful for students).
-    Task<List<Grade>> GetGradesByStudent(int studentId);
+    Task<List<Grade>> GetGradesByStudent(string studentNumber);
 
     // Check if a submission has been graded.
     Task<bool> HasSubmissionBeenGraded(int submissionId);
