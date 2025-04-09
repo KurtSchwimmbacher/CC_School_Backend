@@ -21,10 +21,13 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Avien .env loader 
+DotNetEnv.Env.Load();
+
 // connection to DB String here
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// add db context to services 
-builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+//local connection string --> var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 
 
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
