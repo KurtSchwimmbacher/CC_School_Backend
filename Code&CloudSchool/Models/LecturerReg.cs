@@ -11,9 +11,9 @@ public class LecturerReg : User
     // Mark Id as the primary key
     //[Key]
     // Configure the database to auto-generate the value for Id
-    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Required]
-    [StringLength(12)]
+   
     public int LecturerId { get; set; }
 
     // Lecturer's first name, required with a maximum length of 50 characters
@@ -46,6 +46,10 @@ public class LecturerReg : User
     }
 
     public List<Classes> Classes { get; set; } //this is a list of classes that the lecturer is teaching 
+
+    public List<Majors> Majors { get; set; } //this is a list of majors that the lecturer is teaching
+    public List<Courses> Courses { get; set; } //this is a list of courses that the lecturer is teaching
+    public List<Assignment> Assignments { get; set; } //this is a list of assignments that the lecturer is giving to the students
 
 
 }

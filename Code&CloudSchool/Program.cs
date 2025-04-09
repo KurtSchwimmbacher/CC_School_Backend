@@ -31,10 +31,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
 
 
-// add db context to services 
-builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
 
-Console.WriteLine("Connected to DB: " + builder.Configuration.GetConnectionString("DefaultConnection"));
+//Console.WriteLine("Connected to DB: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 // Add services to the container.
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();

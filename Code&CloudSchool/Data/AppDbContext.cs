@@ -66,14 +66,16 @@ public class AppDBContext : DbContext
 
         // Configure the one-to-many relationship between Assignment and Submission.
         modelBuilder.Entity<Assignment>()
-            .HasMany(a => a.Submissions) // An Assignment can have many Submissions.
-            .WithOne(s => s.Assignment) // A Submission belongs to one Assignment.
-            .HasForeignKey(s => s.Assignment_ID) // Foreign key in the Submission table.
-            .OnDelete(DeleteBehavior.Cascade) // If an Assignment is deleted, its Submissions are also deleted.
-
-            .HasMany(Lecturers => Lecturers.Assignments) // A Lecturer can have many Assignments.
-            .WithOne(Assignments => Assignments.Lecturer) // An Assignment belongs to one Lecturer.
-            .HasForeignKey(Assignments => Assignments.LecturerId); // Foreign key in the Assignment table.
+                .HasMany(a => a.Submissions) // An Assignment can have many Submissions.
+                .WithOne(s => s.Assignment) // A Submission belongs to one Assignment.
+                .HasForeignKey(s => s.Assignment_ID) // Foreign key in the Submission table.
+                .OnDelete(DeleteBehavior.Cascade); // If an Assignment is deleted, its Submissions are also deleted.
+    
+            // Configure the relationship between Assignment and Lecturer
+            modelBuilder.Entity<Assignment>()
+                .HasOne(a => a.Lecturer) // An Assignment has one Lecturer.
+                .WithMany(l => l.Assignments) // A Lecturer can have many Assignments.
+                .HasForeignKey(a => a.LecturerId); // Foreign key in the Assignment table.
 
         // Configure the one-to-one relationship between Submission and Grade.
         modelBuilder.Entity<Submission>()
