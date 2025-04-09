@@ -24,12 +24,18 @@ builder.Services.AddSwaggerGen();
 DotNetEnv.Env.Load();
 
 // connection to DB String here
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+//var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
 //local connection string --> var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
+
 
 // add db context to services 
 builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
 
+Console.WriteLine("Connected to DB: " + builder.Configuration.GetConnectionString("DefaultConnection"));
+// Add services to the container.
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();
 builder.Services.AddScoped<IStudentReEnroll, StudentReEnrollService>();
