@@ -29,7 +29,7 @@ public interface ICourseServices
     //Add
 
     public Task<bool> AddMajorToCourseAsync(int courseId, MajorDetailsDTO majorDetails);
-    public Task<bool> AddStudentToCourseAsync(int courseId, int studentId);
+    public Task<bool> AddStudentToCourseAsync(int courseId, string studentNo);
 
 
 }

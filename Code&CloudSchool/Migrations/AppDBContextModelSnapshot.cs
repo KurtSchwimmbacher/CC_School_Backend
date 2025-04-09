@@ -293,7 +293,7 @@ namespace Code_CloudSchool.Migrations
                     b.HasIndex("MajorsId");
 
                     b.ToTable("MajorCourses", (string)null);
-                });
+                }));
 
             modelBuilder.Entity("CoursesStudent", b =>
                 {
@@ -383,7 +383,7 @@ namespace Code_CloudSchool.Migrations
                 {
                     b.HasOne("Code_CloudSchool.Models.User", null)
                         .WithOne()
-                        .HasForeignKey("Code_CloudSchool.Models.Admin", "UserId")
+                        .HasForeignKey("Code_CloudSchool.Models.Admin", "UserId");
                     b.HasOne("Code_CloudSchool.Models.Classes", null)
                         .WithMany()
                         .HasForeignKey("ClassesclassID")

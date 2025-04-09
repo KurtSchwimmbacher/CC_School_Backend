@@ -63,7 +63,7 @@ namespace Code_CloudSchool.Controllers
             return Ok(courseDetails);
         }
 
-        [HttpGet("courses/classes/{id}")]
+        [HttpGet("courses/getClasses/{id}")]
         public async Task<ActionResult> GetClassesForCourseAsync(int id)
         {
             var classesInCourse = await _courseServices.GetCourseDetailsAsync(id);
@@ -76,7 +76,7 @@ namespace Code_CloudSchool.Controllers
             return Ok(classesInCourse);
         }
 
-        [HttpGet("courses/majors/{id}")]
+        [HttpGet("courses/getMajors/{id}")]
         public async Task<ActionResult>
         GetMajorsForCourseAsync(int id)
         {
@@ -90,18 +90,18 @@ namespace Code_CloudSchool.Controllers
             return Ok(majorsInCourse);
         }
 
-        [HttpGet("students/{id}")]
-        public async Task<ActionResult> GetStudentsInCourseAsync(int id)
-        {
-            var studentsByMajors = await _courseServices.GetMajorsForCourseAsync(id);
+        // [HttpGet("getStudents/{id}")]
+        // public async Task<ActionResult> GetStudentsInCourseAsync(int id)
+        // {
+        //     var studentsByMajors = await _courseServices.GetMajorsForCourseAsync(id);
 
-            if (studentsByMajors == null)
-            {
-                return NotFound();
-            }
+        //     if (studentsByMajors == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            return Ok(studentsByMajors);
-        }
+        //     return Ok(studentsByMajors);
+        // }
 
 
         // PUT: api/Courses/5
@@ -135,7 +135,7 @@ namespace Code_CloudSchool.Controllers
             return NoContent();
         }
 
-        [HttpPut("courseDetails/{id}")]
+        [HttpPut("UpdateCourseDetails/{id}")]
         public async Task<ActionResult> UpdateCourseDetails(int id, [FromBody] CourseDetailsDTO courseDetails)
         {
             if (id <= 0 || courseDetails == null)

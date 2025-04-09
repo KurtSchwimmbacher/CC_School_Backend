@@ -19,7 +19,7 @@ public interface IClassesServices
     public Task<Classes> UpdateClassDetailsAsync(int classId, Classes classes);
     public Task<Classes> UpdateClassTimeAsync(int classId, Classes classes);
 
-    public Task<bool> RemoveStudentFromClassAsync(int classId, int studentId);
+    public Task<bool> RemoveStudentFromClassAsync(int classId, string studentNo);
     public Task<bool> RemoveLecturerFromClassAsync(int classId, int lecturerId);
 
     //TODO: 

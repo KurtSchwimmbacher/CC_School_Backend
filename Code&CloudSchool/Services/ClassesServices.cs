@@ -98,7 +98,7 @@ public class ClassesServices : IClassesServices
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
 
-        var lecturerExists = _context.Lecturers.Any(l => l.Id == lecturerId);
+        var lecturerExists = _context.Lecturers.Any(l => l.LecturerId == lecturerId);
         if (lecturerExists == null)
         {
             throw new KeyNotFoundException($"Lecturer with Id {lecturerId} does not exist");
@@ -110,9 +110,9 @@ public class ClassesServices : IClassesServices
         return Task.FromResult(true); // Assuming the operation is successful save changes from the context and return true
     }
 
-    public Task<bool> RemoveStudentFromClassAsync(int classId, int studentId)
+    public Task<bool> RemoveStudentFromClassAsync(int classId, string studentNo)
     {
-        if (classId <= 0 || studentId <= 0)
+        if (classId <= 0 || studentNo == null)
         {
             throw new ArgumentException("Invalid Id");
         }
@@ -124,13 +124,13 @@ public class ClassesServices : IClassesServices
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
 
-        var studentExists = _context.Students.Any(s => s.Id == studentId);
+        var studentExists = _context.Students.Any(s => s.StudentNumber == studentNo);
         if (studentExists == null)
         {
-            throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
+            throw new KeyNotFoundException($"Student with Id {studentNo} does not exist");
         }
 
-        _context.Students.Remove(_context.Students.Find(studentId));
+        _context.Students.Remove(_context.Students.Find(studentNo));
         _context.SaveChanges();
 
         return Task.FromResult(true); // Assuming the operation is successful save changes from the context and return true

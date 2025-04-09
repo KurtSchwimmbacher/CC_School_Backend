@@ -221,9 +221,9 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpDelete("removeStudent/{classId}/{studentId}")]
-        public async Task<IActionResult> RemoveStudentFromClass(int classId, int studentId)
+        public async Task<IActionResult> RemoveStudentFromClass(int classId, string studentNo)
         {
-            var result = await _classesServices.RemoveStudentFromClassAsync(classId, studentId);
+            var result = await _classesServices.RemoveStudentFromClassAsync(classId, studentNo);
 
             if (!result)
             {

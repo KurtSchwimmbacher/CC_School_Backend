@@ -38,7 +38,7 @@ public class CoursesServices : ICourseServices
 
     }
 
-    public async Task<bool> AddStudentToCourseAsync(int courseId, int studentId)
+    public async Task<bool> AddStudentToCourseAsync(int courseId, string studentNo)
     {
         var course = _context.Courses
             .Include(c => c.Student)
@@ -48,10 +48,10 @@ public class CoursesServices : ICourseServices
             throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
         }
         var student = _context.Students
-            .FirstOrDefault(s => s.Id == studentId);
+            .FirstOrDefault(s => s.StudentNumber == studentNo);
         if (student == null)
         {
-            throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
+            throw new KeyNotFoundException($"Student with Id {studentNo} does not exist");
         }
         course.Student.Add(student);
         await _context.SaveChangesAsync();
