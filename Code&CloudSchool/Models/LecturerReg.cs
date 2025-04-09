@@ -45,6 +45,7 @@ public class LecturerReg : User
         Role = "Lecturer";
     }
 
+//For relationships 
     public List<Classes> Classes { get; set; } //this is a list of classes that the lecturer is teaching 
 
     public List<Majors> Majors { get; set; } //this is a list of majors that the lecturer is teaching

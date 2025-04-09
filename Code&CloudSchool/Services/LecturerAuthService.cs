@@ -27,16 +27,31 @@ public class LecturerAuthService : ILecturerAuth
 
 
     // TODO
+    public Task<string> GenerateEmailAddress(string LectName)
+{
+    // Brilu don't forget to write the code to generate the lecturers email address 
+    //tutorial from https://www.codeproject.com/Articles/22777/Email-Address-Validation-Using-Regular-Expression 
+    
+    
+    string cleanName = LectName.Replace(" ", "").ToLower();
+    string email = $"{cleanName}@cloudschool.edu";
+    
+    // You might want to add checks for uniqueness
+    return Task.FromResult(email);
+}
+
     public Task<string> GenerateEmailAdress(string LectName)
     {
         throw new NotImplementedException();
     }
 
     // TODO
-    public Task<LecturerReg?> GetLecturerByEmail(string email)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<LecturerReg?> GetLecturerByEmail(string email)
+{
+    // Get lecturer with all their related data (if needed)
+    return await _context.Lecturers
+        .FirstOrDefaultAsync(l => l.LecEmail == email);
+}
 
     public Task<string> HashPassword(string password)
     {
@@ -47,10 +62,24 @@ public class LecturerAuthService : ILecturerAuth
 
 
     // TODO
-    public Task<LecturerReg?> LoginLecturer(string email, string password)
+    public async Task<LecturerReg?> LoginLecturer(string email, string password)
+{
+    // 1. Find lecturer by email 
+    var lecturer = await _context.Lecturers
+        .FirstOrDefaultAsync(l => l.LecEmail == email);
+
+    // 2. If lecturer not found, return null
+    if (lecturer == null)
     {
-        throw new NotImplementedException();
+        return null;
     }
+
+    // 3. Verify the password matches the hashed password in database
+    bool isPasswordValid = BCrypt.Net.BCrypt.EnhancedVerify(password, lecturer.Password);
+    
+    // 4. Return lecturer if password is correct, otherwise return null
+    return isPasswordValid ? lecturer : null;
+}
 
     public Task<bool> RegisterLecturer(LecturerReg lecturer)
     {

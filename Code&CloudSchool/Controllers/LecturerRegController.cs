@@ -89,6 +89,8 @@ namespace Code_CloudSchool.Controllers
             return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.Id }, lecturerReg);
         }
 
+        
+
         // DELETE: api/LecturerReg/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLecturerReg(int id)
@@ -109,6 +111,8 @@ namespace Code_CloudSchool.Controllers
         {
             return _context.Lecturers.Any(e => e.Id == id);
         }
+
+        
     }
 
     internal class LecturerDTO
