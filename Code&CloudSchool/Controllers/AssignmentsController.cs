@@ -7,120 +7,122 @@ using System.Threading.Tasks;
 
 namespace Code_CloudSchool.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController] public class AssignmentsController : ControllerBase
+    [Route("api/[controller]")] // Base route: /api/assignments
+    [ApiController]
+    public class AssignmentsController : ControllerBase
     {
-                private readonly IAssignmentService _assignmentService; // Dependency injection for AssignmentService.
+        private readonly IAssignmentService _assignmentService; // Injected service for assignment operations
 
-        // Constructor to inject the AssignmentService.
+        // Constructor with dependency injection
         public AssignmentsController(IAssignmentService assignmentService)
         {
             _assignmentService = assignmentService;
         }
 
-        [HttpPost] // HTTP POST method to create a new assignment.
+        [HttpPost] // POST /api/assignments
         public async Task<ActionResult<Assignment>> CreateAssignment(Assignment assignment)
         {
             try
             {
-                // Debug: Log incoming request details
+                // Log request details for debugging
                 Console.WriteLine($"Received assignment: {System.Text.Json.JsonSerializer.Serialize(assignment)}");
                 Console.WriteLine($"LecturerUser_Id: {assignment.LecturerUser_Id}");
 
-                var result = await _assignmentService.CreateAssignment(assignment); // Call the service method.
-                return Ok(result); // Return the created assignment with a 200 OK status.
+                var result = await _assignmentService.CreateAssignment(assignment);
+                return Ok(result); // 200 OK with created assignment
             }
             catch (Exception ex)
             {
-                // Debug: Log full error details
                 Console.WriteLine($"FULL ERROR: {ex.ToString()}");
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
+                return StatusCode(500, $"Internal server error: {ex.Message}"); // 500 on failure
             }
         }
 
-        [HttpGet("lecturer/{lecturerId}")] // HTTP GET method to get assignments by lecturer ID.
+        [HttpGet("lecturer/{lecturerId}")] // GET /api/assignments/lecturer/5
         public async Task<ActionResult<List<Assignment>>> GetAssignmentsByLecturer(int lecturerId)
         {
             try
             {
-                var assignments = await _assignmentService.GetAssignmentsByLecturer(lecturerId); // Call the service method.
-                return Ok(assignments); // Return the list of assignments with a 200 OK status.
+                var assignments = await _assignmentService.GetAssignmentsByLecturer(lecturerId);
+                return Ok(assignments); // 200 OK with assignments list
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-        [HttpGet("{id}")] // HTTP GET method to get an assignment by its ID.
+        [HttpGet("{id}")] // GET /api/assignments/3
         public async Task<ActionResult<Assignment>> GetAssignmentById(int id)
         {
             try
             {
-                var assignment = await _assignmentService.GetAssignmentById(id); // Call the service method.
-                if (assignment == null) return NotFound(); // If no assignment is found, return a 404 Not Found status.
-                return Ok(assignment); // Return the assignment with a 200 OK status.
+                var assignment = await _assignmentService.GetAssignmentById(id);
+                if (assignment == null) return NotFound(); // 404 if not found
+                return Ok(assignment); // 200 OK with assignment
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-        [HttpPut] // HTTP PUT method to update an existing assignment.
+        [HttpPut] // PUT /api/assignments
         public async Task<ActionResult<Assignment>> UpdateAssignment(Assignment assignment)
         {
             try
             {
-                var result = await _assignmentService.UpdateAssignment(assignment); // Call the service method.
-                return Ok(result); // Return the updated assignment with a 200 OK status.
+                var result = await _assignmentService.UpdateAssignment(assignment);
+                return Ok(result); // 200 OK with updated assignment
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-        [HttpDelete("{id}")] // HTTP DELETE method to delete an assignment by its ID.
+        [HttpDelete("{id}")] // DELETE /api/assignments/3
         public async Task<ActionResult<bool>> DeleteAssignment(int id)
         {
             try
             {
-                var result = await _assignmentService.DeleteAssignment(id); // Call the service method.
-                if (!result) return NotFound(); // If the assignment is not found, return a 404 Not Found status.
-                return Ok(result); // Return true with a 200 OK status.
+                var result = await _assignmentService.DeleteAssignment(id);
+                if (!result) return NotFound(); // 404 if not found
+                return Ok(result); // 200 OK with true/false
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-        [HttpGet] // HTTP GET method to get all assignments.
+        [HttpGet] // GET /api/assignments
         public async Task<ActionResult<List<Assignment>>> GetAllAssignments()
         {
             try
             {
-                var assignments = await _assignmentService.GetAllAssignments(); // Call the service method.
-                return Ok(assignments); // Return the list of assignments with a 200 OK status.
+                var assignments = await _assignmentService.GetAllAssignments();
+                return Ok(assignments); // 200 OK with all assignments
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-        [HttpGet("filter")] // HTTP GET method to filter assignments by due date and completion status.
-        public async Task<ActionResult<List<Assignment>>> GetAssignmentsByFilter([FromQuery] DateTime? dueDate, [FromQuery] bool? isCompleted)
+        [HttpGet("filter")] // GET /api/assignments/filter?dueDate=2023-12-31&isCompleted=true
+        public async Task<ActionResult<List<Assignment>>> GetAssignmentsByFilter(
+            [FromQuery] DateTime? dueDate, 
+            [FromQuery] bool? isCompleted)
         {
             try
             {
-                var assignments = await _assignmentService.GetAssignmentsByFilter(dueDate, isCompleted); // Call the service method.
-                return Ok(assignments); // Return the filtered assignments with a 200 OK status.
+                var assignments = await _assignmentService.GetAssignmentsByFilter(dueDate, isCompleted);
+                return Ok(assignments); // 200 OK with filtered assignments
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
     }

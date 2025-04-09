@@ -10,41 +10,45 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Code_CloudSchool.Services;
 
+// Service handling submission-related business logic
+// Implements ISubmissionService for dependency injection
 public class SubmissionService : ISubmissionService
 {
-    private readonly AppDBContext _context;
+    private readonly AppDBContext _context; // Database context for EF Core operations
 
+    // Constructor with dependency injection
     public SubmissionService(AppDBContext context)
     {
         _context = context;
     }
 
-    // Submit a new assignment using DTO
+    // Creates a new submission from DTO with validation
     public async Task<Submission> SubmitAssignment(CreateSubmissionDTO submissionDto)
     {
-        // Load required entities
+        // Verify assignment exists
         var assignment = await _context.Assignments
             .FirstOrDefaultAsync(a => a.Assignment_ID == submissionDto.AssignmentId) 
             ?? throw new ArgumentException("Assignment not found");
 
+        // Verify student exists
         var student = await _context.Students
             .FirstOrDefaultAsync(s => s.Id == submissionDto.StudentId) 
             ?? throw new ArgumentException("Student not found");
 
-        // Create submission - Grade will be auto-initialized by constructor
+        // Create new submission - Grade is auto-initialised by constructor
         var submission = new Submission
         {
             Assignment_ID = submissionDto.AssignmentId,
             Student_ID = submissionDto.StudentId,
             FilePath = submissionDto.FilePath,
             SubmissionDate = submissionDto.SubmissionDate,
-            Assignment = assignment,
-            Student = student
+            Assignment = assignment,  // Set navigation property
+            Student = student        // Set navigation property
         };
 
-        // Configure the auto-created Grade
-        submission.Grade.Score = 0; // Default ungraded value
-        submission.Grade.Submission_ID = submission.Submission_ID; // Will be set on save
+        // Configure auto-created Grade
+        submission.Grade.Score = 0; // Default ungraded state
+        submission.Grade.Submission_ID = submission.Submission_ID; // Will update on save
 
         _context.Submissions.Add(submission);
         await _context.SaveChangesAsync();
@@ -52,7 +56,7 @@ public class SubmissionService : ISubmissionService
         return submission;
     }
         
-    // Submit a new assignment using existing model (legacy support)
+    // Legacy method for direct submission creation
     public async Task<Submission> SubmitAssignment(Submission submission)
     {
         _context.Submissions.Add(submission);
@@ -60,30 +64,31 @@ public class SubmissionService : ISubmissionService
         return submission;
     }
 
-    // Get all submissions for a specific student with related data
+    // Gets all submissions for a specific student with related data
     public async Task<List<Submission>> GetSubmissionsByStudent(int studentId)
     {
         return await _context.Submissions
-            .Include(s => s.Assignment)
+            .Include(s => s.Assignment) // Eager load assignment details
             .Where(s => s.Student.Id == studentId)
             .ToListAsync();
     }
 
-    // Get a specific submission by ID with related data
+    // Gets single submission by ID with full related data
     public async Task<Submission> GetSubmissionById(int id)
     {
         return await _context.Submissions
-            .Include(s => s.Assignment)
-            .Include(s => s.Student)
+            .Include(s => s.Assignment) // Load assignment
+            .Include(s => s.Student)    // Load student
             .FirstOrDefaultAsync(s => s.Submission_ID == id);
     }
 
-    // Update an existing submission using DTO
+    // Updates submission from DTO (partial updates supported)
     public async Task<Submission> UpdateSubmission(UpdateSubmissionDTO submissionDto)
     {
         var submission = await _context.Submissions.FindAsync(submissionDto.SubmissionId);
         if (submission == null) return null;
 
+        // Only update provided fields
         if (!string.IsNullOrEmpty(submissionDto.FilePath))
             submission.FilePath = submissionDto.FilePath;
 
@@ -94,7 +99,7 @@ public class SubmissionService : ISubmissionService
         return submission;
     }
 
-    // Update an existing submission using model (legacy support)
+    // Legacy method for direct submission updates
     public async Task<Submission> UpdateSubmission(Submission submission)
     {
         _context.Entry(submission).State = EntityState.Modified;
@@ -102,7 +107,7 @@ public class SubmissionService : ISubmissionService
         return submission;
     }
 
-    // Delete a submission by its ID
+    // Deletes submission by ID
     public async Task<bool> DeleteSubmission(int id)
     {
         var submission = await _context.Submissions.FindAsync(id);
@@ -113,16 +118,16 @@ public class SubmissionService : ISubmissionService
         return true;
     }
 
-    // Get all submissions for a specific assignment with related data
+    // Gets all submissions for a specific assignment
     public async Task<List<Submission>> GetSubmissionsForAssignment(int assignmentId)
     {
         return await _context.Submissions
-            .Include(s => s.Student)
+            .Include(s => s.Student) // Load student details
             .Where(s => s.Assignment.Assignment_ID == assignmentId)
             .ToListAsync();
     }
 
-    // Check if a student has already submitted a specific assignment
+    // Checks if student has already submitted to prevent duplicates
     public async Task<bool> HasStudentSubmittedAssignment(int studentId, int assignmentId)
     {
         return await _context.Submissions

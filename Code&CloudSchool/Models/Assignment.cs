@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Code_CloudSchool.Models;
 
+// Represents an assignment in the school management system
+// Maps to the 'Assignments' table in PostgreSQL database
+
 public class Assignment
 {
     [Key] // This is the primary key for the Assignment table.
@@ -18,12 +21,13 @@ public class Assignment
     [Required] // The DueDate field is required and cannot be null.
     public DateTime DueDate { get; set; }
     
-    // Foreign key reference to Lecturer's ID
+    // Links to the lecturer who created this assignment (foreign key)
     public int LecturerUser_Id { get; set; }
 
     [ForeignKey("LecturerUser_Id")]
      public virtual LecturerReg? LecturerUser { get; set; } // Navigation property to lecturer
 
-    // Navigation property to the list of submissions for this assignment.
+    // Stores all student submissions for this assignment
+    // Initialised as empty list to avoid null reference exceptions
     public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
 }

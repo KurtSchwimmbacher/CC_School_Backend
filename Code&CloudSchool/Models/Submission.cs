@@ -4,38 +4,43 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Code_CloudSchool.Models;
 
+// Represents a student's submission for an assignment
+// Maps to 'Submissions' table in PostgreSQL database
 public class Submission
 {
-    [Key] // This is the primary key for the Submission table.
+    [Key] // Primary key - unique identifier for each submission
     public int Submission_ID { get; set; }
 
-    [Required] // The Assignment_ID field is required and cannot be null.
-    [ForeignKey("Assignment")] // This is a foreign key linking to the Assignment table.
-    public int Assignment_ID { get; set; }
+    [Required] // Mandatory field - every submission must link to an assignment
+    [ForeignKey("Assignment")] // References primary key in Assignment table
+    public int Assignment_ID { get; set; } // Foreign key to assignment
 
-    [Required] // The Student_ID field is required and cannot be null.
-    [ForeignKey("Student")] // This is a foreign key linking to the Student table.
-    public int Student_ID { get; set; }
+    [Required] // Mandatory field - every submission must have a student
+    [ForeignKey("Student")] // References primary key in Student table
+    public int Student_ID { get; set; } // Foreign key to student
 
-    [Required] // The FilePath field is required and cannot be null.
-    public string? FilePath { get; set; } // Path to the submitted file.
+    [Required] // Mandatory field - submission must have file reference
+    public string? FilePath { get; set; } // Server path to submitted file (e.g., PDF)
 
-    [Required] // The SubmissionDate field is required and cannot be null.
-    public DateTime SubmissionDate { get; set; } // Date and time of submission.
+    [Required] // Mandatory field - submission timestamp required
+    public DateTime SubmissionDate { get; set; } // When submission was uploaded
 
-    // Navigation property to the Assignment this submission belongs to.
-    public Assignment Assignment { get; set; } = null!; // Initialised as non-null
+    // Navigation property to linked assignment
+    // Initialised as non-null to prevent null reference issues
+    public Assignment Assignment { get; set; } = null!;
 
-    // Navigation property to the Student who made this submission.
-    public Student Student { get; set; } = null!; // Initialised as non-null
+    // Navigation property to student who submitted
+    // Initialised as non-null to prevent null reference issues
+    public Student Student { get; set; } = null!;
 
-    // Navigation property to the Grade for this submission
-    // Initialised in constructor to avoid circular dependency
+    // Navigation property to grading information
+    // Initialised in constructor to establish circular relationship
     public Grade Grade { get; set; } = null!;
 
     // Constructor ensures Grade is properly initialised with back-reference
     public Submission()
     {
-        Grade = new Grade { Submission = this }; // Sets up circular relationship
+        // Sets up circular relationship between submission and grade
+        Grade = new Grade { Submission = this };
     }
 }
