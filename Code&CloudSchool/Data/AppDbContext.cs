@@ -30,6 +30,12 @@ public class AppDBContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Configure TPT: Separate tables for User and Student
+        modelBuilder.Entity<User>().ToTable("Users");
+        modelBuilder.Entity<Student>().ToTable("Students");
+        modelBuilder.Entity<LecturerReg>().ToTable("Lecturers");
+
+
         modelBuilder.Entity<Majors>() //this is the entity that we are going to be working with
             .HasMany(m => m.Courses) // a major has many courses
             .WithMany(c => c.Majors) // a course has many majors
