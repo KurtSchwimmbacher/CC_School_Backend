@@ -19,7 +19,7 @@ public class LecturerAuthService : ILecturerAuth
     public async Task<LecturerReg?> EmailExists(string email)
     {
         //checking if the email exists in our DB
-        //go find the fist user where their email matches the email we are looking for
+        //go find the first user where their email matches the email we are looking for
         LecturerReg? lecturerFromDB = await _context.Lecturers.FirstOrDefaultAsync(lectInDB => lectInDB.LecEmail == email);
         return lecturerFromDB; // if null, email not in use, if User, means User already exists 
 
@@ -32,7 +32,7 @@ public class LecturerAuthService : ILecturerAuth
     // Brilu don't forget to write the code to generate the lecturers email address 
     //tutorial from https://www.codeproject.com/Articles/22777/Email-Address-Validation-Using-Regular-Expression 
     
-    
+
     string cleanName = LectName.Replace(" ", "").ToLower();
     string email = $"{cleanName}@cloudschool.edu";
     
@@ -44,6 +44,8 @@ public class LecturerAuthService : ILecturerAuth
     {
         throw new NotImplementedException();
     }
+
+
 
     // TODO
     public async Task<LecturerReg?> GetLecturerByEmail(string email)
