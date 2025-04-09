@@ -9,7 +9,7 @@ public class User
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int UserId { get; set; }  // Primary Key
-    
+
     [Required]
     public string Name { get; set; } = string.Empty;
 
@@ -23,5 +23,5 @@ public class User
     public string Password { get; set; } = string.Empty;
 
     [Required]
-    public virtual string Role { get; set; } = "User"; 
+    public virtual string Role { get; set; } = "User";
 }

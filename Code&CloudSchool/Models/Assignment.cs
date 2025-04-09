@@ -8,6 +8,7 @@ namespace Code_CloudSchool.Models;
 public class Assignment
 {
     [Key] // This is the primary key for the Assignment table.
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Assignment_ID { get; set; }
 
     [Required] // The Title field is required and cannot be null.

@@ -28,14 +28,14 @@ public class SubmissionService : ISubmissionService
             ?? throw new ArgumentException("Assignment not found");
 
         var student = await _context.Students
-            .FirstOrDefaultAsync(s => s.StudentNumber == submissionDto.StudentId)
+            .FirstOrDefaultAsync(s => s.UserId == submissionDto.StudentId)
             ?? throw new ArgumentException("Student not found");
 
         // Create submission - Grade will be auto-initialized by constructor
         var submission = new Submission
         {
             Assignment_ID = submissionDto.AssignmentId,
-            StudentNumber = submissionDto.StudentId
+            StudentId = submissionDto.StudentId
             ?? throw new ArgumentException("Student not found"), // Ensure StudentId is not null
             FilePath = submissionDto.FilePath,
             SubmissionDate = submissionDto.SubmissionDate,

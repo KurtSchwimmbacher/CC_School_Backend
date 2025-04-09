@@ -43,11 +43,9 @@ public class AppDBContext : DbContext
             .HasMaxLength(12);
 
         // Unique constraint for StudentNumber
-        modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
-
-        // Ensure StudentNumber is not mapped to the User table
-        modelBuilder.Entity<User>()
-        .Ignore(u => ((Student)u).StudentNumber);
+        modelBuilder.Entity<Student>()
+            .HasIndex(s => s.StudentNumber)
+            .IsUnique();
 
         //one course has many students and one student can take many courses 
         modelBuilder.Entity<Courses>()
@@ -97,11 +95,11 @@ public class AppDBContext : DbContext
 
         // Configure the relationship between Submission and Student
         modelBuilder.Entity<Submission>()
-            .HasOne(s => s.Student) // A Submission has one Student.
-            .WithMany() // A Student can have many Submissions.
-            .HasForeignKey(s => s.StudentNumber) // Foreign key in the Submission table.
-            .HasPrincipalKey(s => s.StudentNumber) //Map to the Student's studentNumber
-            .OnDelete(DeleteBehavior.Cascade); // If a Student is deleted, their Submissions are also deleted.
+            .HasOne(s => s.Student)
+            .WithMany()
+            .HasForeignKey(s => s.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
 
         // unique constraint for AdminID
