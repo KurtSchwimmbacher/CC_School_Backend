@@ -62,11 +62,11 @@ public class SubmissionService : ISubmissionService
     }
 
     // Get all submissions for a specific student with related data
-    public async Task<List<Submission>> GetSubmissionsByStudent(string studentId)
+    public async Task<List<Submission>> GetSubmissionsByStudent(int studentId)
     {
         return await _context.Submissions
             .Include(s => s.Assignment)
-            .Where(s => s.Student.StudentNumber == studentId)
+            .Where(s => s.Student.UserId == studentId)
             .ToListAsync();
     }
 
@@ -134,10 +134,10 @@ public class SubmissionService : ISubmissionService
     }
 
     // Check if a student has already submitted a specific assignment
-    public async Task<bool> HasStudentSubmittedAssignment(string studentId, int assignmentId)
+    public async Task<bool> HasStudentSubmittedAssignment(int studentId, int assignmentId)
     {
         return await _context.Submissions
-            .AnyAsync(s => s.Student.StudentNumber == studentId &&
+            .AnyAsync(s => s.Student.UserId == studentId &&
                           s.Assignment.Assignment_ID == assignmentId);
     }
 }

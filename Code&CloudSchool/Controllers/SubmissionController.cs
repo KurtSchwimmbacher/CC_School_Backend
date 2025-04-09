@@ -81,7 +81,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpGet("student/{studentId}")]
-        public async Task<ActionResult<List<Submission>>> GetSubmissionsByStudent(string studentId)
+        public async Task<ActionResult<List<Submission>>> GetSubmissionsByStudent(int studentId)
         {
             try
             {
