@@ -28,7 +28,8 @@ DotNetEnv.Env.Load();
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
 //local connection string --> var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-
+// add db context to services 
+builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IStudentAuth, StudentAuthService>();
 builder.Services.AddScoped<IStudentStatus, StudentStatusService>();
