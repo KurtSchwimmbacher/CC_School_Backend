@@ -151,7 +151,7 @@ namespace Code_CloudSchool.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    LecturerId = table.Column<int>(type: "integer", maxLength: 12, nullable: false),
+                    LecturerId = table.Column<int>(type: "integer", nullable: false),
                     LectName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LecLastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LecEmail = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Code_CloudSchool.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250408205104_InitialCreate")]
+    [Migration("20250410115722_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -372,7 +372,6 @@ namespace Code_CloudSchool.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<int>("LecturerId")
-                        .HasMaxLength(12)
                         .HasColumnType("integer");
 
                     b.ToTable("Lecturers");

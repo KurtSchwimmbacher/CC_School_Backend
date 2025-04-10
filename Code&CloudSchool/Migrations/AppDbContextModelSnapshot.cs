@@ -369,7 +369,6 @@ namespace Code_CloudSchool.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<int>("LecturerId")
-                        .HasMaxLength(12)
                         .HasColumnType("integer");
 
                     b.ToTable("Lecturers");
