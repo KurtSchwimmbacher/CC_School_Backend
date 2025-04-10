@@ -88,7 +88,6 @@ namespace Code_CloudSchool.Controllers
 
             return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.Id }, lecturerReg);
         }
-
         
 
         // DELETE: api/LecturerReg/5

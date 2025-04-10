@@ -30,7 +30,7 @@ public class LAuthService : ILAuthService
 
         // Hash and update the lecturer's password before storing it
         lecturer.Password = HashedPassword(lecturer.Password).Result;
-
+ 
         // Add the lecturer to the database
         _context.Lecturers.Add(lecturer);
         _context.SaveChanges(); // Save the changes

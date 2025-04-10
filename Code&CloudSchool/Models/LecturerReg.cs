@@ -28,7 +28,7 @@ public class LecturerReg : User
 
     // Lecturer's email, required, must be a valid email format, with a maximum length of 150 characters
     [Required]
-    [EmailAddress]
+    [EmailAddress] 
     [MaxLength(150)]
     public string LecEmail { get; set; } = string.Empty;
 
