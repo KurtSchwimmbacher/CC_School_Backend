@@ -40,21 +40,38 @@ public class CoursesServices : ICourseServices
 
     public async Task<bool> AddStudentToCourseAsync(int courseId, string studentId)
     {
-        var course = _context.Courses
+        var course = await _context.Courses
             .Include(c => c.Student)
-            .FirstOrDefault(c => c.Id == courseId);
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
         if (course == null)
         {
             throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
         }
-        var student = _context.Students
-            .FirstOrDefault(s => s.StudentNumber == studentId);
+
+        var student = await _context.Students
+            .FirstOrDefaultAsync(s => s.StudentNumber == studentId);
+
         if (student == null)
         {
             throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
         }
+
+        // Ensure the Student collection is initialized
+        if (course.Student == null)
+        {
+            course.Student = new List<Student>();
+        }
+
+        // Check if the student is already in the course
+        if (course.Student.Any(s => s.StudentNumber == studentId))
+        {
+            throw new InvalidOperationException($"Student with Id {studentId} is already enrolled in the course");
+        }
+
         course.Student.Add(student);
         await _context.SaveChangesAsync();
+
         return true;
     }
 
@@ -131,20 +148,21 @@ public class CoursesServices : ICourseServices
     {
         if (courseId <= 0)
         {
-            throw new ArgumentException("Invalid Id");
+            throw new ArgumentException("Invalid course ID", nameof(courseId));
         }
 
-        var courseExists = await _context.Courses.AnyAsync(c => c.Id == courseId);
-
-        if (!courseExists)
-        {
-            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
-        }
-
-        return await _context.Courses
+        // Retrieve the course and its students in a single query
+        var students = await _context.Courses
             .Where(c => c.Id == courseId)
             .SelectMany(c => c.Student)
             .ToListAsync();
+
+        if (!students.Any())
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist or has no students");
+        }
+
+        return students;
     }
 
 

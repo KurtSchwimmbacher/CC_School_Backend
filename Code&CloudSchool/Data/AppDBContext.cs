@@ -51,7 +51,19 @@ public class AppDBContext : DbContext
         modelBuilder.Entity<Courses>()
             .HasMany(c => c.Student)
             .WithMany(s => s.Courses)
-            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
+            .UsingEntity<Dictionary<string, object>>(
+                "CourseStudents", // Name of the join table
+                join => join
+                    .HasOne<Student>() //configure the relation to student
+                    .WithMany()
+                    .HasForeignKey("StudentNumber") //use student number as the fk
+                    .HasPrincipalKey(s => s.StudentNumber), // Map to the studentnumber in the student entity
+                join => join
+                    .HasOne<Courses>() //configure the relation to course
+                    .WithMany()
+                    .HasForeignKey("CourseId") //use course id as the fk
+                    .HasPrincipalKey(c => c.Id) //map to Id in the Courses Entity
+            );
 
         // one class can have many students and one student can take many classes 
         modelBuilder.Entity<Classes>()
