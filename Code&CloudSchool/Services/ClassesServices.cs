@@ -30,40 +30,88 @@ public class ClassesServices : IClassesServices
             .FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Class with ID {classId} not found");
     }
 
-    public async Task<Classes> GetClassLecturersAsync(int classId)
+    public async Task<ClassLecturerDTO> GetClassLecturersAsync(int classId)
     {
         if (classId <= 0)
         {
             throw new ArgumentException("Invalid Id");
         }
-        var classExists = _context.Classes.Any(c => c.classID == classId);
 
+        // Check if the class exists
+        var classExists = await _context.Classes.AnyAsync(c => c.classID == classId);
         if (!classExists)
         {
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
 
-        return await _context.Classes
+        // Fetch the class with its lecturers
+        var classWithLecturers = await _context.Classes
             .Include(c => c.Lecturers)
-            .FirstOrDefaultAsync(c => c.classID == classId) ?? throw new KeyNotFoundException($"Class with ID {classId} does not exist or was not found");
+            .FirstOrDefaultAsync(c => c.classID == classId);
+
+        if (classWithLecturers == null || classWithLecturers.Lecturers == null || !classWithLecturers.Lecturers.Any())
+        {
+            throw new KeyNotFoundException($"No lecturers found for the class with ID {classId}");
+        }
+
+        // Map the lecturers to a LecturerDTO
+        var classLecturerDTO = new ClassLecturerDTO
+        {
+            ClassId = classId,
+            Lecturers = classWithLecturers.Lecturers.Select(l => new LecturerDTO
+            {
+                LecturerId = l.LecturerId,
+                LecName = l.Name,
+                LecEmail = l.LecEmail,
+                Department = l.Department
+            }).ToList()
+        };
+
+        return classLecturerDTO;
     }
 
-    public Task<Classes?> GetClassStudentsAsync(int classId)
+    public async Task<bool> AddLecturerToClassAsync(int classId, int lecturerId)
     {
-        if (classId <= 0)
+        if (classId <= 0 || lecturerId <= 0)
         {
-            throw new ArgumentException("Invalid Id");
-        }
-        var classExists = _context.Classes.Any(c => c.classID == classId);
-
-        if (!classExists)
-        {
-            throw new KeyNotFoundException($"Class with Id {classId} does not exist");
+            throw new ArgumentException("Invalid input parameters");
         }
 
-        return _context.Classes
-            .Include(c => c.Student)
-            .FirstOrDefaultAsync(c => c.classID == classId) ?? throw new KeyNotFoundException($"Class with ID {classId} does not exist or was not found");
+        // Check if the class exists
+        var classExists = await _context.Classes
+            .Include(c => c.Lecturers) // Include the Lecturers navigation property
+            .FirstOrDefaultAsync(c => c.classID == classId);
+
+        if (classExists == null)
+        {
+            throw new KeyNotFoundException($"Class with ID {classId} does not exist");
+        }
+
+        // Check if the lecturer exists
+        var lecturerExists = await _context.Lecturers.FindAsync(lecturerId);
+        if (lecturerExists == null)
+        {
+            throw new KeyNotFoundException($"Lecturer with ID {lecturerId} does not exist");
+        }
+
+        // Check if the lecturer is already associated with the class
+        if (classExists.Lecturers.Any(l => l.LecturerId == lecturerId))
+        {
+            throw new InvalidOperationException($"Lecturer with ID {lecturerId} is already assigned to the class");
+        }
+
+        // Add the lecturer to the class
+        classExists.Lecturers.Add(lecturerExists);
+
+        // Save changes to the database
+        await _context.SaveChangesAsync();
+
+        return true; 
+    }
+
+    public Task<List<Student>> GetClassStudentsAsync(int classId)
+    {
+        throw new NotImplementedException();
     }
 
     public Task<Classes> GetClassTimeAsync(int classId)
@@ -187,15 +235,6 @@ public class ClassesServices : IClassesServices
         return Task.FromResult(classes); // Assuming the operation is successful save changes from the context and return the updated class
     }
 
-    async Task<LecturerDTO> IClassesServices.GetClassLecturersAsync(int classId)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<Student> IClassesServices.GetClassStudentsAsync(int classId)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<CourseDetailsDTO> GetClassCourseAsync(int classId)
     {

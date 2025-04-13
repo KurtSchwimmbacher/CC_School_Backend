@@ -79,31 +79,47 @@ namespace Code_CloudSchool.Controllers
             return classDetails;
         }
 
-        // [HttpGet("getClasslecturers/{id}")]
-        // public async Task<ActionResult<LecturerDTO>> GetClassLecturers(int id)
-        // {
-        //     var classLecturers = await _classesServices.GetClassLecturersAsync(id);
+        [HttpGet("getClassLecturers/{classId}")]
+        public async Task<ActionResult<LecturerReg>> GetClassLecturersAsync(int classId)
+        {
+            if (classId <= 0)
+            {
+                return BadRequest("Invalid class ID");
+            }
 
-        //     if (classLecturers == null)
+            try
+            {
+                var classLecturers = await _classesServices.GetClassLecturersAsync(classId);
+
+                if (classLecturers == null)
+                {
+                    return NotFound($"No Lecturers found for class with ID {classId}");
+                }
+
+                return Ok(classLecturers);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
+        // [HttpGet("students/{id}")]
+        // public async Task<ActionResult<Student>> GetClassStudents(int id)
+        // {
+        //     var classStudents = await _classesServices.GetClassStudentsAsync(id);
+
+        //     if (classStudents == null)
         //     {
         //         return NotFound();
         //     }
 
-        //     return classLecturers;
+        //     return classStudents;
         // }
-
-        [HttpGet("students/{id}")]
-        public async Task<ActionResult<Student>> GetClassStudents(int id)
-        {
-            var classStudents = await _classesServices.GetClassStudentsAsync(id);
-
-            if (classStudents == null)
-            {
-                return NotFound();
-            }
-
-            return classStudents;
-        }
 
         [HttpGet("time/{id}")]
         public async Task<ActionResult<Classes>> GetClassTime(int id)
@@ -178,7 +194,39 @@ namespace Code_CloudSchool.Controllers
             return NoContent();
         }
 
+        // post lecturer to class
+        [HttpPost("addLecturerToClass/{classId}/{lecturerId}")]
+        public async Task<IActionResult> AddLecturerToClass(int classId, int lecturerId)
+        {
+            if (classId <= 0 || lecturerId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
 
+            try
+            {
+                var result = await _classesServices.AddLecturerToClassAsync(classId, lecturerId);
+
+                if (result)
+                {
+                    return Ok($"Lecturer with ID: {lecturerId} added to class successfully.");
+                }
+
+                return StatusCode(500, "An unexpected error occurred while adding the lecturer to the class");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
 
         // POST: api/Classes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -235,36 +283,3 @@ namespace Code_CloudSchool.Controllers
     }
 }
 
-/* 
-
-[HttpPut("{id}")]
-        public async Task<IActionResult> PutClasses(int id, Classes classes)
-        {
-            if (id != classes.classID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(classes).State = EntityState.Modified;
-
-            var classesExists = await _context.Classes.AnyAsync(c => c.classID == id);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!classesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-*/
