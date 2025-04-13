@@ -323,4 +323,33 @@ public class CoursesServices : ICourseServices
     }
 
 
+    public async Task<bool> RemoveStudentInCourseAsync(int courseId, int studentId)
+    {
+        if (courseId <= 0 || studentId <= 0)
+        {
+            throw new ArgumentException("Invalid input parameters");
+        }
+
+        var course = _context.Courses
+            .Include(c => c.Student)
+            .FirstOrDefault(c => c.Id == courseId);
+
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+
+        var student = course.Student.FirstOrDefault(s => s.UserId == studentId);
+
+        if (student == null)
+        {
+            throw new KeyNotFoundException($"Student with Id {studentId} does not exist in the course");
+        }
+
+        course.Student.Remove(student);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
 }

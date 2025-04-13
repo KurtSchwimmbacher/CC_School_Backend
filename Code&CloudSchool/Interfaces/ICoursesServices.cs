@@ -18,8 +18,8 @@ public interface ICourseServices
 
     //students 
     public Task<List<Student>> GetStudentsInCourseAsync(int courseId);
-    // public Task<bool> UpdateStudentInCourseAsync(int courseId, int studentId);
-    // public Task<bool> RemoveStudentInCourseAsync(int courseId, int studentId);
+
+    public Task<bool> RemoveStudentInCourseAsync(int courseId, int studentId);
 
     //classes 
     public Task<List<Classes>> GetClassesForCourseAsync(int courseId);
