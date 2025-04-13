@@ -321,6 +321,9 @@ namespace Code_CloudSchool.Controllers
             return NoContent();
         }
 
+
+
+
         // POST: api/Courses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("create-course")]
@@ -390,6 +393,41 @@ namespace Code_CloudSchool.Controllers
 
             return NoContent();
         }
+
+        // Post Students into Course
+        [HttpPost("addStudentToCourse/{courseId}/student/{studentId}")]
+        public async Task<ActionResult> AddStudentToCourse(int courseId, int studentId)
+        {
+            if (courseId <=0 || studentId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            try
+            {
+                var result = await _courseServices.AddStudentToCourseAsync(courseId, studentId);
+
+                if(result)
+                {
+                    return Ok($"Student with ID: {studentId} has successfully been added to the Course with ID: {courseId}");
+                }
+
+                return StatusCode(500, "An unexpected error occurred while adding the student to the course");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
 
         // DELETE: api/Courses/5
         [HttpDelete("{id}")]
