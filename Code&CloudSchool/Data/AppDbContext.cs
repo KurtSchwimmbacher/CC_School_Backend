@@ -47,11 +47,6 @@ public class AppDBContext : DbContext
             .HasIndex(s => s.StudentNumber)
             .IsUnique();
 
-        //one course has many students and one student can take many courses 
-        modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Student)
-            .WithMany(s => s.Courses)
-            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
 
         // one class can have many students and one student can take many classes 
         modelBuilder.Entity<Classes>()

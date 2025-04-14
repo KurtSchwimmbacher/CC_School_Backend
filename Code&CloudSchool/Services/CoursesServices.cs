@@ -31,6 +31,8 @@ public class CoursesServices : ICourseServices
             MajorDescription = majorDetails.MajorDescription ?? string.Empty
         };
 
+
+        course.Majors.Add(newMajor);
         await _context.SaveChangesAsync();
 
         return true;
@@ -38,23 +40,40 @@ public class CoursesServices : ICourseServices
 
     }
 
-    public async Task<bool> AddStudentToCourseAsync(int courseId, string studentId)
+    public async Task<bool> AddStudentToCourseAsync(int courseId, int studentId)
     {
-        var course = _context.Courses
+        var course = await _context.Courses
             .Include(c => c.Student)
-            .FirstOrDefault(c => c.Id == courseId);
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
         if (course == null)
         {
             throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
         }
-        var student = _context.Students
-            .FirstOrDefault(s => s.StudentNumber == studentId);
+
+        var student = await _context.Students
+            .FirstOrDefaultAsync(s => s.UserId == studentId);
+
         if (student == null)
         {
             throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
         }
+
+        // Ensure the Student collection is initialized
+        if (course.Student == null)
+        {
+            course.Student = new List<Student>();
+        }
+
+        // Check if the student is already in the course
+        if (course.Student.Any(s => s.UserId == studentId))
+        {
+            throw new InvalidOperationException($"Student with Id {studentId} is already enrolled in the course");
+        }
+
         course.Student.Add(student);
         await _context.SaveChangesAsync();
+
         return true;
     }
 
@@ -131,24 +150,25 @@ public class CoursesServices : ICourseServices
     {
         if (courseId <= 0)
         {
-            throw new ArgumentException("Invalid Id");
+            throw new ArgumentException("Invalid course ID", nameof(courseId));
         }
 
-        var courseExists = await _context.Courses.AnyAsync(c => c.Id == courseId);
-
-        if (!courseExists)
-        {
-            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
-        }
-
-        return await _context.Courses
+        // Retrieve the course and its students in a single query
+        var students = await _context.Courses
             .Where(c => c.Id == courseId)
             .SelectMany(c => c.Student)
             .ToListAsync();
+
+        if (!students.Any())
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist or has no students");
+        }
+
+        return students;
     }
 
 
-    public async Task<bool> RemoveClassCourseAsync(int courseId, ClassDetailsDTO classDTO)
+    public async Task<bool> RemoveClassFromCourseAsync(int courseId, ClassDetailsDTO classDTO)
     {
         if (courseId <= 0 || classDTO == null)
         {
@@ -170,9 +190,6 @@ public class CoursesServices : ICourseServices
         {
             throw new KeyNotFoundException($"Class with Id {classDTO.ClassId} does not exist in the course");
         }
-
-        existingClass.className = classDTO.ClassName ?? string.Empty;
-        existingClass.classDescription = classDTO.classDescription ?? string.Empty;
 
         _context.Classes.Remove(existingClass);
         await _context.SaveChangesAsync();
@@ -204,8 +221,6 @@ public class CoursesServices : ICourseServices
         }
 
         existingMajor.MajorName = majorDetails.MajorName;
-        existingMajor.MajorDescription = existingMajor.MajorDescription;
-
 
         _context.Majors.Remove(existingMajor);
         await _context.SaveChangesAsync();
@@ -307,5 +322,34 @@ public class CoursesServices : ICourseServices
         return true;
     }
 
+
+    public async Task<bool> RemoveStudentInCourseAsync(int courseId, int studentId)
+    {
+        if (courseId <= 0 || studentId <= 0)
+        {
+            throw new ArgumentException("Invalid input parameters");
+        }
+
+        var course = _context.Courses
+            .Include(c => c.Student)
+            .FirstOrDefault(c => c.Id == courseId);
+
+        if (course == null)
+        {
+            throw new KeyNotFoundException($"Course with Id {courseId} does not exist");
+        }
+
+        var student = course.Student.FirstOrDefault(s => s.UserId == studentId);
+
+        if (student == null)
+        {
+            throw new KeyNotFoundException($"Student with Id {studentId} does not exist in the course");
+        }
+
+        course.Student.Remove(student);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
 
 }
