@@ -109,9 +109,72 @@ public class ClassesServices : IClassesServices
         return true; 
     }
 
-    public Task<List<Student>> GetClassStudentsAsync(int classId)
+
+    public async Task<bool> AddStudentToClassAsync(int classId, int studentId)
     {
-        throw new NotImplementedException();
+        if (classId <= 0 || studentId <= 0)
+        {
+            throw new ArgumentException("Invalid input parameters");
+        }
+        
+        // check if the class exists
+        var classExists = _context.Classes
+            .Include(c => c.Student) // Include the Students navigation property
+            .FirstOrDefault(c => c.classID == classId);
+
+        if (classExists == null)
+        {
+            throw new KeyNotFoundException($"Class with ID {classId} does not exists");
+        }
+
+        // check if the student exists
+        var studentExists = _context.Students.Find(studentId);
+        if (studentExists == null)
+        {
+            throw new KeyNotFoundException($"Student with ID {studentId} does not exists");
+        }
+
+        // check if the student is already associated with the class
+        if (classExists.Student.Any(s => s.UserId == studentId))
+        {
+            throw new InvalidOperationException($"Student with ID {studentId} is already assigned to the class");
+        }
+
+        // add student to the class
+        classExists.Student.Add(studentExists);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<List<Student>> GetClassStudentsAsync(int classId)
+    {
+        if (classId <= 0)
+        {
+            throw new ArgumentException("Invalid Id");
+        }
+
+        // Check if the class exists
+        var classExists = await _context.Classes.AnyAsync(c => c.classID == classId);
+        if (!classExists)
+        {
+            throw new KeyNotFoundException($"Class with Id {classId} does not exist");
+        }
+
+        // Fetch the students associated with the class
+        var students = await _context.Classes
+            .Where(c => c.classID == classId)
+            .Include(c => c.Student) // Ensure the Students navigation property is loaded
+            .SelectMany(c => c.Student) // Flatten the collection of students
+            .ToListAsync();
+
+        if (students == null || !students.Any())
+        {
+            throw new KeyNotFoundException($"No students found for the class with ID {classId}");
+        }
+
+        return students;
+        
     }
 
     public Task<Classes> GetClassTimeAsync(int classId)
@@ -163,7 +226,7 @@ public class ClassesServices : IClassesServices
         return Task.FromResult(true); // Assuming the operation is successful save changes from the context and return true
     }
 
-    public Task<bool> RemoveStudentFromClassAsync(int classId, string studentId)
+    public Task<bool> RemoveStudentFromClassAsync(int classId, int studentId)
     {
         if (classId <= 0 || studentId == null)
         {
@@ -177,7 +240,7 @@ public class ClassesServices : IClassesServices
             throw new KeyNotFoundException($"Class with Id {classId} does not exist");
         }
 
-        var studentExists = _context.Students.Any(s => s.StudentNumber == studentId);
+        var studentExists = _context.Students.Any(s => s.UserId == studentId);
         if (!studentExists)
         {
             throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
@@ -257,4 +320,6 @@ public class ClassesServices : IClassesServices
             })
             .FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Class with ID {classId} not found");
     }
+
+    
 }

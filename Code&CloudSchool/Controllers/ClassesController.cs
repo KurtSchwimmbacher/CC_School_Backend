@@ -108,18 +108,34 @@ namespace Code_CloudSchool.Controllers
             }
         }
 
-        // [HttpGet("students/{id}")]
-        // public async Task<ActionResult<Student>> GetClassStudents(int id)
-        // {
-        //     var classStudents = await _classesServices.GetClassStudentsAsync(id);
+        [HttpGet("students/{classId}")]
+        public async Task<ActionResult<List<Student>>> GetClassStudents(int classId)
+        {
+            if (classId <= 0)
+            {
+                return BadRequest("Invalid class ID");
+            }
 
-        //     if (classStudents == null)
-        //     {
-        //         return NotFound();
-        //     }
+            try
+            {
+                var classStudents = await _classesServices.GetClassStudentsAsync(classId);
 
-        //     return classStudents;
-        // }
+                if (classStudents == null || !classStudents.Any())
+                {
+                    return NotFound($"No students found for class with ID {classId}");
+                }
+
+                return Ok(classStudents);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
 
         [HttpGet("time/{id}")]
         public async Task<ActionResult<Classes>> GetClassTime(int id)
@@ -228,6 +244,40 @@ namespace Code_CloudSchool.Controllers
             }
         }
 
+
+        [HttpPost("addStudentToClass/{classId}/{studentId}")]
+        public async Task<IActionResult> AddStudentToClass(int classId, int studentId)
+        {
+            if (classId <= 0 || studentId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            try
+            {
+                var result = await _classesServices.AddStudentToClassAsync(classId, studentId);
+
+                if (result)
+                {
+                    return Ok($"Student with ID: {studentId} added to class successfully.");
+                }
+
+                return StatusCode(500, "An unexpected error occurred while adding the student to the class");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
         // POST: api/Classes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -269,7 +319,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpDelete("removeStudent/{classId}/{studentId}")]
-        public async Task<IActionResult> RemoveStudentFromClass(int classId, string studentId)
+        public async Task<IActionResult> RemoveStudentFromClass(int classId, int studentId)
         {
             var result = await _classesServices.RemoveStudentFromClassAsync(classId, studentId);
 

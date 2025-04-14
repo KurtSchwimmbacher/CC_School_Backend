@@ -19,12 +19,14 @@ public interface IClassesServices
     public Task<Classes> UpdateClassDetailsAsync(int classId, Classes classes);
     public Task<Classes> UpdateClassTimeAsync(int classId, Classes classes);
 
-    public Task<bool> RemoveStudentFromClassAsync(int classId, string studentId);
+    public Task<bool> RemoveStudentFromClassAsync(int classId, int studentId);
     public Task<bool> RemoveLecturerFromClassAsync(int classId, int lecturerId);
 
 
     public Task<bool> AddLecturerToClassAsync(int classId, int lecturerId);
-    
+
+    public Task<bool> AddStudentToClassAsync(int classId, int studentId );
+
     //TODO: 
     /*
         GET, POST, PUT, DELETE -> Courses 
