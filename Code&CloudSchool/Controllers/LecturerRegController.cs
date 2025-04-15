@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Code_CloudSchool.Data;
+using Code_CloudSchool.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Code_CloudSchool.Models;
-using Code_CloudSchool.Data;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -14,6 +10,7 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class LecturerRegController : ControllerBase
     {
+
         private readonly AppDBContext _context;
 
         public LecturerRegController(AppDBContext context)
@@ -30,21 +27,16 @@ namespace Code_CloudSchool.Controllers
 
         // GET: api/LecturerReg/5
         [HttpGet("{id}")]
-        public IActionResult GetLecturer(int id)
+        public async Task<ActionResult<LecturerReg>> GetLecturerReg(int id)
         {
-            var lecturer = new LecturerDTO
-            {
-                Id = id,
-                LectName = "John",
-                LecLastName = "Doe",
-                LecEmail = "john.doe@example.com",
-                PhoneNumber = "123-456-7890",
-                Department = "Computer Science",
-                DateOfJoining = DateTime.Now,
-                IsActive = true
-            };
+            var lecturerReg = await _context.Lecturers.FindAsync(id);
 
-            return Ok(lecturer);  // Return the DTO as the response
+            if (lecturerReg == null)
+            {
+                return NotFound();
+            }
+
+            return lecturerReg;
         }
 
         // PUT: api/LecturerReg/5
@@ -88,7 +80,7 @@ namespace Code_CloudSchool.Controllers
 
             return CreatedAtAction("GetLecturerReg", new { id = lecturerReg.Id }, lecturerReg);
         }
-        
+
 
         // DELETE: api/LecturerReg/5
         [HttpDelete("{id}")]
@@ -106,24 +98,14 @@ namespace Code_CloudSchool.Controllers
             return NoContent();
         }
 
+
+
+
         private bool LecturerRegExists(int id)
         {
             return _context.Lecturers.Any(e => e.Id == id);
         }
 
-        
-    }
 
-    internal class LecturerDTO
-    {
-        public int Id { get; set; }
-        public string LectName { get; set; }
-        public string LecLastName { get; set; }
-        public string LecEmail { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Department { get; set; }
-        public DateTime DateOfJoining { get; set; }
-        public bool IsActive { get; set; }
     }
 }
-

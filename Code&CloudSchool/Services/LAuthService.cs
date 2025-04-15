@@ -1,88 +1,50 @@
-using System;
 using Code_CloudSchool.Data;
+using Code_CloudSchool.Interfaces;
 using Code_CloudSchool.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Code_CloudSchool.Services;
 
-// Service class for handling lecturer authentication and registration
-public class LAuthService : ILAuthService
+public class LAuthService : ILecturerAuth
 {
-    // Private field to hold the database context
     private readonly AppDBContext _context;
 
-    // Constructor that injects the database context
-    public LAuthService(AppDBContext context)
+    public LAuthService(AppDBContext context) => _context = context;
+
+    public async Task<string> GenerateEmailAddress(string lectName)
     {
-        _context = context;
+        var names = lectName.ToLower(); 
+        return $"{names}.@cloudschool.edu";
     }
 
-    // Method to register a new lecturer
-    public Task<bool> RegisterLecturer(LecturerReg lecturer)
+    public async Task<bool> RegisterLecturer(LecturerReg lecturer)
     {
-        // Check if the lecturer's email already exists in the database
-        LecturerReg? doesLecturerExist = EmailExists(lecturer.LecEmail).Result;
-        
-        if (doesLecturerExist != null)
-        {
-            return Task.FromResult(false); // If the email exists, return false (registration failed)
-        }
+        if (await _context.Lecturers.AnyAsync(l => l.LecEmail == lecturer.LecEmail))
+            return false;
 
-        // Hash and update the lecturer's password before storing it
-        lecturer.Password = HashedPassword(lecturer.Password).Result;
- 
-        // Add the lecturer to the database
+        lecturer.Password = await HashPassword(lecturer.Password);
+        lecturer.Role = "Lecturer";
         _context.Lecturers.Add(lecturer);
-        _context.SaveChanges(); // Save the changes
-
-        return Task.FromResult(true); // Return true if the lecturer was added successfully
-        throw new NotImplementedException(); // Unreachable code (can be removed)
+        return await _context.SaveChangesAsync() > 0;
     }
 
-    // Private method to hash the lecturer's password
-    private Task<string> HashedPassword(string password)
+    public Task<string> HashPassword(string password) 
+        => Task.FromResult(BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13)); //why the work factor of 13 ? 
+        //It balances security and performance. Higher values increase hash time but improve resistance to brute-force attacks
+
+    public Task<LecturerReg?> EmailExists(string email) 
+        => _context.Lecturers.FirstOrDefaultAsync(l => l.LecEmail == email);
+
+    public async Task<LecturerReg?> LoginLecturer(string email, string password)
     {
-        // Hashing and salting the password using BCrypt with an enhanced security factor of 13
-        string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13);
-        return Task.FromResult(hashedPassword); // Return the hashed password
+        var lecturer = await EmailExists(email);
+        return lecturer != null && BCrypt.Net.BCrypt.EnhancedVerify(password, lecturer.Password) 
+            ? lecturer : null;
     }
 
-    // Public method to hash a password
-    public Task<string> HashPassword(string password)
-    {
-        // Hashing and salting the password with BCrypt
-        string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13);
-        return Task.FromResult(hashedPassword); // Return the hashed password
-        
-        // Task represents an asynchronous operation that will return the hashed password in the future
-    }
+    public Task<LecturerReg?> GetLecturerByEmail(string email) 
+        => _context.Lecturers.Include(l => l.Courses).FirstOrDefaultAsync(l => l.LecEmail == email);
 
-    // Method to check if an email already exists in the database
-    public async Task<LecturerReg?> EmailExists(string email)
-    {
-        // Search for the first lecturer where their email matches the given email
-        LecturerReg? userFromDB = await _context.Lecturers.FirstOrDefaultAsync(userInDB => userInDB.LecEmail == email);
-        
-        // Return the lecturer record if found, otherwise return null
-        return userFromDB; // If null, email is not in use; if not null, the user already exists 
 
-        throw new NotImplementedException(); // Unreachable code (can be removed)
-    }
-
-    // Method to handle user login (not yet implemented)
-    public Task<bool> LoginUser(string email, string password)
-    {
-        throw new NotImplementedException();
-    }
-
-    // Method to validate a lecturer's password (not yet implemented)
-    public Task<bool> ValidatePassword(LecturerReg lecturer, string password)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-// Incorrect interface definition (this should be an interface, not a class)
-public class ILAuthService
-{
+        //All methods are asynchronous to avoid blocking threads during database operations.
 }

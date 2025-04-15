@@ -5,7 +5,7 @@ namespace Code_CloudSchool.Interfaces;
 
 public interface ILecturerAuth
 {
-    public Task<string> GenerateEmailAdress(string LectName);
+    public Task<string> GenerateEmailAddress(string LectName);
 
     public Task<bool> RegisterLecturer(LecturerReg lecturer);
 

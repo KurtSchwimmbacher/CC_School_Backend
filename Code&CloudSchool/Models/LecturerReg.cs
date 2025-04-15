@@ -18,7 +18,7 @@ public class LecturerReg : User
 
     // Lecturer's first name, required with a maximum length of 50 characters
     [Required]
-    [StringLength(50)]
+    [StringLength(50)] 
     public string LectName { get; set; } = string.Empty;
 
     // Lecturer's last name, required with a maximum length of 50 characters
