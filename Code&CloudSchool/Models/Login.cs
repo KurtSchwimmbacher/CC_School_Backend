@@ -11,7 +11,7 @@ public class Login
     public string PhoneNumber { get; set; }  // For SMS/WhatsApp OTP
 
     [Required]
-    public string OTP { get; set; }          // 6-digit code from user
+    public int OTP { get; set; }          // 6-digit code from user
 
     // Optional: For traditional username/password + 2FA
     public string Email { get; set; }        
