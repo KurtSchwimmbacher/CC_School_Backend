@@ -7,7 +7,6 @@ public interface ILecturerAuth
 {
     public Task<string> GenerateEmailAddress(string LectName);
 
-    public Task<bool> RegisterLecturer(LecturerReg lecturer);
 
     public Task<string> HashPassword(string password);
 

@@ -17,20 +17,11 @@ public class LAuthService : ILecturerAuth
         return $"{names}.@cloudschool.edu";
     }
 
-    public async Task<bool> RegisterLecturer(LecturerReg lecturer)
-    {
-        if (await _context.Lecturers.AnyAsync(l => l.LecEmail == lecturer.LecEmail))
-            return false;
-
-        lecturer.Password = await HashPassword(lecturer.Password);
-        lecturer.Role = "Lecturer";
-        _context.Lecturers.Add(lecturer);
-        return await _context.SaveChangesAsync() > 0;
-    }
-
-    public Task<string> HashPassword(string password) 
+        public Task<string> HashPassword(string password) 
         => Task.FromResult(BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13)); //why the work factor of 13 ? 
         //It balances security and performance. Higher values increase hash time but improve resistance to brute-force attacks
+
+        //Securely compares password to hash.
 
     public Task<LecturerReg?> EmailExists(string email) 
         => _context.Lecturers.FirstOrDefaultAsync(l => l.LecEmail == email);
@@ -39,7 +30,7 @@ public class LAuthService : ILecturerAuth
     {
         var lecturer = await EmailExists(email);
         return lecturer != null && BCrypt.Net.BCrypt.EnhancedVerify(password, lecturer.Password) 
-            ? lecturer : null;
+            ? lecturer : null; //Ternary operator for clean returns. One-line success/failure handling.
     }
 
     public Task<LecturerReg?> GetLecturerByEmail(string email) 
