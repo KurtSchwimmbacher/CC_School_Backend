@@ -13,9 +13,11 @@ public class Submission
     [ForeignKey("Assignment")] // This is a foreign key linking to the Assignment table.
     public int Assignment_ID { get; set; }
 
-    [Required] // The Student_ID field is required and cannot be null.
-    [ForeignKey("Student")] // This is a foreign key linking to the Student table.
-    public string Student_ID { get; set; }
+    public int StudentId { get; set; } // FK to Student.UserId
+
+    [ForeignKey("StudentId")]
+    public Student Student { get; set; } = null!;
+
 
     [Required] // The FilePath field is required and cannot be null.
     public string? FilePath { get; set; } // Path to the submitted file.
@@ -26,8 +28,7 @@ public class Submission
     // Navigation property to the Assignment this submission belongs to.
     public Assignment Assignment { get; set; } = null!; // Initialised as non-null
 
-    // Navigation property to the Student who made this submission.
-    public Student Student { get; set; } = null!; // Initialised as non-null
+
 
     // Navigation property to the Grade for this submission
     // Initialised in constructor to avoid circular dependency

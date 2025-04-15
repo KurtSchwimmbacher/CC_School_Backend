@@ -71,7 +71,7 @@ namespace Code_CloudSchool.Controllers
         }
 
 
-        [HttpPut("{studentNumber}/updatePassword")]
+        [HttpPut("{AdminEmail}/updatePassword")]
         public async Task<IActionResult> UpdateAdminPassword(string AdminEmail, StudentPasswordDTO PasswordDTO)
         {
             bool updated = await _passwordService.UpdateAdminPassword(AdminEmail, PasswordDTO);

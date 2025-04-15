@@ -90,18 +90,18 @@ namespace Code_CloudSchool.Controllers
             return Ok(majorsInCourse);
         }
 
-        // [HttpGet("getStudents/{id}")]
-        // public async Task<ActionResult> GetStudentsInCourseAsync(int id)
-        // {
-        //     var studentsByMajors = await _courseServices.GetMajorsForCourseAsync(id);
+        [HttpGet("studentsInCourse/{CourseId}")]
+        public async Task<ActionResult> GetStudentsInCourseAsync(int CourseId)
+        {
+            var studentsInCourse = await _courseServices.GetStudentsInCourseAsync(CourseId);
 
-        //     if (studentsByMajors == null)
-        //     {
-        //         return NotFound();
-        //     }
+            if (studentsInCourse == null)
+            {
+                return NotFound();
+            }
 
-        //     return Ok(studentsByMajors);
-        // }
+            return Ok(studentsInCourse);
+        }
 
 
         // PUT: api/Courses/5
@@ -154,7 +154,10 @@ namespace Code_CloudSchool.Controllers
 
             if (courseToUpdate.courseName != courseDetails.CourseName)
             {
-                courseToUpdate.courseName = courseDetails.CourseName;
+                if (courseDetails.CourseName != null)
+                {
+                    courseToUpdate.courseName = courseDetails.CourseName;
+                }
 
                 hasChanged = true;
             }
@@ -219,12 +222,18 @@ namespace Code_CloudSchool.Controllers
 
             if (classToUpdate.className != classDetails.ClassName)
             {
-                classToUpdate.className = classDetails.ClassName;
+                if (classDetails.ClassName != null)
+                {
+                    classToUpdate.className = classDetails.ClassName;
+                }
                 hasChanged = true;
             }
             if (classToUpdate.classDescription != classDetails.classDescription)
             {
-                classToUpdate.classDescription = classDetails.classDescription;
+                if (classDetails.classDescription != null)
+                {
+                    classToUpdate.classDescription = classDetails.classDescription;
+                }
                 hasChanged = true;
             }
 
@@ -284,7 +293,10 @@ namespace Code_CloudSchool.Controllers
             }
             if (majorToUpdate.MajorDescription != majorDetails.MajorDescription)
             {
-                majorToUpdate.MajorDescription = majorDetails.MajorDescription;
+                if (majorDetails.MajorDescription != null)
+                {
+                    majorToUpdate.MajorDescription = majorDetails.MajorDescription;
+                }
 
                 hasChanged = true;
             }
@@ -308,6 +320,9 @@ namespace Code_CloudSchool.Controllers
             }
             return NoContent();
         }
+
+
+
 
         // POST: api/Courses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -378,6 +393,41 @@ namespace Code_CloudSchool.Controllers
 
             return NoContent();
         }
+
+        // Post Students into Course
+        [HttpPost("addStudentToCourse/{courseId}/student/{studentId}")]
+        public async Task<ActionResult> AddStudentToCourse(int courseId, int studentId)
+        {
+            if (courseId <= 0 || studentId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            try
+            {
+                var result = await _courseServices.AddStudentToCourseAsync(courseId, studentId);
+
+                if (result)
+                {
+                    return Ok($"Student with ID: {studentId} has successfully been added to the Course with ID: {courseId}");
+                }
+
+                return StatusCode(500, "An unexpected error occurred while adding the student to the course");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
 
         // DELETE: api/Courses/5
         [HttpDelete("{id}")]
@@ -459,5 +509,37 @@ namespace Code_CloudSchool.Controllers
 
             return NoContent();
         }
+
+
+        [HttpDelete("deleteStudentFromCourse/{courseId}/student/{studentId}")]
+        public async Task<ActionResult> RemoveStudentFromCourse(int courseId, int studentId)
+        {
+            if (courseId <= 0 || studentId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            try
+            {
+                var result = await _courseServices.RemoveStudentInCourseAsync(courseId, studentId);
+
+                if (result)
+                {
+                    return Ok($"Student with ID: {studentId} has successfully been removed from the Course with ID: {courseId}");
+                }
+
+                return StatusCode(500, "An unexpected error occurred while removing the student from the course");
+            }
+
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
     }
 }

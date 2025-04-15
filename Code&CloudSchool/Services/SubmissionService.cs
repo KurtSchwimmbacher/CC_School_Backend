@@ -28,14 +28,15 @@ public class SubmissionService : ISubmissionService
             ?? throw new ArgumentException("Assignment not found");
 
         var student = await _context.Students
-            .FirstOrDefaultAsync(s => s.StudentNumber == submissionDto.StudentId)
+            .FirstOrDefaultAsync(s => s.UserId == submissionDto.StudentId)
             ?? throw new ArgumentException("Student not found");
 
         // Create submission - Grade will be auto-initialized by constructor
         var submission = new Submission
         {
             Assignment_ID = submissionDto.AssignmentId,
-            Student_ID = submissionDto.StudentId,
+            StudentId = submissionDto.StudentId
+            ?? throw new ArgumentException("Student not found"), // Ensure StudentId is not null
             FilePath = submissionDto.FilePath,
             SubmissionDate = submissionDto.SubmissionDate,
             Assignment = assignment,
@@ -61,11 +62,11 @@ public class SubmissionService : ISubmissionService
     }
 
     // Get all submissions for a specific student with related data
-    public async Task<List<Submission>> GetSubmissionsByStudent(string studentId)
+    public async Task<List<Submission>> GetSubmissionsByStudent(int studentId)
     {
         return await _context.Submissions
             .Include(s => s.Assignment)
-            .Where(s => s.Student.StudentNumber == studentId)
+            .Where(s => s.Student.UserId == studentId)
             .ToListAsync();
     }
 
@@ -133,10 +134,10 @@ public class SubmissionService : ISubmissionService
     }
 
     // Check if a student has already submitted a specific assignment
-    public async Task<bool> HasStudentSubmittedAssignment(string studentId, int assignmentId)
+    public async Task<bool> HasStudentSubmittedAssignment(int studentId, int assignmentId)
     {
         return await _context.Submissions
-            .AnyAsync(s => s.Student.StudentNumber == studentId &&
+            .AnyAsync(s => s.Student.UserId == studentId &&
                           s.Assignment.Assignment_ID == assignmentId);
     }
 }

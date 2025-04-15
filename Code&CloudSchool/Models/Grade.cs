@@ -21,5 +21,5 @@ public class Grade
 
     // Navigation property to the Submission this grade belongs to.
     // Changed from required to optional initialisation to prevent errors when not immediately assigned.
-    public Submission Submission { get; set; } = null!;
+    public Submission? Submission { get; set; }
 }

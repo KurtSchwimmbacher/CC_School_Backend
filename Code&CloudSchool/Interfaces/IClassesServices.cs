@@ -11,8 +11,8 @@ public interface IClassesServices
 {
     public Task<ClassDetailsDTO> GetClassDetailsAsync(int classId);
     public Task<Classes> GetClassTimeAsync(int classId);
-    public Task<LecturerDTO> GetClassLecturersAsync(int classId);
-    public Task<Student> GetClassStudentsAsync(int classId);
+    public Task<ClassLecturerDTO> GetClassLecturersAsync(int classId);
+    public Task<List<Student>> GetClassStudentsAsync(int classId);
     public Task<CourseDetailsDTO> GetClassCourseAsync(int classId);
 
 
@@ -21,6 +21,11 @@ public interface IClassesServices
 
     public Task<bool> RemoveStudentFromClassAsync(int classId, string studentNo);
     public Task<bool> RemoveLecturerFromClassAsync(int classId, int lecturerId);
+
+
+    public Task<bool> AddLecturerToClassAsync(int classId, int lecturerId);
+
+    public Task<bool> AddStudentToClassAsync(int classId, int studentId );
 
     //TODO: 
     /*

@@ -35,7 +35,7 @@ namespace Code_CloudSchool.Controllers
 
                 // Validate student exists
                 var studentExists = await _context.Students
-                    .AnyAsync(s => s.StudentNumber == submissionDto.StudentId);
+                    .AnyAsync(s => s.UserId == submissionDto.StudentId);
                 if (!studentExists)
                     return BadRequest("Student does not exist");
 
@@ -81,7 +81,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpGet("student/{studentId}")]
-        public async Task<ActionResult<List<Submission>>> GetSubmissionsByStudent(string studentId)
+        public async Task<ActionResult<List<Submission>>> GetSubmissionsByStudent(int studentId)
         {
             try
             {

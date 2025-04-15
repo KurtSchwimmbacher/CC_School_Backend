@@ -17,11 +17,11 @@ public interface ISubmissionService
     Task<Submission> UpdateSubmission(Submission submission);
 
     // Query methods
-    Task<List<Submission>> GetSubmissionsByStudent(string studentId);
+    Task<List<Submission>> GetSubmissionsByStudent(int studentId);
     Task<Submission> GetSubmissionById(int id);
     Task<List<Submission>> GetSubmissionsForAssignment(int assignmentId);
     
     // Management methods
     Task<bool> DeleteSubmission(int id);
-    Task<bool> HasStudentSubmittedAssignment(string studentId, int assignmentId);
+    Task<bool> HasStudentSubmittedAssignment(int studentId, int assignmentId);
 }

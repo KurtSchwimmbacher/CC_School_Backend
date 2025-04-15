@@ -64,7 +64,7 @@ namespace Code_CloudSchool.Controllers
         {
             var majorCredits = await _majorServices.GetMajorCreditsAsync(id);
 
-            if (majorCredits == null)
+            if (majorCredits == default)
             {
                 return NotFound();
             }
@@ -164,7 +164,10 @@ namespace Code_CloudSchool.Controllers
 
             if (existingMajor.MajorDescription != detailsDTO.MajorDescription)
             {
-                existingMajor.MajorDescription = detailsDTO.MajorDescription;
+                if (detailsDTO.MajorDescription != null)
+                {
+                    existingMajor.MajorDescription = detailsDTO.MajorDescription;
+                }
 
                 hasChanged = true;
             }

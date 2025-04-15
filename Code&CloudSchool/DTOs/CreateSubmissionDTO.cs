@@ -9,7 +9,7 @@ public class CreateSubmissionDTO
         public int AssignmentId { get; set; }
 
         [Required(ErrorMessage = "Student ID is required")]
-        public string? StudentId { get; set; } = string.Empty;
+        public int? StudentId { get; set; }
 
         [Required(ErrorMessage = "File path is required")]
         public string? FilePath { get; set; } = string.Empty;

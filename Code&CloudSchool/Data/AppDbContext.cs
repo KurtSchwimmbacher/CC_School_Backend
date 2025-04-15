@@ -37,11 +37,16 @@ public class AppDBContext : DbContext
         modelBuilder.Entity<Student>().ToTable("Students");
         modelBuilder.Entity<Admin>().ToTable("Admins");
 
-        //one course has many students and one student can take many courses 
-        modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Student)
-            .WithMany(s => s.Courses)
-            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
+        // Explicitly map StudentNumber to the Students table
+        modelBuilder.Entity<Student>()
+            .Property(s => s.StudentNumber)
+            .HasMaxLength(12);
+
+        // Unique constraint for StudentNumber
+        modelBuilder.Entity<Student>()
+            .HasIndex(s => s.StudentNumber)
+            .IsUnique();
+
 
         // one class can have many students and one student can take many classes 
         modelBuilder.Entity<Classes>()
@@ -61,8 +66,6 @@ public class AppDBContext : DbContext
             .WithOne(cl => cl.Courses)
             .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
 
-        // Unique constraint for StudentNumber
-        modelBuilder.Entity<Student>().HasIndex(s => s.StudentNumber).IsUnique();
 
         // Configure the one-to-many relationship between Assignment and Submission.
         modelBuilder.Entity<Assignment>()
@@ -87,10 +90,11 @@ public class AppDBContext : DbContext
 
         // Configure the relationship between Submission and Student
         modelBuilder.Entity<Submission>()
-            .HasOne(s => s.Student) // A Submission has one Student.
-            .WithMany() // A Student can have many Submissions.
-            .HasForeignKey(s => s.Student_ID) // Foreign key in the Submission table.
-            .OnDelete(DeleteBehavior.Cascade); // If a Student is deleted, their Submissions are also deleted.
+            .HasOne(s => s.Student)
+            .WithMany()
+            .HasForeignKey(s => s.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
 
         // unique constraint for AdminID
@@ -102,16 +106,16 @@ public class AppDBContext : DbContext
             .UsingEntity(joinTbl => joinTbl.ToTable("MajorCourses")); // this is the name of the join table used to handle the many to many relationship
 
         //one course has many studdents and one student can take many courses 
-        // modelBuilder.Entity<Courses>()
-        //     .HasMany(c => c.Students)
-        //     .WithMany(s => s.Courses)
-        //     .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
+        modelBuilder.Entity<Courses>()
+            .HasMany(c => c.Student)
+            .WithMany(s => s.Courses)
+            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
 
-        // // one class can have many students and one student can take many classes 
-        // modelBuilder.Entity<Classes>()
-        //     .HasMany(cl => cl.Students)
-        //     .WithMany(s => s.Classes)
-        //     .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
+        // one class can have many students and one student can take many classes 
+        modelBuilder.Entity<Classes>()
+            .HasMany(cl => cl.Student)
+            .WithMany(s => s.Classes)
+            .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
 
         // one lecturer teaches many classes and one class can have many lecturers 
         modelBuilder.Entity<Classes>()
