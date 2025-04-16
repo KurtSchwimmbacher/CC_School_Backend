@@ -12,12 +12,34 @@ namespace Code_CloudSchool.Controllers
     {
 
         private readonly ITimetableGenerator _timetableService;
+
+        private readonly ITimeSlotGen _timeSlotService;
         private readonly AppDBContext _context;
 
-        public TimetableController(ITimetableGenerator timetableService, AppDBContext context)
+        public TimetableController(ITimetableGenerator timetableService, AppDBContext context, ITimeSlotGen timeSlotService)
         {
+            _timeSlotService = timeSlotService;
             _timetableService = timetableService;
             _context = context;
+        }
+
+
+        [HttpPost("generate-timeslots")]
+        public async Task<IActionResult> GenerateTimeSlots()
+        {
+             try
+            {
+                var timeSlots = await _timeSlotService.GenerateDefaultWeeklySlotsAsync();
+                return Ok(new
+                {
+                    Message = "Time slots generated successfully.",
+                    TimeSlotCount = timeSlots.Count
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Failed to generate time slots: {ex.Message}");
+            }
         }
 
         [HttpPost("generate")]

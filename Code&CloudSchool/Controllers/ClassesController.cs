@@ -192,22 +192,24 @@ namespace Code_CloudSchool.Controllers
         [HttpPut("updateClassTime/{id}")]
         public async Task<IActionResult> UpdateClassTime(int id, ClassTimeDTO classTimeDTO)
         {
-            if (id <= 0 || classTimeDTO == null)
-            {
-                return BadRequest("Invalid input parameters");
-            }
 
-            var classToUpdate = await _context.Classes.FindAsync(id);
-            if (classToUpdate == null)
-            {
-                return NotFound();
-            }
+            throw new NotImplementedException();
+            // if (id <= 0 || classTimeDTO == null)
+            // {
+            //     return BadRequest("Invalid input parameters");
+            // }
 
-            classToUpdate.classTime = classTimeDTO.ClassTime;
+            // var classToUpdate = await _context.Classes.FindAsync(id);
+            // if (classToUpdate == null)
+            // {
+            //     return NotFound();
+            // }
 
-            await _context.SaveChangesAsync();
+            // classToUpdate.classTime = classTimeDTO.ClassTime;
 
-            return NoContent();
+            // await _context.SaveChangesAsync();
+
+            // return NoContent();
         }
 
         // post lecturer to class

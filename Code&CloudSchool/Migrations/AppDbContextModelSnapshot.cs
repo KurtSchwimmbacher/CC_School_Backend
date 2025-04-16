@@ -118,23 +118,22 @@ namespace Code_CloudSchool.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("TimeSlotId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("classDescription")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("classEndTime")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("className")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("classTime")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("classID");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("TimeSlotId");
 
                     b.ToTable("Classes");
                 });
@@ -243,6 +242,28 @@ namespace Code_CloudSchool.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Submissions");
+                });
+
+            modelBuilder.Entity("Code_CloudSchool.Models.TimeSlot", b =>
+                {
+                    b.Property<int>("TimeSlotId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TimeSlotId"));
+
+                    b.Property<int>("Day")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("interval");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("interval");
+
+                    b.HasKey("TimeSlotId");
+
+                    b.ToTable("TimeSlots");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.User", b =>
@@ -467,7 +488,13 @@ namespace Code_CloudSchool.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Code_CloudSchool.Models.TimeSlot", "TimeSlot")
+                        .WithMany()
+                        .HasForeignKey("TimeSlotId");
+
                     b.Navigation("Courses");
+
+                    b.Navigation("TimeSlot");
                 });
 
             modelBuilder.Entity("Code_CloudSchool.Models.Grade", b =>

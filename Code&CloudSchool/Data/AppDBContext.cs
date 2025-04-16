@@ -131,6 +131,11 @@ public class AppDBContext : DbContext
             .WithOne(cl => cl.Courses)
             .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
 
+        modelBuilder.Entity<Classes>()
+            .HasOne(c => c.TimeSlot)
+            .WithMany()
+            .HasForeignKey(c => c.TimeSlotId);
+
 
     }
 }

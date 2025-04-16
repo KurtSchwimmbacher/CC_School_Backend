@@ -51,7 +51,7 @@ public class TimetableGeneratorService : ITimetableGenerator
                         cls.TimeSlotId = slot.TimeSlotId;
                         // Add to scheduled list so future checks include this
                         scheduledClasses.Add(cls); 
-                        
+                        Console.WriteLine($"Class {cls.classID} assigned to TimeSlot {slot.TimeSlotId}");
                         break;
                     }
                 }
