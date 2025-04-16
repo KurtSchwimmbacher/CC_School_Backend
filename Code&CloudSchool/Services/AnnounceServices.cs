@@ -2,6 +2,7 @@ using System;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Interface;
 using Code_CloudSchool.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Code_CloudSchool.Services;
 
@@ -31,8 +32,11 @@ public class AnnounceServices : IAuthAnnouncement
     }
 
     // Method to retrieve an announcement by its ID (not yet implemented)
-    public Task<Announcements> GetAnnouncementsAsync(Guid id)
-    {
-        throw new NotImplementedException(); // Placeholder for future implementation
-    }
+   public async Task<Announcements?> GetAnnouncementsAsync(Announcements id)
+{
+    return await _context.Announcements
+        .FirstOrDefaultAsync(a => a.LecturerId == id.LecturerId);
+}
+
+   
 }

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Code_CloudSchool.Data;
 
-public class AppDBContext : DbContext
+public class AppDBContext(DbContextOptions<AppDBContext> options) : DbContext(options)
 {
-    public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
+    
 
     //below are the tables that we are going to be working with
 
@@ -93,7 +93,7 @@ public class AppDBContext : DbContext
         // Configure the relationship between Assignment and Lecturer
         modelBuilder.Entity<Assignment>()
             .HasOne(a => a.Lecturer) // An Assignment has one Lecturer.
-            .WithMany() // A Lecturer can have many Assignments.
+            .WithMany(l => l.Assignments) // A Lecturer can have many Assignments.
             .HasForeignKey(a => a.LecturerId) // Foreign key in the Assignment table.
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete (optional: change to Cascade if needed).
 
@@ -103,5 +103,13 @@ public class AppDBContext : DbContext
             .WithMany() // A Student can have many Submissions.
             .HasForeignKey(s => s.Student_ID) // Foreign key in the Submission table.
             .OnDelete(DeleteBehavior.Cascade); // If a Student is deleted, their Submissions are also deleted.
+
+
+        modelBuilder.Entity<Announcements>()
+            .HasOne(a => a.Lecturer)
+            .WithMany(l => l.Announcements)
+            .HasForeignKey(a => a.LecturerId)
+            .OnDelete(DeleteBehavior.Cascade); // If a Lecturer is deleted, their Announcements are also deleted.
+
     }
 }

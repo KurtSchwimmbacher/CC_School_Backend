@@ -10,5 +10,5 @@ public interface IAuthAnnouncement
     Task<Announcements> CreateAnnouncementAsync(Announcements announcements);
 
     // Asynchronously retrieves an announcement by its unique identifier (ID)
-    Task<Announcements> GetAnnouncementsAsync(Guid id);
+    Task<Announcements> GetAnnouncementsAsync(Announcements id);
 }

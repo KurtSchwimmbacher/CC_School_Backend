@@ -24,4 +24,12 @@ public class Announcements
 
     // Foreign key referencing the Lecturer who created the announcement
     public int LecturerId { get; set; }
+
+
+    public LecturerReg Lecturer { get; set; }
+    // Navigation property to establish a relationship with the LecturerReg class
+    // This allows access to the lecturer who created the announcement
+    // The relationship is defined as one-to-many, where one lecturer can create multiple announcements
 }
+
+ 

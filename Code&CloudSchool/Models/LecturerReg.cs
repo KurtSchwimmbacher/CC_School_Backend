@@ -18,18 +18,17 @@ public class LecturerReg : User
 
     // Lecturer's first name, required with a maximum length of 50 characters
     [Required]
-    [StringLength(50)] 
-    public string LectName { get; set; } = string.Empty;
+    
+    public string LectName { get; set; }
 
-    // Lecturer's last name, required with a maximum length of 50 characters
+    
     [Required]
-    [MaxLength(50)]
-    public string LecLastName { get; set; } = string.Empty;
+    public string LecLastName { get; set; }
 
     // Lecturer's email, required, must be a valid email format, with a maximum length of 150 characters
     [Required]
     [EmailAddress] 
-    [MaxLength(150)]
+    
     public string LecEmail { get; set; } = string.Empty;
 
     [Required]
@@ -45,7 +44,11 @@ public class LecturerReg : User
         Role = "Lecturer";
     }
 
-//For relationships 
+
+    //public ICollection<Announcements> Announcements { get; set; } = new List<Announcements>();
+    public List<Announcements> Announcements {get;set;}
+
+    //For relationships 
     public List<Classes> Classes { get; set; } //this is a list of classes that the lecturer is teaching 
 
     public List<Majors> Majors { get; set; } //this is a list of majors that the lecturer is teaching
@@ -54,5 +57,7 @@ public class LecturerReg : User
 
 
 }
+
+
 
 
