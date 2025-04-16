@@ -25,8 +25,9 @@ builder.Services.AddSwaggerGen();
 DotNetEnv.Env.Load();
 
 // connection to DB String here
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
-//local connection string --> var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+//local connection string --> 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // add db context to services 
 builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
@@ -49,6 +50,9 @@ builder.Services.AddScoped<IUpdateAdminPassword, AdminPasswordService>();
 builder.Services.AddScoped<IMajorServices, MajorServices>();
 builder.Services.AddScoped<ICourseServices, CoursesServices>();
 builder.Services.AddScoped<IClassesServices, ClassesServices>();
+
+builder.Services.AddScoped<ITimeSlotGen, TimeSlotGen>();
+builder.Services.AddScoped<ITimetableGenerator, TimetableGeneratorService>();
 
 var app = builder.Build();
 

@@ -179,20 +179,21 @@ public class ClassesServices : IClassesServices
 
     public Task<Classes> GetClassTimeAsync(int classId)
     {
-        if (classId <= 0)
-        {
-            throw new ArgumentException("Invalid Id");
-        }
-        var classExists = _context.Classes.Any(c => c.classID == classId);
+        throw new NotImplementedException();
+        // if (classId <= 0)
+        // {
+        //     throw new ArgumentException("Invalid Id");
+        // }
+        // var classExists = _context.Classes.Any(c => c.classID == classId);
 
-        if (!classExists)
-        {
-            throw new KeyNotFoundException($"Class with Id {classId} does not exist");
-        }
+        // if (!classExists)
+        // {
+        //     throw new KeyNotFoundException($"Class with Id {classId} does not exist");
+        // }
 
-        return _context.Classes
-            .Include(c => c.classTime)
-            .FirstOrDefaultAsync(c => c.classID == classId) ?? throw new KeyNotFoundException($"Class with ID {classId} does not exist or was not found");
+        // return _context.Classes
+        //     .Include(c => c.classTime)
+        //     .FirstOrDefaultAsync(c => c.classID == classId) ?? throw new KeyNotFoundException($"Class with ID {classId} does not exist or was not found");
     }
 
     public Task<bool> RemoveLecturerFromClassAsync(int classId, int lecturerId)
