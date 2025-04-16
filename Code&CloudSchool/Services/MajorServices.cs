@@ -29,7 +29,7 @@ public class MajorServices : IMajorServices
             MajorDescription = m.MajorDescription,
             CreditsRequired = m.CreditsRequired
         })
-        .FirstOrDefaultAsync()
+        .FirstOrDefaultAsync() //this fetches the first record that matches the condition
         ?? throw new KeyNotFoundException($"Major {majorId} not found");
     }
 
@@ -58,7 +58,7 @@ public class MajorServices : IMajorServices
             throw new KeyNotFoundException($"Major with this ID: {majorId}, does not exist");
         }
 
-        return major.CreditsRequired ?? throw new InvalidOperationException($"No credits defined for major {major.MajorName}");
+        return major.CreditsRequired ?? throw new InvalidOperationException($"No credits defined for major {major.MajorName}"); //the '??' operator is used to provide a default value if the left-hand side is null
     }
 
     public async Task<bool> UpdateMajorCreditsAsync(int majorId, MajorCreditsDTO majorCredits)
@@ -137,7 +137,7 @@ public class MajorServices : IMajorServices
     {
         if (majorId <= 0)
         {
-            throw new ArgumentException("Invalid Id");
+            throw new ArgumentException("Invalid Id"); //argumentException is thrown when the argument passed to a method is not valid
         }
 
         var majorExists = await _context.Majors.AnyAsync(m => m.Id == majorId);
@@ -150,7 +150,7 @@ public class MajorServices : IMajorServices
         return await _context.Majors
             .Where(m => m.Id == majorId)
             .SelectMany(m => m.Students)
-            .ToListAsync();
+            .ToListAsync(); // SelectMany flattens the collection of students from each major into a single list
     }
 
 }

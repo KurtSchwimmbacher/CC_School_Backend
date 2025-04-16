@@ -36,7 +36,7 @@ namespace Code_CloudSchool.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Majors>> GetMajors(int id)
         {
-            var majors = await _context.Majors.FindAsync(id);
+            var majors = await _context.Majors.FindAsync(id); //this fetches the first record that matches the condition by using the id. _context.Majors is a DbSet<Majors> which is a collection of Majors objects.
 
             if (majors == null)
             {
@@ -49,7 +49,7 @@ namespace Code_CloudSchool.Controllers
         [HttpGet("getMajorDetails/{id}")]
         public async Task<ActionResult<MajorDetailsDTO>> GetMajorDetails(int id)
         {
-            var majorDetails = await _majorServices.GetMajorDetails(id);
+            var majorDetails = await _majorServices.GetMajorDetails(id); //
 
             if (majorDetails == null)
             {
@@ -102,7 +102,7 @@ namespace Code_CloudSchool.Controllers
         // PUT: api/Majors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMajors(int id, Majors majors)
+        public async Task<IActionResult> PutMajors(int id, Majors majors) //IActionResult is a base class for all action results in ASP.NET Core MVC. It provides a way to return different types of HTTP responses from an action method.
         {
             if (id != majors.Id)
             {
