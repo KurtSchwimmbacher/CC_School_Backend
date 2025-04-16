@@ -1,4 +1,5 @@
 using Code_CloudSchool.Data;
+using Code_CloudSchool.DTOs;
 using Code_CloudSchool.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace Code_CloudSchool.Controllers
         [HttpPost("generate-timeslots")]
         public async Task<IActionResult> GenerateTimeSlots()
         {
-             try
+            try
             {
                 var timeSlots = await _timeSlotService.GenerateDefaultWeeklySlotsAsync();
                 return Ok(new
@@ -61,8 +62,22 @@ namespace Code_CloudSchool.Controllers
         public async Task<IActionResult> GetScheduledClasses()
         {
             var scheduled = await _context.Classes
-                .Where(c => c.TimeSlotId != null)
-                .Include(c => c.TimeSlot)
+                .Where(cls => cls.TimeSlotId != null)
+                .Include(cls => cls.TimeSlot)
+                .Include(cls => cls.Student)
+                .Include(cls => cls.Lecturers)
+                .Select(cls => new TimetableDTO
+                {
+                    ClassID = cls.classID,
+                    ClassName = cls.className,
+                    ClassDescription = cls.classDescription,
+                    TimeSlotId = cls.TimeSlotId.Value,
+                    Day = cls.TimeSlot.Day.ToString(),
+                    StartTime = cls.TimeSlot.StartTime.ToString(@"hh\:mm"),
+                    EndTime = cls.TimeSlot.EndTime.ToString(@"hh\:mm"),
+                    Students = cls.Student.Select(s => s.Name +" "+ s.LastName).ToList(),
+                    Lecturers = cls.Lecturers.Select(l => l.Name +" "+ l.LastName).ToList()
+                })
                 .ToListAsync();
 
             return Ok(scheduled);
