@@ -54,6 +54,8 @@ builder.Services.AddScoped<IClassesServices, ClassesServices>();
 builder.Services.AddScoped<ITimeSlotGen, TimeSlotGen>();
 builder.Services.AddScoped<ITimetableGenerator, TimetableGeneratorService>();
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
