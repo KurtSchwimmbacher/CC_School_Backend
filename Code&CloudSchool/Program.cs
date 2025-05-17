@@ -29,6 +29,9 @@ DotNetEnv.Env.Load();
 //local connection string --> 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// add health checks 
+builder.Services.AddHealthChecks();
+
 // add db context to services 
 builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connectionString));
 
@@ -71,4 +74,10 @@ app.UseHttpsRedirection();
 
 app.MapControllers(); //controller based on api endpoints -> so that we can use the controller to get the data from the db
 
-app.Run();
+// to expose a simple /health endpoint
+app.MapHealthChecks("/health");
+
+// Tell Kestrel to listen on port 80 (important for Docker)
+app.Run("http://0.0.0.0:80");
+
+//app.Run("http://localhost:80"); // for local testing
