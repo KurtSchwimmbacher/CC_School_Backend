@@ -53,7 +53,21 @@ builder.Services.AddScoped<IClassesServices, ClassesServices>();
 builder.Services.AddScoped<ITimeSlotGen, TimeSlotGen>();
 builder.Services.AddScoped<ITimetableGenerator, TimetableGeneratorService>();
 
+// Allow any origin, method, and header (for testing — restrict later in production)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .AllowAnyOrigin()       // Or .WithOrigins("http://localhost:5173") for stricter
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+
 var app = builder.Build();
+
 
 // Pipeline
 if (app.Environment.IsDevelopment())
@@ -63,6 +77,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
+
 app.MapControllers();
 app.MapHealthChecks("/health");
 
