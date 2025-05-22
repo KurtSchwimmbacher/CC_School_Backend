@@ -2,9 +2,9 @@ name: .NET CI
 
 on:
   push:
-    branches: [ "deploy_to_docker" ]
+    branches: [ "deploy_to_Docker" ]
   pull_request:
-    branches: [ "deploy_to_docker" ]
+    branches: [ "deploy_to_Docker" ]
 
 jobs:
   build-test:
