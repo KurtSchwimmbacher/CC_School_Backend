@@ -10,7 +10,7 @@ namespace Code_CloudSchool.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("The Backend is Healthy");
+            return Ok("The deployed backend is Healthy");
         }
     }
 }
