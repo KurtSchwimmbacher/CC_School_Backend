@@ -10,7 +10,7 @@ namespace Code_CloudSchool.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Healthy");
+            return Ok("is Healthy");
         }
     }
 }
