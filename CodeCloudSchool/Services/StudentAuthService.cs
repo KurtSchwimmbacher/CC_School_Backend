@@ -91,22 +91,24 @@ public class StudentAuthService : IStudentAuth
     }
 
 
-    public Task<string> LoginStudent(string password, string email)
+    public async Task<Student?> LoginStudent(string password, string email)
     {
-        Student? studentFromDB = EmailExists(email).Result;
+        Student? studentFromDB = await EmailExists(email);
 
         // user doesnt exist means cant login
         if (studentFromDB == null)
         {
-            return Task.FromResult("Student Doesn't Exist");
+            return null;
         }
 
-        if (!ValidatePassword(studentFromDB, password).Result)
+        bool isPasswordValid = await ValidatePassword(studentFromDB, password);
+        if (!isPasswordValid)
         {
-            return Task.FromResult("Password is incorrect");
+            return null;
         }
 
-        return Task.FromResult("Login Successful");
+        // login successful
+        return studentFromDB;
     }
 
 }

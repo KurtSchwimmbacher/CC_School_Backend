@@ -20,7 +20,7 @@ public interface IStudentAuth
     // returns a student object if email address exists
     public Task<Student?> EmailExists(string email);
 
-    public Task<string> LoginStudent(string password, string email);
+    public Task<Student?> LoginStudent(string password, string email);
 
     public Task<bool> ValidatePassword(Student student, string password);
 

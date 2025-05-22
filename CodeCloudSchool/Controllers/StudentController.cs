@@ -54,17 +54,24 @@ namespace Code_CloudSchool.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginStudent(LoginDTO student)
+        public async Task<ActionResult<UserLoginReturnDTO>> LoginStudent(LoginDTO student)
         {
-            string message = await _StudentAuth.LoginStudent(student.Password, student.Email);
-            if (message == "Login Successful")
+            var studentLogin = await _StudentAuth.LoginStudent(student.Password, student.Email);
+
+            if (studentLogin == null)
             {
-                return Ok(message);
+                return BadRequest("Invalid credentials or student not found");
             }
-            else
+
+            var UserLoginReturnDTO = new UserLoginReturnDTO
             {
-                return BadRequest(message);
-            }
+                UserID = studentLogin.UserId,
+                Name = studentLogin.Name,
+                Email = studentLogin.Email,
+                Role = studentLogin.Role
+            };
+
+            return Ok(UserLoginReturnDTO);
         }
 
 
