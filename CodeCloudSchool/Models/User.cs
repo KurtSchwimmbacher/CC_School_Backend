@@ -24,4 +24,6 @@ public class User
 
     [Required]
     public virtual string Role { get; set; } = "User";
+
+    public string? ProfileImagePath { get; set; } = null;
 }

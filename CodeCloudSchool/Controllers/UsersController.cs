@@ -74,7 +74,6 @@ namespace Code_CloudSchool.Controllers
         }
 
         // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -83,6 +82,32 @@ namespace Code_CloudSchool.Controllers
 
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
+
+        // upload profile pictures
+        [HttpPost("{id}/upload-profile-image")]
+        public async Task<IActionResult> UploadProfileImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found.");
+
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var filePath = Path.Combine("wwwroot", "uploads", fileName);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Ensure dir exists
+
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            user.ProfileImagePath = $"/uploads/{fileName}";
+            await _context.SaveChangesAsync();
+
+            return Ok(new { imageUrl = user.ProfileImagePath });
+        }
+
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
