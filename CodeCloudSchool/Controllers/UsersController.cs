@@ -25,14 +25,14 @@ namespace Code_CloudSchool.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.User.Include(u => (u as Student)).ToListAsync();
+            return await _context.Users.Include(u => (u as Student)).ToListAsync();
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -77,7 +77,7 @@ namespace Code_CloudSchool.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.User.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
@@ -87,39 +87,55 @@ namespace Code_CloudSchool.Controllers
         [HttpPost("{id}/upload-profile-image")]
         public async Task<IActionResult> UploadProfileImage(int id, IFormFile file)
         {
-            if (file == null || file.Length == 0)
-                return BadRequest("No file uploaded.");
+            try
+            {
+                if (file == null || file.Length == 0)
+                    return BadRequest("No file uploaded.");
 
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-                return NotFound("User not found.");
+                var user = await _context.Users.FindAsync(id);
+                if (user == null)
+                    return NotFound("User not found.");
 
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            var filePath = Path.Combine("wwwroot", "uploads", fileName);
+                // Validate file type/size if needed
+                if (file.Length > 5 * 1024 * 1024) // 5MB max
+                    return BadRequest("File too large.");
 
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Ensure dir exists
+                var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extension = Path.GetExtension(file.FileName).ToLower();
+                if (!validExtensions.Contains(extension))
+                    return BadRequest("Invalid file type.");
 
-            using var stream = new FileStream(filePath, FileMode.Create);
-            await file.CopyToAsync(stream);
+                var fileName = $"{Guid.NewGuid()}{extension}";
+                var filePath = Path.Combine("wwwroot", "uploads", fileName);
 
-            user.ProfileImagePath = $"/uploads/{fileName}";
-            await _context.SaveChangesAsync();
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
 
-            return Ok(new { imageUrl = user.ProfileImagePath });
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await file.CopyToAsync(stream);
+
+                user.ProfileImagePath = $"/uploads/{fileName}";
+                await _context.SaveChangesAsync();
+
+                return Ok(new { imageUrl = user.ProfileImagePath });
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.User.Remove(user);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -127,7 +143,7 @@ namespace Code_CloudSchool.Controllers
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.UserId == id);
+            return _context.Users.Any(e => e.UserId == id);
         }
     }
 }

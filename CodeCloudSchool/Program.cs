@@ -86,5 +86,12 @@ app.UseStaticFiles(); // Enables wwwroot access
 app.MapControllers();
 app.MapHealthChecks("/health");
 
+// Ensure upload directory exists
+var uploadPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot", "uploads");
+if (!Directory.Exists(uploadPath))
+{
+    Directory.CreateDirectory(uploadPath);
+}
+
 // Important for Docker/Render: Listen on port 80
 app.Run("http://0.0.0.0:80");

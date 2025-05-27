@@ -10,7 +10,7 @@ public class AppDBContext : DbContext
 
     //below are the tables that we are going to be working with
 
-    public DbSet<User> User { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Majors> Majors { get; set; } //adding majors to the database so that we can use it in the database and in our application
     public DbSet<Courses> Courses { get; set; }
     public DbSet<Classes> Classes { get; set; }
