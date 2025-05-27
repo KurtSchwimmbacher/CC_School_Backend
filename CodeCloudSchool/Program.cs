@@ -80,7 +80,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
-app.UseStaticFiles(); // Enables wwwroot access
+// app.UseStaticFiles(); // Enables wwwroot access
 
 
 app.MapControllers();
