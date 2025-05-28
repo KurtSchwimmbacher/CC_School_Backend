@@ -83,47 +83,6 @@ namespace Code_CloudSchool.Controllers
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
-        // upload profile pictures
-        [HttpPost("{id}/upload-profile-image")]
-        public async Task<IActionResult> UploadProfileImage(int id, IFormFile file)
-        {
-            try
-            {
-                if (file == null || file.Length == 0)
-                    return BadRequest("No file uploaded.");
-
-                var user = await _context.Users.FindAsync(id);
-                if (user == null)
-                    return NotFound("User not found.");
-
-                // Validate file type/size if needed
-                if (file.Length > 5 * 1024 * 1024) // 5MB max
-                    return BadRequest("File too large.");
-
-                var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                var extension = Path.GetExtension(file.FileName).ToLower();
-                if (!validExtensions.Contains(extension))
-                    return BadRequest("Invalid file type.");
-
-                var fileName = $"{Guid.NewGuid()}{extension}";
-                var filePath = Path.Combine("wwwroot", "uploads", fileName);
-
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-
-                using var stream = new FileStream(filePath, FileMode.Create);
-                await file.CopyToAsync(stream);
-
-                user.ProfileImagePath = $"/uploads/{fileName}";
-                await _context.SaveChangesAsync();
-
-                return Ok(new { imageUrl = user.ProfileImagePath });
-            }
-            catch (Exception ex)
-            {
-                // Log the error
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
