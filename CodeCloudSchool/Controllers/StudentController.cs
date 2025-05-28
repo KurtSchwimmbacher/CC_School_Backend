@@ -39,16 +39,16 @@ namespace Code_CloudSchool.Controllers
 
         // register student
         [HttpPost("register")]
-        public async Task<ActionResult<bool>> RegisterStudent(Student student)
+        public async Task<ActionResult<Student>> RegisterStudent(Student student)
         {
-            bool isRegistered = await _StudentAuth.RegisterStudent(student);
+            var registeredStudent = await _StudentAuth.RegisterStudent(student);
 
-            if (!isRegistered)
+            if (registeredStudent == null)
             {
                 return BadRequest("Student already exists");
             }
 
-            return Ok("Student registered successfully");
+            return Ok(registeredStudent);
         }
 
 

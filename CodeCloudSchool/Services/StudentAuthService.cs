@@ -53,33 +53,33 @@ public class StudentAuthService : IStudentAuth
         return Task.FromResult(HashedPassword);
     }
 
-    public async Task<bool> RegisterStudent(Student student)
+    public async Task<Student?> RegisterStudent(Student student)
     {
-        Student? doesStudentExist = EmailExists(student.Email).Result;
+        Student? doesStudentExist = await EmailExists(student.Email);
         if (doesStudentExist != null)
         {
-            return false;
+            return null;
         }
 
         // if student doesnt exist yet
 
         // hash password 
-        student.Password = HashPassword(student.Password).Result;
+        student.Password = await HashPassword(student.Password);
 
         // Step 1: Save the base User first
         _context.Students.Add(student);
         await _context.SaveChangesAsync(); // Ensures the User ID is generated
 
         // step 2:  generate student number using newly assigned UserID
-        student.StudentNumber = GenerateStudentNumber(student).Result;
-        student.Email = GenerateEmailAddress(student.StudentNumber).Result;
+        student.StudentNumber = await GenerateStudentNumber(student);
+        student.Email = await GenerateEmailAddress(student.StudentNumber);
 
 
         // adding user to DB
         _context.Students.Update(student);
         await _context.SaveChangesAsync();
 
-        return true;
+        return student;
     }
 
 

@@ -15,7 +15,7 @@ public interface IStudentAuth
     public Task<string> GenerateEmailAddress(string studentNumber);
 
     // returns true if student was registered successfully
-    public Task<bool> RegisterStudent(Student student);
+    public Task<Student?> RegisterStudent(Student student);
 
     // returns a student object if email address exists
     public Task<Student?> EmailExists(string email);
