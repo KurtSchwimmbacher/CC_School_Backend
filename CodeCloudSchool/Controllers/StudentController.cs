@@ -82,11 +82,12 @@ namespace Code_CloudSchool.Controllers
             return await _context.Students.ToListAsync();
         }
 
-        // GET: api/Student/5
         [HttpGet("{studentNumber}")]
         public async Task<ActionResult<Student>> GetStudent(string studentNumber)
         {
-            var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
+            var student = await _context.Students
+                .Include(s => s.Courses)
+                .FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
 
             if (student == null)
             {
@@ -95,6 +96,7 @@ namespace Code_CloudSchool.Controllers
 
             return student;
         }
+
 
         // PUT: api/Student/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
