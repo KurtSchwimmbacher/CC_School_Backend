@@ -20,7 +20,7 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpPost("course/{courseId}")] // HTTP POST method to create a new assignment.
-        public async Task<ActionResult<Assignment>> CreateAssignment(int courseId, Assignment assignment)
+        public async Task<ActionResult<Assignment>> CreateAssignment(int courseId, [FromBody] Assignment assignment)
         {
             try
             {
