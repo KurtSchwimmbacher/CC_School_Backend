@@ -11,7 +11,7 @@ namespace Code_CloudSchool.Controllers
     [ApiController]
     public class AssignmentsController : ControllerBase
     {
-                private readonly IAssignmentService _assignmentService; // Dependency injection for AssignmentService.
+        private readonly IAssignmentService _assignmentService; // Dependency injection for AssignmentService.
 
         // Constructor to inject the AssignmentService.
         public AssignmentsController(IAssignmentService assignmentService)

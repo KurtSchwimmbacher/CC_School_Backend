@@ -21,7 +21,7 @@ public class AppDBContext : DbContext
     public DbSet<Submission> Submissions { get; set; }
     public DbSet<Grade> Grades { get; set; }
 
-    public DbSet<TimeSlot> TimeSlots {get; set; }
+    public DbSet<TimeSlot> TimeSlots { get; set; }
 
     // Define a DbSet for Announcements, representing a table in the database
     public DbSet<Announcements> Announcements { get; set; } = default!;
@@ -67,6 +67,12 @@ public class AppDBContext : DbContext
             .HasMany(c => c.Classes)
             .WithOne(cl => cl.Courses)
             .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
+
+        modelBuilder.Entity<Assignment>()
+                .HasOne(a => a.Course)
+                .WithMany(c => c.Assignments)
+                .HasForeignKey(a => a.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         // Configure the one-to-many relationship between Assignment and Submission.

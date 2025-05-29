@@ -40,7 +40,9 @@ namespace Code_CloudSchool.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Courses>> GetCourses(int id)
         {
-            var courses = await _context.Courses.FindAsync(id);
+            var courses = await _context.Courses
+                .Include(c => c.Assignments) // Eagerly load related assignments
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (courses == null)
             {
