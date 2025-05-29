@@ -19,11 +19,14 @@ namespace Code_CloudSchool.Controllers
             _assignmentService = assignmentService;
         }
 
-        [HttpPost] // HTTP POST method to create a new assignment.
-        public async Task<ActionResult<Assignment>> CreateAssignment(Assignment assignment)
+        [HttpPost("course/{courseId}")] // HTTP POST method to create a new assignment.
+        public async Task<ActionResult<Assignment>> CreateAssignment(int courseId, Assignment assignment)
         {
             try
             {
+                // set the course Id for the assignment
+                assignment.CourseId = courseId; 
+
                 var result = await _assignmentService.CreateAssignment(assignment); // Call the service method.
                 return Ok(result); // Return the created assignment with a 200 OK status.
             }
