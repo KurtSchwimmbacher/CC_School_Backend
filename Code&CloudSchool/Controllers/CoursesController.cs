@@ -541,5 +541,46 @@ namespace Code_CloudSchool.Controllers
             }
         }
 
+
+
+        //BELOW ARE THE ENDPOINTS FOR THE DESCRIPTIVE DETAILS -> SERIALIZED JSON OBJECTS
+
+        [HttpGet("courses/{courseId}/details-descript")]
+        public async Task<IActionResult> GetCourseDetailsDescript(int courseId)
+        {
+            var details = await _courseServices.GetDescriptiveDetails(courseId);
+            if (details == null) return NotFound();
+
+            return Ok(details);
+        }
+
+        [HttpPost("courses/{courseId}/add-descript-details")]
+        public async Task<IActionResult> AddDescriptDetails(int courseId, [FromBody] CourseDescriptDetailsDTO newDescriptDetails)
+        {
+            var success = await _courseServices.AddDescriptiveDetails(courseId, newDescriptDetails);
+            if (!success) return BadRequest("Course not found or details already exist.");
+
+            return CreatedAtAction(nameof(GetCourseDetails), new { id = courseId }, newDescriptDetails);
+        }
+
+        [HttpPatch("courses/{courseId}/descript-details")]
+        public async Task<IActionResult> UpdateDescriptCourseDetails(int courseId, [FromBody] CourseDescriptDetailsDTO updatedDetails)
+        {
+            var success = await _courseServices.UpdateDescriptiveCourseDetails(courseId, updatedDetails);
+            if (!success) return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpPatch("courses/{courseId}/descript-details/patch")]
+
+        public async Task<IActionResult> PatchDescriptCourseDetails(int courseId, [FromBody] CourseDescriptDetailsDTO partialDescriptDetails)
+        {
+            var success = await _courseServices.PatchDescriptiveDetails(courseId, partialDescriptDetails);
+            if (!success) return NotFound();
+
+            return NoContent();
+        }
+
     }
 }
