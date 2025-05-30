@@ -74,6 +74,13 @@ public class AppDBContext : DbContext
                 .HasForeignKey(a => a.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+        // Configure the one-to-many relationship between Course and Assignment.
+        modelBuilder.Entity<Announcements>()
+            .HasOne(a => a.Course)
+            .WithMany(c => c.Announcements)
+            .HasForeignKey(a => a.CourseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
         // Configure the one-to-many relationship between Assignment and Submission.
         modelBuilder.Entity<Assignment>()

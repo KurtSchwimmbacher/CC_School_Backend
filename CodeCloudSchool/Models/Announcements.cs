@@ -22,6 +22,12 @@ public class Announcements
     // Date of the announcement, defaulting to the current date and time
     public DateTime Date { get; set; } = DateTime.Now;
 
+    // === New Course relationship ===
+    public int CourseId { get; set; } // Foreign key
+
+    [ForeignKey("CourseId")]
+    public Courses? Course { get; set; } // Navigation property
+
     // Foreign key referencing the Lecturer who created the announcement
     public int LecturerId { get; set; }
 }
