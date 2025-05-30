@@ -75,7 +75,7 @@ namespace Code_CloudSchool.Controllers
 
         // POST: api/Announce
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("course/{courseId}")]
         public async Task<ActionResult<Announcements>> PostAnnouncements(int courseId, [FromBody] Announcements announcements)
         {
             // Validate that the course exists
