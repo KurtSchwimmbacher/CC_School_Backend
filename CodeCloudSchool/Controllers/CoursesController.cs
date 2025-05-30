@@ -42,6 +42,7 @@ namespace Code_CloudSchool.Controllers
         {
             var courses = await _context.Courses
                 .Include(c => c.Assignments) // Eagerly load related assignments
+                 .Include(c => c.Announcements) // Eagerly load related announcements
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (courses == null)

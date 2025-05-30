@@ -76,8 +76,18 @@ namespace Code_CloudSchool.Controllers
         // POST: api/Announce
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Announcements>> PostAnnouncements(Announcements announcements)
+        public async Task<ActionResult<Announcements>> PostAnnouncements(int courseId, [FromBody] Announcements announcements)
         {
+            // Validate that the course exists
+            var course = await _context.Courses.FindAsync(courseId);
+            if (course == null)
+            {
+                return NotFound($"Course with ID {courseId} not found.");
+            }
+
+            // set the course Id for the assignment
+            announcements.CourseId = courseId;
+
             _context.Announcements.Add(announcements);
             await _context.SaveChangesAsync();
 
