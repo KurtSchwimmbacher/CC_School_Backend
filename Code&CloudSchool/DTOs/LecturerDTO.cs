@@ -6,7 +6,7 @@ public class LecturerDTO
 {
     public int LecturerId { get; set; }
     public string LecEmail { get; set; } = default!;
-    public string Password { get; set; } = default!;
+    public string Password { get; set; } = default!; 
     public string LecName { get; set; } = default!;
 
     public string LectName { get; set; } = string.Empty;

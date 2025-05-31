@@ -2,7 +2,7 @@ using System;
 using Code_CloudSchool.Models;
 
 namespace Code_CloudSchool.Interfaces;
-
+ 
 public interface ILecturerAuth
 {
     public Task<string> GenerateEmailAdress(string LectName);

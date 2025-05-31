@@ -40,7 +40,7 @@ public class LecturerReg : User
     public bool IsActive { get; set; } = true;
 
     public LecturerReg()
-    {
+    { 
         Role = "Lecturer";
         Classes = new List<Classes>();
     }

@@ -52,7 +52,7 @@ public class LecturerAuthService : ILecturerAuth
         throw new NotImplementedException();
     }
 
-    public Task<bool> RegisterLecturer(LecturerReg lecturer)
+    public Task<bool> RegisterLecturer(LecturerReg lecturer) 
     {
         LecturerReg? doesLecturerExist = EmailExists(lecturer.LecEmail).Result; //checking if the email exists in our DB
         if (doesLecturerExist != null)
