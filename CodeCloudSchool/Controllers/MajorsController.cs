@@ -36,14 +36,16 @@ namespace Code_CloudSchool.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Majors>> GetMajors(int id)
         {
-            var majors = await _context.Majors.FindAsync(id);
+            var majorWithStudents = await _context.Majors
+            .Include(m => m.Students) 
+            .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (majors == null)
+            if (majorWithStudents == null)
             {
                 return NotFound();
             }
 
-            return majors;
+            return majorWithStudents;
         }
 
         [HttpGet("getMajorDetails/{id}")]
