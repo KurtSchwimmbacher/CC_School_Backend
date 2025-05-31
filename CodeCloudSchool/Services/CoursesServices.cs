@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.DTOs;
 using Code_CloudSchool.Interfaces;
@@ -351,5 +352,64 @@ public class CoursesServices : ICourseServices
 
         return true;
     }
+
+    // for descriptive details 
+    public async Task<CourseDescriptDetailsDTO?> GetDescriptiveDetails(int courseId)
+    {
+        var course = await _context.Courses.FindAsync(courseId);
+
+        if (course == null || string.IsNullOrEmpty(course.courseDescription))
+            return null;
+
+        return JsonSerializer.Deserialize<CourseDescriptDetailsDTO>(course.courseDescription);
+    }
+
+    public async Task<bool> AddDescriptiveDetails(int courseId, CourseDescriptDetailsDTO descriptiveDetails)
+    {
+        var course = await _context.Courses.FindAsync(courseId);
+        if (course == null) return false;
+
+        if (!string.IsNullOrEmpty(course.courseDescription))
+            return false; // Details already exist — guard clause
+
+        course.courseDescription = JsonSerializer.Serialize(descriptiveDetails);
+        _context.Courses.Update(course);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateDescriptiveCourseDetails(int courseId, CourseDescriptDetailsDTO updatedDetails)
+    {
+        var course = await _context.Courses.FindAsync(courseId);
+        if (course == null) return false;
+
+        course.courseDescription = JsonSerializer.Serialize(updatedDetails);
+        _context.Courses.Update(course);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+
+    public async Task<bool> PatchDescriptiveDetails(int courseId, CourseDescriptDetailsDTO partialDetails)
+    {
+        var course = await _context.Courses.FindAsync(courseId);
+        if (course == null) return false;
+
+        var existing = string.IsNullOrEmpty(course.courseDescription)
+            ? new CourseDescriptDetailsDTO()
+            : JsonSerializer.Deserialize<CourseDescriptDetailsDTO>(course.courseDescription)!;
+
+        // Patch logic (null-coalescing where needed)
+        existing.courseSlides ??= partialDetails.courseSlides; //checking if the value has changed before patching the change 
+        existing.courseWeekBreakdown ??= partialDetails.courseWeekBreakdown;
+        existing.courseMarkBreakdown ??= partialDetails.courseMarkBreakdown;
+        existing.courseSemDescriptions ??= partialDetails.courseSemDescriptions;
+
+        course.courseDescription = JsonSerializer.Serialize(existing);
+        _context.Courses.Update(course);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
 
 }

@@ -32,4 +32,17 @@ public interface ICourseServices
     public Task<bool> AddStudentToCourseAsync(int courseId, int studentId);
 
 
+    //for descriptive details
+    // Fetch full course details (JSON stored in courseDescription)
+    Task<CourseDescriptDetailsDTO?> GetDescriptiveDetails(int courseId);
+
+    // Overwrite the course details completely
+    Task<bool> UpdateDescriptiveCourseDetails(int courseId, CourseDescriptDetailsDTO updatedDetails);
+
+    // Add new course details (when courseDescription is currently null or empty)
+    Task<bool> AddDescriptiveDetails(int courseId, CourseDescriptDetailsDTO descriptiveDetails);
+
+    //Handle PATCH-style partial updates if needed
+    Task<bool> PatchDescriptiveDetails(int courseId, CourseDescriptDetailsDTO partialDetails);
+
 }
