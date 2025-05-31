@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Code_CloudSchool.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("health")]
     [ApiController]
     public class HealthController : ControllerBase
     {
