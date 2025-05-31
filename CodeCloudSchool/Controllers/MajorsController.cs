@@ -212,6 +212,40 @@ namespace Code_CloudSchool.Controllers
             return CreatedAtAction("GetMajors", new { id = majors.Id }, majors);
         }
 
+        // add student to a major
+        [HttpPost("addStudentToMajor/{majorId}/{studentId}")]
+        public async Task<ActionResult> AddStudentToMajor(int majorId, int studentId)
+        {
+            if (majorId <= 0 || studentId <= 0)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            try
+            {
+                var result = await _majorServices.AddStudentToMajorAsync(majorId, studentId);
+
+                if (result)
+                {
+                    return Ok($"Student with ID: {studentId} has successfully been added to the Major with ID: {majorId}");
+                }
+
+                return StatusCode(500, "An unexpected error occurred while adding the student to the major.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
         // DELETE: api/Majors/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMajors(int id)

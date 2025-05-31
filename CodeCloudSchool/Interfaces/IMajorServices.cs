@@ -27,6 +27,8 @@ public interface IMajorServices
     public Task<List<Student>> GetStudentsByMajorAsync(int majorId);
 
     public Task<Majors> CreateMajorAsync(MajorDetailsDTO majorCreateDTO);
+    
+    public Task<bool> AddStudentToMajorAsync(int majorId, int studentId);
 
     //TODO: 
     /*

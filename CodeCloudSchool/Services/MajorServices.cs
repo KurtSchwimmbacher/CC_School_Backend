@@ -153,4 +153,42 @@ public class MajorServices : IMajorServices
             .ToListAsync();
     }
 
+     public async Task<bool> AddStudentToMajorAsync(int courseId, int studentId)
+    {
+        var major = await _context.Majors
+            .Include(c => c.Students) // Include Students to check if the student is already enrolled
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
+        if (major == null)
+        {
+            throw new KeyNotFoundException($"Major with Id {courseId} does not exist");
+        }
+
+        var student = await _context.Students
+            .FirstOrDefaultAsync(s => s.UserId == studentId);
+
+        if (student == null)
+        {
+            throw new KeyNotFoundException($"Student with Id {studentId} does not exist");
+        }
+
+        // Ensure the Student collection is initialized
+        if (major.Students == null)
+        {
+            major.Students = new List<Student>();
+        }
+
+        // Check if the student is already in the course
+        if (major.Students.Any(s => s.UserId == studentId))
+        {
+            throw new InvalidOperationException($"Student with Id {studentId} is already enrolled in the course");
+        }
+
+        major.Students.Add(student);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+
 }
