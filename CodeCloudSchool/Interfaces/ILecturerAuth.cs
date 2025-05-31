@@ -17,5 +17,6 @@ public interface ILecturerAuth
 
     public Task<LecturerReg?> GetLecturerByEmail(string email);
 
+    public Task<bool> ValidatePassword(LecturerReg lecturer, string password);
 
 }

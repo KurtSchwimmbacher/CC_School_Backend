@@ -11,7 +11,7 @@ public class LecturerReg : User
     // Mark Id as the primary key
     //[Key]
     // Configure the database to auto-generate the value for Id
-    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Required]
     public int LecturerId { get; set; }
 

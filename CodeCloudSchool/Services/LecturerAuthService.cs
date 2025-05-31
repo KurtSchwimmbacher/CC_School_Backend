@@ -21,8 +21,8 @@ public class LecturerAuthService : ILecturerAuth
         //checking if the email exists in our DB
         //go find the fist user where their email matches the email we are looking for
         LecturerReg? lecturerFromDB = await _context.Lecturers.FirstOrDefaultAsync(lectInDB => lectInDB.LecEmail == email);
-        return lecturerFromDB; // if null, email not in use, if User, means User already exists 
 
+        return lecturerFromDB; // if null, email not in use, if User, means User already exists 
     }
 
 
@@ -46,10 +46,31 @@ public class LecturerAuthService : ILecturerAuth
     }
 
 
-    // TODO
-    public Task<LecturerReg?> LoginLecturer(string email, string password)
+    public Task<bool> ValidatePassword(LecturerReg lecturer, string password)
     {
-        throw new NotImplementedException();
+        bool isPasswordValid = BCrypt.Net.BCrypt.EnhancedVerify(password, lecturer.Password);
+        return Task.FromResult(isPasswordValid);
+    }
+
+    // TODO
+    public async Task<LecturerReg?> LoginLecturer(string email, string password)
+    {
+        LecturerReg? lecturerFromDB = await EmailExists(email);
+
+        // user doesnt exist means cant login
+        if (lecturerFromDB == null)
+        {
+            return null;
+        }
+
+        bool isPasswordValid = await ValidatePassword(lecturerFromDB, password);
+        if (!isPasswordValid)
+        {
+            return null;
+        }
+
+        // login successful
+        return lecturerFromDB;
     }
 
     public Task<bool> RegisterLecturer(LecturerReg lecturer)
@@ -57,12 +78,11 @@ public class LecturerAuthService : ILecturerAuth
         LecturerReg? doesLecturerExist = EmailExists(lecturer.LecEmail).Result; //checking if the email exists in our DB
         if (doesLecturerExist != null)
         {
-
             return Task.FromResult(false); //if the email exists, return false
         }
 
-        lecturer.Password = HashPassword(lecturer.Password).Result; //first updating my password 
-
+        lecturer.Password = HashPassword(lecturer.Password).Result; //hash passwords    
+        lecturer.LecEmail = GenerateEmailAdress(lecturer.LectName).Result; //generate email address based on lecturer name
 
         //Adding the lecturer to our DB
         _context.Lecturers.Add(lecturer);

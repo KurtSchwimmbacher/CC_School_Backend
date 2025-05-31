@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Code_CloudSchool.Models;
 using Code_CloudSchool.Data;
+using Code_CloudSchool.Interfaces;
+using Code_CloudSchool.DTOs;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -15,9 +17,12 @@ namespace Code_CloudSchool.Controllers
     public class LecturerRegController : ControllerBase
     {
         private readonly AppDBContext _context;
+        
+        private readonly ILecturerAuth _lecturerAuth;
 
-        public LecturerRegController(AppDBContext context)
+        public LecturerRegController(AppDBContext context, ILecturerAuth lecturerAuth)
         {
+            _lecturerAuth = lecturerAuth;
             _context = context;
         }
 
@@ -77,6 +82,45 @@ namespace Code_CloudSchool.Controllers
 
             return NoContent();
         }
+
+
+        // register student
+        [HttpPost("register")]
+        public async Task<ActionResult<LecturerReg>> RegisterLecturer(LecturerReg lecturer)
+        {
+            var registeredLecturer = await _lecturerAuth.RegisterLecturer(lecturer);
+
+            if (!registeredLecturer)
+            {
+                return BadRequest("Lecturer already exists");
+            }
+
+            return Ok(registeredLecturer);
+        }
+
+
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserLoginReturnDTO>> LoginStudent(LoginDTO lecturer)
+        {
+            var LecturerLogin = await _lecturerAuth.LoginLecturer(lecturer.Email, lecturer.Password);
+
+            if (LecturerLogin == null)
+            {
+                return BadRequest("Invalid credentials or student not found");
+            }
+
+            var UserLoginReturnDTO = new UserLoginReturnDTO
+            {
+                UserID = LecturerLogin.UserId,
+                Name = LecturerLogin.Name,
+                Email = LecturerLogin.LecEmail,
+                Role = LecturerLogin.Role
+            };
+
+            return Ok(UserLoginReturnDTO);
+        }
+
 
         // POST: api/LecturerReg
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
