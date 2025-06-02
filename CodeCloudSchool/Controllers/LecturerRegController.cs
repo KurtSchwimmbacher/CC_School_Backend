@@ -33,6 +33,24 @@ namespace Code_CloudSchool.Controllers
             return await _context.Lecturers.ToListAsync();
         }
 
+        [HttpPost("assign")]
+        public IActionResult AssignLecturerToCourse(int lecturerId, int courseId)
+        {
+            var lecturer = _context.Lecturers.FirstOrDefault(l => l.LecturerId == lecturerId);
+            if (lecturer == null)
+                return NotFound($"Lecturer with ID {lecturerId} not found.");
+
+            var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
+            if (course == null)
+                return NotFound($"Course with ID {courseId} not found.");
+
+            course.LecturerId = lecturerId;
+            _context.SaveChanges();
+
+            return Ok($"Lecturer {lecturer.LectName} assigned to course {course.courseName}.");
+        }
+
+
         // GET: api/LecturerReg/5
         [HttpGet("{id}")]
         public IActionResult GetLecturer(int id)
