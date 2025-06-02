@@ -399,11 +399,19 @@ public class CoursesServices : ICourseServices
             ? new CourseDescriptDetailsDTO()
             : JsonSerializer.Deserialize<CourseDescriptDetailsDTO>(course.courseDescription)!;
 
-        // Patch logic (null-coalescing where needed)
-        existing.courseSlides ??= partialDetails.courseSlides; //checking if the value has changed before patching the change 
-        existing.courseWeekBreakdown ??= partialDetails.courseWeekBreakdown;
-        existing.courseMarkBreakdown ??= partialDetails.courseMarkBreakdown;
-        existing.courseSemDescriptions ??= partialDetails.courseSemDescriptions;
+        // Patch logic  first checks if there is a value if there is -> update the OG value 
+        if (partialDetails.courseSlides != null)
+            existing.courseSlides = partialDetails.courseSlides;
+
+        if (partialDetails.courseWeekBreakdown != null)
+            existing.courseWeekBreakdown = partialDetails.courseWeekBreakdown;
+
+        if (partialDetails.courseMarkBreakdown != null)
+            existing.courseMarkBreakdown = partialDetails.courseMarkBreakdown;
+
+        if (partialDetails.courseSemDescriptions != null)
+            existing.courseSemDescriptions = partialDetails.courseSemDescriptions;
+
 
         course.courseDescription = JsonSerializer.Serialize(existing);
         _context.Courses.Update(course);
