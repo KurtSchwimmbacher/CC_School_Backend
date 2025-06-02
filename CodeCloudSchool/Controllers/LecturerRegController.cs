@@ -34,20 +34,20 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpPost("assign")]
-        public IActionResult AssignLecturerToCourse(int lecturerId, int courseId)
+        public IActionResult AssignLecturerToCourse([FromBody] AssignLecturerToCourse request)
         {
-            var lecturer = _context.Lecturers.FirstOrDefault(l => l.LecturerId == lecturerId);
+            var lecturer = _context.Lecturers.FirstOrDefault(l => l.LecturerId == request.LecturerId);
             if (lecturer == null)
-                return NotFound($"Lecturer with ID {lecturerId} not found.");
+                return NotFound($"Lecturer with ID {request.LecturerId} not found.");
 
-            var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
+            var course = _context.Courses.FirstOrDefault(c => c.Id == request.CourseId);
             if (course == null)
-                return NotFound($"Course with ID {courseId} not found.");
+                return NotFound($"Course with ID {request.CourseId} not found.");
 
-            course.LecturerId = lecturerId;
+            course.LecturerId = request.LecturerId;
             _context.SaveChanges();
 
-            return Ok($"Lecturer {lecturer.LectName} assigned to course {course.courseName}.");
+            return Ok($"Lecturer {request.LecturerId} assigned to course {request.CourseId}.");
         }
 
 
