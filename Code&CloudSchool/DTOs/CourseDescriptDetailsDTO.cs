@@ -3,6 +3,7 @@ namespace Code_CloudSchool.DTOs;
 public class CourseDescriptDetailsDTO
 {
     public string courseFullCode { get; set; } = string.Empty;
+    public string courseAbout { get; set; } = string.Empty;
     public List<WeekBreakdown>? courseWeekBreakdown { get; set; } = [];
     public string courseSlides { get; set; } = string.Empty;
     public List<MarkBreakdown>? courseMarkBreakdown { get; set; } = [];
