@@ -17,7 +17,7 @@ namespace Code_CloudSchool.Controllers
     public class LecturerRegController : ControllerBase
     {
         private readonly AppDBContext _context;
-        
+
         private readonly ILecturerAuth _lecturerAuth;
 
         public LecturerRegController(AppDBContext context, ILecturerAuth lecturerAuth)
@@ -37,19 +37,16 @@ namespace Code_CloudSchool.Controllers
         [HttpGet("{id}")]
         public IActionResult GetLecturer(int id)
         {
-            var lecturer = new LecturerDTO
-            {
-                Id = id,
-                LectName = "John",
-                LecLastName = "Doe",
-                LecEmail = "john.doe@example.com",
-                PhoneNumber = "123-456-7890",
-                Department = "Computer Science",
-                DateOfJoining = DateTime.Now,
-                IsActive = true
-            };
+            var lecturer = _context.Lecturers
+                .Include(l => l.Courses)
+                .FirstOrDefault(l => l.LecturerId == id);
 
-            return Ok(lecturer);  // Return the DTO as the response
+            if (lecturer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lecturer);
         }
 
         // PUT: api/LecturerReg/5

@@ -13,6 +13,8 @@ public class Courses
     [Required]
     public string courseName { get; set; } = string.Empty;
 
+    public string? coursePresentationLink { get; set; } = string.Empty; 
+
     [Required]
     public int? courseCode { get; set; }
 
@@ -24,6 +26,14 @@ public class Courses
     public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
     public ICollection<Announcements> Announcements { get; set; } = new List<Announcements>();
+
+
+    public int? LecturerId { get; set; }  // Foreign key to LecturerReg
+
+    [ForeignKey("LecturerId")]
+    public LecturerReg? Lecturer { get; set; } = null!;  // Navigation property
+
+
 
     public List<Majors> Majors { get; set; } = []; // this is a list of majors that are being taught in the course
     public List<Classes> Classes { get; set; } = []; // this is a list of classes that are being offered for the course

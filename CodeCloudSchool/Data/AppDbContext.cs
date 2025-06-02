@@ -82,6 +82,12 @@ public class AppDBContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
 
+        modelBuilder.Entity<Courses>()
+            .HasOne(c => c.Lecturer)
+            .WithMany(l => l.Courses)
+            .HasForeignKey(c => c.LecturerId);
+
+
         // Configure the one-to-many relationship between Assignment and Submission.
         modelBuilder.Entity<Assignment>()
             .HasMany(a => a.Submissions) // An Assignment can have many Submissions.
