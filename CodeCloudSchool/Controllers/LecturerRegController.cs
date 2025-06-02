@@ -34,21 +34,29 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpPost("assign")]
-        public IActionResult AssignLecturerToCourse([FromBody] AssignLecturerToCourse request)
+        public async Task<IActionResult> AssignCourseToLecturer([FromBody] AssignLecturerToCourse request)
         {
-            var lecturer = _context.Lecturers.FirstOrDefault(l => l.LecturerId == request.LecturerId);
-            if (lecturer == null)
-                return NotFound($"Lecturer with ID {request.LecturerId} not found.");
+            try
+            {
+                var lecturer = await _context.Lecturers.FindAsync(request.LecturerId);
+                if (lecturer == null)
+                    return NotFound($"Lecturer with ID {request.LecturerId} not found.");
 
-            var course = _context.Courses.FirstOrDefault(c => c.Id == request.CourseId);
-            if (course == null)
-                return NotFound($"Course with ID {request.CourseId} not found.");
+                var course = await _context.Courses.FindAsync(request.CourseId);
+                if (course == null)
+                    return NotFound($"Course with ID {request.CourseId} not found.");
 
-            course.LecturerId = request.LecturerId;
-            _context.SaveChanges();
+                course.LecturerId = request.LecturerId;
+                await _context.SaveChangesAsync();
 
-            return Ok($"Lecturer {request.LecturerId} assigned to course {request.CourseId}.");
+                return Ok($"Lecturer {request.LecturerId} assigned to course {request.CourseId}.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
 
 
         // GET: api/LecturerReg/5
