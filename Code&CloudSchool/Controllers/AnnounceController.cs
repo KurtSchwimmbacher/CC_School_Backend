@@ -28,6 +28,22 @@ namespace Code_CloudSchool.Controllers
             return await _context.Announcements.ToListAsync();
         }
 
+        // GET: api/Announce/course/5  (NEW ENDPOINT)
+        [HttpGet("course/{courseId}")]
+        public async Task<ActionResult<IEnumerable<Announcements>>> GetAnnouncementsByCourse(int courseId)
+        {
+            var announcements = await _context.Announcements
+                .Where(a => a.CourseId == courseId)
+                .ToListAsync();
+
+            if (announcements == null || !announcements.Any())
+            {
+                return NotFound($"No announcements found for course ID {courseId}");
+            }
+
+            return announcements;
+        }
+
         // GET: api/Announce/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Announcements>> GetAnnouncements(int id)
@@ -41,7 +57,6 @@ namespace Code_CloudSchool.Controllers
 
             return announcements;
         }
-
         // PUT: api/Announce/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
