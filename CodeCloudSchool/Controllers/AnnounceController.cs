@@ -42,6 +42,29 @@ namespace Code_CloudSchool.Controllers
             return announcements;
         }
 
+        // get announcements by course id
+        // GET: api/Announce/course/5
+        [HttpGet("course/{courseId}")]
+        public async Task<ActionResult<IEnumerable<Announcements>>> GetAnnouncementsByCourseId(int courseId)
+        {
+            // Check if course exists
+            var courseExists = await _context.Courses.AnyAsync(c => c.Id == courseId);
+            if (!courseExists)
+            {
+                return NotFound($"Course with ID {courseId} not found.");
+            }
+
+            // Fetch all announcements related to the course
+            var announcements = await _context.Announcements
+                .Where(a => a.CourseId == courseId)
+                .OrderByDescending(a => a.Date)
+                .ToListAsync();
+
+            return Ok(announcements);
+        }
+
+
+
         // PUT: api/Announce/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
