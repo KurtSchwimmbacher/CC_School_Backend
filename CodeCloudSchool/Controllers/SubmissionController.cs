@@ -50,6 +50,56 @@ namespace Code_CloudSchool.Controllers
             }
         }
 
+        [HttpPost("upload")]
+        public async Task<ActionResult<Submission>> UploadSubmission([FromForm] int assignmentId, [FromForm] int studentId, [FromForm] IFormFile file)
+        {
+            try
+            {
+                // Validate entities
+                var assignment = await _context.Assignments.FirstOrDefaultAsync(a => a.Assignment_ID == assignmentId);
+                if (assignment == null)
+                    return BadRequest("Assignment does not exist");
+
+                var student = await _context.Students.FirstOrDefaultAsync(s => s.UserId == studentId);
+                if (student == null)
+                    return BadRequest("Student does not exist");
+
+                // Save file to server
+                var uploadsFolder = Path.Combine("Uploads/Submissions", assignmentId.ToString());
+                Directory.CreateDirectory(uploadsFolder);
+
+                var filePath = Path.Combine(uploadsFolder, file.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Create submission
+                var submission = new Submission
+                {
+                    Assignment_ID = assignmentId,
+                    StudentId = studentId,
+                    FilePath = filePath,
+                    SubmissionDate = DateTime.UtcNow,
+                    Assignment = assignment,
+                    Student = student,
+                };
+
+                submission.Grade.Score = 0;
+
+                _context.Submissions.Add(submission);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetSubmissionById), new { id = submission.Submission_ID }, submission);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Submission>> GetSubmissionById(int id)
         {
