@@ -44,7 +44,7 @@ namespace Code_CloudSchool.Controllers
 
         // get announcements by course id
         // GET: api/Announce/course/5
-        [HttpGet("course/{courseId}")]
+        [HttpGet("by-course/{courseId}")]
         public async Task<ActionResult<IEnumerable<Announcements>>> GetAnnouncementsByCourseId(int courseId)
         {
             // Check if course exists
