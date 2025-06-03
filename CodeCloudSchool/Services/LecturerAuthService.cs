@@ -29,7 +29,7 @@ public class LecturerAuthService : ILecturerAuth
     // TODO
     public Task<string> GenerateEmailAdress(string LectName)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(LectName + "@codecloudschool.com");
     }
 
     // TODO
