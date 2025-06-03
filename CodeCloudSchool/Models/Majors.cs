@@ -23,15 +23,3 @@ public class Majors
     public List<Student> Students { get; set; } = []; // this is a list of students that are in the major 
 
 }
-
-//---
-//sojfeo: [
-//   "Id": 1,
-//   "MajorName": "Software Engineering",
-//   "MajorCode": "SWE",
-//   "MajorDescription": "Learn how to build software applications",
-//   "CreditsRequired": 120, 
-//   "Courses": [ 
-//     {    }
-//   ],
-//   "Students": [

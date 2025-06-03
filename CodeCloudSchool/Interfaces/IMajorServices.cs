@@ -27,25 +27,9 @@ public interface IMajorServices
     public Task<List<Student>> GetStudentsByMajorAsync(int majorId);
 
     public Task<Majors> CreateMajorAsync(MajorDetailsDTO majorCreateDTO);
-    
+
     public Task<bool> AddStudentToMajorAsync(int majorId, int studentId);
 
-    //TODO: 
-    /*
-        GET, POST, PUT, DELETE -> MAJOR 
 
-        Get major Details ./
-        Get major description 
-        Get major credit 
-        Get Major Courses 
-        Get Major Students 
-        Update Major Courses 
-        Uppdate Major Details -> dto
-        Update Major Description -> dto
-        Update Major Credits -> dto 
-        
-        addCourse to Major
-        remove course from major 
-        
-    */
+    public Task<List<Majors>> GetMajorsByStudentIdAsync(int studentId);
 }

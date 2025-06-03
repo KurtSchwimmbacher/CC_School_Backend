@@ -153,7 +153,7 @@ public class MajorServices : IMajorServices
             .ToListAsync();
     }
 
-     public async Task<bool> AddStudentToMajorAsync(int courseId, int studentId)
+    public async Task<bool> AddStudentToMajorAsync(int courseId, int studentId)
     {
         var major = await _context.Majors
             .Include(c => c.Students) // Include Students to check if the student is already enrolled
@@ -191,4 +191,11 @@ public class MajorServices : IMajorServices
     }
 
 
+
+    public async Task<List<Majors>> GetMajorsByStudentIdAsync(int studentId)
+    {
+        return await _context.Majors
+            .Where(m => m.Students.Any(s => s.UserId == studentId))
+            .ToListAsync();
+    }
 }

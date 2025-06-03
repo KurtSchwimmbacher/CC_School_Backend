@@ -37,7 +37,7 @@ namespace Code_CloudSchool.Controllers
         public async Task<ActionResult<Majors>> GetMajors(int id)
         {
             var majorWithStudents = await _context.Majors
-            .Include(m => m.Students) 
+            .Include(m => m.Students)
             .FirstOrDefaultAsync(m => m.Id == id);
 
             if (majorWithStudents == null)
@@ -100,6 +100,20 @@ namespace Code_CloudSchool.Controllers
 
             return Ok(studentsByMajors);
         }
+
+        [HttpGet("getMajorsByStudentId/{studentId}")]
+        public async Task<ActionResult<IEnumerable<Majors>>> GetMajorsByStudentIdAsync(int studentId)
+        {
+            var majorsByStudent = await _majorServices.GetMajorsByStudentIdAsync(studentId);
+
+            if (majorsByStudent == null || !majorsByStudent.Any())
+            {
+                return NotFound($"No majors found for student with ID: {studentId}");
+            }
+
+            return Ok(majorsByStudent);
+        }
+
 
         // PUT: api/Majors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
