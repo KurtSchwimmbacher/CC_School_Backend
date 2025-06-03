@@ -27,5 +27,8 @@ namespace Code_CloudSchool.Interfaces
 
         // Get assignments with optional filtering (e.g., by due date, status, etc.).
         Task<List<Assignment>> GetAssignmentsByFilter(DateTime? dueDate, bool? isComplete);
+
+
+        Task<List<Assignment>> GetAssignmentsByCourseId(int courseId);
     }
 }

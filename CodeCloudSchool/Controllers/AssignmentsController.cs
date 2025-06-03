@@ -25,7 +25,7 @@ namespace Code_CloudSchool.Controllers
             try
             {
                 // set the course Id for the assignment
-                assignment.CourseId = courseId; 
+                assignment.CourseId = courseId;
 
                 var result = await _assignmentService.CreateAssignment(assignment); // Call the service method.
                 return Ok(result); // Return the created assignment with a 200 OK status.
@@ -64,6 +64,15 @@ namespace Code_CloudSchool.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}"); // Handle exceptions.
             }
         }
+
+        // get assignment by course ID
+        [HttpGet("by-course/{courseId}")]
+        public async Task<ActionResult<List<Assignment>>> GetAssignmentsByCourseId(int courseId)
+        {
+            var assignments = await _assignmentService.GetAssignmentsByCourseId(courseId);
+            return Ok(assignments);
+        }
+
 
         [HttpPut] // HTTP PUT method to update an existing assignment.
         public async Task<ActionResult<Assignment>> UpdateAssignment(Assignment assignment)
