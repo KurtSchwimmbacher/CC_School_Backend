@@ -73,21 +73,25 @@ public class LecturerAuthService : ILecturerAuth
         return lecturerFromDB;
     }
 
-    public Task<bool> RegisterLecturer(LecturerReg lecturer)
+    public async Task<bool> RegisterLecturer(LecturerReg lecturer)
+{
+    LecturerReg? doesLecturerExist = await EmailExists(lecturer.LecEmail);
+    if (doesLecturerExist != null)
     {
-        LecturerReg? doesLecturerExist = EmailExists(lecturer.LecEmail).Result; //checking if the email exists in our DB
-        if (doesLecturerExist != null)
-        {
-            return Task.FromResult(false); //if the email exists, return false
-        }
-
-        lecturer.Password = HashPassword(lecturer.Password).Result; //hash passwords    
-        lecturer.LecEmail = GenerateEmailAdress(lecturer.LectName).Result; //generate email address based on lecturer name
-
-        //Adding the lecturer to our DB
-        _context.Lecturers.Add(lecturer);
-        _context.SaveChanges();
-
-        return Task.FromResult(true); //returning true if the user was added successfully
+        return false; // Email exists
     }
+
+    lecturer.Password = await HashPassword(lecturer.Password);    
+
+    if (string.IsNullOrWhiteSpace(lecturer.LecEmail))
+    {
+        lecturer.LecEmail = await GenerateEmailAdress(lecturer.LectName);
+    }
+
+    _context.Lecturers.Add(lecturer);
+    await _context.SaveChangesAsync();
+
+    return true;
+}
+
 }
