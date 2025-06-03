@@ -22,40 +22,14 @@ namespace Code_CloudSchool.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Submission>> SubmitAssignment(CreateSubmissionDTO submissionDto)
-        {
-            try
-            {
-                // Validate assignment exists
-                var assignmentExists = await _context.Assignments
-                    .AnyAsync(a => a.Assignment_ID == submissionDto.AssignmentId);
-                if (!assignmentExists)
-                    return BadRequest("Assignment does not exist");
-
-                // Validate student exists
-                var studentExists = await _context.Students
-                    .AnyAsync(s => s.UserId == submissionDto.StudentId);
-                if (!studentExists)
-                    return BadRequest("Student does not exist");
-
-                var result = await _submissionService.SubmitAssignment(submissionDto);
-                return CreatedAtAction(nameof(GetSubmissionById),
-                    new { id = result.Submission_ID },
-                    result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
         [HttpPost("upload")]
-        public async Task<ActionResult<Submission>> UploadSubmission([FromForm] int assignmentId, [FromForm] int studentId, [FromForm] IFormFile file)
+        public async Task<ActionResult<Submission>> UploadSubmission(
+            [FromForm] int assignmentId,
+            [FromForm] int studentId,
+            [FromForm] IFormFile file)
         {
             try
             {
-                // Validate entities
                 var assignment = await _context.Assignments.FirstOrDefaultAsync(a => a.Assignment_ID == assignmentId);
                 if (assignment == null)
                     return BadRequest("Assignment does not exist");
@@ -64,17 +38,18 @@ namespace Code_CloudSchool.Controllers
                 if (student == null)
                     return BadRequest("Student does not exist");
 
-                // Save file to server
-                var uploadsFolder = Path.Combine("Uploads/Submissions", assignmentId.ToString());
+                var uploadsFolder = Path.Combine("wwwroot", "Uploads", "Submissions", assignmentId.ToString());
                 Directory.CreateDirectory(uploadsFolder);
 
-                var filePath = Path.Combine(uploadsFolder, file.FileName);
+                var safeFileName = Path.GetFileName(file.FileName);
+                var uniqueFileName = $"{studentId}_{Path.GetFileNameWithoutExtension(safeFileName)}_{Guid.NewGuid()}{Path.GetExtension(safeFileName)}";
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
 
-                // Create submission
                 var submission = new Submission
                 {
                     Assignment_ID = assignmentId,
@@ -83,9 +58,11 @@ namespace Code_CloudSchool.Controllers
                     SubmissionDate = DateTime.UtcNow,
                     Assignment = assignment,
                     Student = student,
+                    Grade = new Grade
+                    {
+                        Score = 0
+                    }
                 };
-
-                submission.Grade.Score = 0;
 
                 _context.Submissions.Add(submission);
                 await _context.SaveChangesAsync();
@@ -96,6 +73,18 @@ namespace Code_CloudSchool.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+
+        [HttpGet("download/{fileName}")]
+        public IActionResult DownloadSubmission(string fileName)
+        {
+            var filePath = Path.Combine("wwwroot", "Uploads", "Submissions", fileName);
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var contentType = "application/octet-stream";
+            return PhysicalFile(filePath, contentType, fileName);
         }
 
 
