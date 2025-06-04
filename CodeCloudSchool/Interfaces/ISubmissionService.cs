@@ -11,7 +11,7 @@ public interface ISubmissionService
     // DTO-based methods
     Task<Submission> SubmitAssignment(CreateSubmissionDTO submissionDto);
     Task<Submission> UpdateSubmission(UpdateSubmissionDTO submissionDto);
-    
+
     // Model-based methods (legacy support)
     Task<Submission> SubmitAssignment(Submission submission);
     Task<Submission> UpdateSubmission(Submission submission);
@@ -20,8 +20,12 @@ public interface ISubmissionService
     Task<List<Submission>> GetSubmissionsByStudent(int studentId);
     Task<Submission> GetSubmissionById(int id);
     Task<List<Submission>> GetSubmissionsForAssignment(int assignmentId);
-    
+
     // Management methods
     Task<bool> DeleteSubmission(int id);
     Task<bool> HasStudentSubmittedAssignment(int studentId, int assignmentId);
+    
+
+    Task<Submission> GetSubmissionByAssignmentAndStudent(int assignmentId, int studentId);
+
 }

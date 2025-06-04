@@ -133,6 +133,22 @@ namespace Code_CloudSchool.Controllers
             }
         }
 
+        [HttpGet("{assignmentId}/student/{studentId}")]
+        public async Task<ActionResult<Submission>> GetSubmissionByAssignmentAndStudent(int assignmentId, int studentId)
+        {
+            try
+            {
+                var submission = await _submissionService.GetSubmissionByAssignmentAndStudent(assignmentId, studentId);
+                if (submission == null)
+                    return NotFound($"Submission for Assignment ID {assignmentId} and Student ID {studentId} not found");
+                return Ok(submission);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpPut]
         public async Task<ActionResult<Submission>> UpdateSubmission(UpdateSubmissionDTO submissionDto)
         {

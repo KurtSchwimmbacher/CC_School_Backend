@@ -34,7 +34,7 @@ public class SubmissionService : ISubmissionService
         // Create submission - Grade will be auto-initialized by constructor
         var submission = new Submission
         {
-            Assignment_ID = submissionDto.AssignmentId,
+            AssignmentId = submissionDto.AssignmentId,
             StudentId = submissionDto.StudentId
             ?? throw new ArgumentException("Student not found"), // Ensure StudentId is not null
             FilePath = submissionDto.FilePath,
@@ -140,4 +140,20 @@ public class SubmissionService : ISubmissionService
             .AnyAsync(s => s.Student.UserId == studentId &&
                           s.Assignment.Assignment_ID == assignmentId);
     }
+
+
+    // get submission by assignment and student
+    public async Task<Submission> GetSubmissionByAssignmentAndStudent(int assignmentId, int studentId)
+    {
+        var submission = await _context.Submissions
+            .FirstOrDefaultAsync(s => s.AssignmentId == assignmentId && s.StudentId == studentId);
+
+        if (submission == null)
+        {
+            throw new ArgumentException("Submission not found");
+        }
+
+        return submission;
+    }
+
 }
