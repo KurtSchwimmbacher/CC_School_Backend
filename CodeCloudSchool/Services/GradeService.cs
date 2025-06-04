@@ -90,7 +90,7 @@ public class GradeService : IGradeService
     {
         return await _context.Grades
             .Include(g => g.Submission)
-            .Where(g => g.Submission.Assignment_ID == assignmentId)
+            .Where(g => g.Submission.AssignmentId == assignmentId)
             .ToListAsync();
     }
 
