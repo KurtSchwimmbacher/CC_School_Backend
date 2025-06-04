@@ -52,7 +52,7 @@ namespace Code_CloudSchool.Controllers
 
                 var submission = new Submission
                 {
-                    Assignment_ID = assignmentId,
+                    AssignmentId = assignmentId,
                     StudentId = studentId,
                     FilePath = filePath,
                     SubmissionDate = DateTime.UtcNow,
@@ -60,7 +60,7 @@ namespace Code_CloudSchool.Controllers
                     Student = student,
                     Grade = new Grade
                     {
-                        Score = 0
+                        Score = 100 // Default score, can be updated later
                     }
                 };
 
