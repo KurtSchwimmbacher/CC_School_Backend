@@ -395,29 +395,39 @@ public class CoursesServices : ICourseServices
         var course = await _context.Courses.FindAsync(courseId);
         if (course == null) return false;
 
+        // Deserialize the current JSON or create a blank one
         var existing = string.IsNullOrEmpty(course.courseDescription)
             ? new CourseDescriptDetailsDTO()
             : JsonSerializer.Deserialize<CourseDescriptDetailsDTO>(course.courseDescription)!;
 
-        // Patch logic  first checks if there is a value if there is -> update the OG value 
-        if (partialDetails.courseSlides != null)
+        // PATCH STRING FIELDS if not null or empty
+        if (!string.IsNullOrWhiteSpace(partialDetails.courseFullCode))
+            existing.courseFullCode = partialDetails.courseFullCode;
+
+        if (!string.IsNullOrWhiteSpace(partialDetails.courseAbout))
+            existing.courseAbout = partialDetails.courseAbout;
+
+        if (!string.IsNullOrWhiteSpace(partialDetails.courseSlides))
             existing.courseSlides = partialDetails.courseSlides;
 
-        if (partialDetails.courseWeekBreakdown != null)
+        // PATCH LIST FIELDS if list has values
+        if (partialDetails.courseWeekBreakdown is { Count: > 0 })
             existing.courseWeekBreakdown = partialDetails.courseWeekBreakdown;
 
-        if (partialDetails.courseMarkBreakdown != null)
+        if (partialDetails.courseMarkBreakdown is { Count: > 0 })
             existing.courseMarkBreakdown = partialDetails.courseMarkBreakdown;
 
-        if (partialDetails.courseSemDescriptions != null)
+        if (partialDetails.courseSemDescriptions is { Count: > 0 })
             existing.courseSemDescriptions = partialDetails.courseSemDescriptions;
 
-
+        // Serialize back to string and save
         course.courseDescription = JsonSerializer.Serialize(existing);
         _context.Courses.Update(course);
         await _context.SaveChangesAsync();
+
         return true;
     }
+
 
 
 }
