@@ -53,6 +53,10 @@ builder.Services.AddScoped<IClassesServices, ClassesServices>();
 builder.Services.AddScoped<ITimeSlotGen, TimeSlotGen>();
 builder.Services.AddScoped<ITimetableGenerator, TimetableGeneratorService>();
 
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IEmailVerificationService, EmailVerificationService>();
+
+
 // Allow any origin, method, and header (for testing — restrict later in production)
 builder.Services.AddCors(options =>
 {
@@ -79,6 +83,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+
 
 app.UseStaticFiles();
 

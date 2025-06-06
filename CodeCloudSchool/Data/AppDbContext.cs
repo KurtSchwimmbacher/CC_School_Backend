@@ -26,6 +26,10 @@ public class AppDBContext : DbContext
     // Define a DbSet for Announcements, representing a table in the database
     public DbSet<Announcements> Announcements { get; set; } = default!;
 
+    // for the email service
+    public DbSet<EmailVerificationToken> EmailVerificationTokens { get; set; }
+
+
 
     //Add Relationships below 
 

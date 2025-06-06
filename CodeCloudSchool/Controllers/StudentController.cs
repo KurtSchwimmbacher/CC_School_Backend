@@ -26,30 +26,81 @@ namespace Code_CloudSchool.Controllers
 
         private readonly IUpdateStudentPassword _StudentPassword;
 
-        public StudentController(AppDBContext context, IStudentAuth studentAuth, IStudentStatus studentStatus, IStudentReEnroll studentReEnroll, IUpdateStudentPassword studentPassword)
+        private readonly IEmailVerificationService _emailVerificationService;
+
+
+        public StudentController(AppDBContext context, IStudentAuth studentAuth, IStudentStatus studentStatus, IStudentReEnroll studentReEnroll, IUpdateStudentPassword studentPassword, IEmailVerificationService emailVerificationService)
         {
             _context = context;
             _StudentAuth = studentAuth;
             _StudentStatus = studentStatus;
             _StudentReEnroll = studentReEnroll;
             _StudentPassword = studentPassword;
+            _emailVerificationService = emailVerificationService;
         }
 
 
 
         // register student
         [HttpPost("register")]
-        public async Task<ActionResult<Student>> RegisterStudent(Student student)
+        public async Task<ActionResult<Student>> RegisterStudent(RegisterStudentDTO dto)
         {
-            var registeredStudent = await _StudentAuth.RegisterStudent(student);
+            var newStudent = new Student
+            {
+                Name = dto.Name,
+                LastName = dto.LastName,
+                Password = dto.Password,
+                privateEmail = dto.PrivateEmail,
+                Gender = dto.Gender,
+                Address = dto.Address,
+                YearLevel = dto.YearLevel
+            };
+
+            var registeredStudent = await _StudentAuth.RegisterStudent(newStudent);
 
             if (registeredStudent == null)
             {
                 return BadRequest("Student already exists");
             }
 
-            return Ok(registeredStudent);
+            // Trigger verification
+            var token = await _emailVerificationService.GenerateAndStoreToken(registeredStudent);
+            await _emailVerificationService.SendVerificationEmail(registeredStudent, token);
+
+            return Ok("Verification email sent. Please check your inbox.");
         }
+
+
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailDTO dto)
+        {
+            // Find the token record, include the User with it
+            var tokenEntry = await _context.EmailVerificationTokens
+                                .Include(t => t.User)
+                                .FirstOrDefaultAsync(t => t.Token == dto.Token);
+
+            if (tokenEntry == null)
+            {
+                return BadRequest("Invalid token.");
+            }
+
+            if (tokenEntry.ExpiryTime < DateTime.UtcNow)
+            {
+                return BadRequest("Token has expired.");
+            }
+
+            // Mark the user as verified
+            tokenEntry.User.IsEmailVerified = true;
+
+            // Remove or invalidate the token to prevent reuse
+            _context.EmailVerificationTokens.Remove(tokenEntry);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Email successfully verified.");
+        }
+
+
 
 
 

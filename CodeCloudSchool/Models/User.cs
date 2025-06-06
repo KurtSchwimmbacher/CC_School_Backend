@@ -16,6 +16,9 @@ public class User
     [Required]
     public string LastName { get; set; } = string.Empty;
 
+    [Required]
+    public string privateEmail { get; set; } = string.Empty;
+
     [Phone]
     public string? PhoneNumber { get; set; } = null;
 
@@ -24,5 +27,8 @@ public class User
 
     [Required]
     public virtual string Role { get; set; } = "User";
+
+    public bool IsEmailVerified { get; set; } = false;
+
 
 }
