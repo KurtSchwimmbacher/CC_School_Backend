@@ -20,10 +20,13 @@ namespace Code_CloudSchool.Controllers
 
         private readonly ILecturerAuth _lecturerAuth;
 
-        public LecturerRegController(AppDBContext context, ILecturerAuth lecturerAuth)
+        private readonly IEmailVerificationService _emailVerificationService;
+
+        public LecturerRegController(AppDBContext context, ILecturerAuth lecturerAuth, IEmailVerificationService emailVerificationService)
         {
             _lecturerAuth = lecturerAuth;
             _context = context;
+            _emailVerificationService = emailVerificationService;
         }
 
         // GET: api/LecturerReg
@@ -109,16 +112,61 @@ namespace Code_CloudSchool.Controllers
 
         // register student
         [HttpPost("register")]
-        public async Task<ActionResult<LecturerReg>> RegisterLecturer(LecturerReg lecturer)
+        public async Task<ActionResult<LecturerReg>> RegisterLecturer(RegisterLecturerDTO dto)
         {
-            var registeredLecturer = await _lecturerAuth.RegisterLecturer(lecturer);
+            var newLecturer = new LecturerReg
+            {
+                Name = dto.Name,
+                LastName = dto.LastName,
+                Password = dto.Password,
+                privateEmail = dto.PrivateEmail,
+                PhoneNumber = dto.PhoneNumber,
+                Department = dto.Department,
+                DateOfJoining = dto.DateOfJoining
+            };
 
-            if (!registeredLecturer)
+            var registeredLecturer = await _lecturerAuth.RegisterLecturer(newLecturer);
+
+            if (registeredLecturer == null)
             {
                 return BadRequest("Lecturer already exists");
             }
 
-            return Ok(registeredLecturer);
+            // trigger verification 
+            var token = await _emailVerificationService.GenerateAndStoreToken(registeredLecturer);
+            await _emailVerificationService.SendVerificationEmail(registeredLecturer, token, registeredLecturer.LecEmail);
+
+            return Ok("Verification email sent. Please check your inbox");
+        }
+
+
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailDTO dto)
+        {
+            // Find the token record, include the User with it
+            var tokenEntry = await _context.EmailVerificationTokens
+                                .Include(t => t.User)
+                                .FirstOrDefaultAsync(t => t.Token == dto.Token);
+
+            if (tokenEntry == null)
+            {
+                return BadRequest("Invalid token.");
+            }
+
+            if (tokenEntry.ExpiryTime < DateTime.UtcNow)
+            {
+                return BadRequest("Token has expired.");
+            }
+
+            // Mark the user as verified
+            tokenEntry.User.IsEmailVerified = true;
+
+            // Remove or invalidate the token to prevent reuse
+            _context.EmailVerificationTokens.Remove(tokenEntry);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Email successfully verified.");
         }
 
 

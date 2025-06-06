@@ -67,7 +67,7 @@ public class AdminAuthService : IAdminAuth
         return Task.FromResult("Login Successful");
     }
 
-    public async Task<bool> RegisterAdmin(Admin admin)
+    public async Task<Admin> RegisterAdmin(Admin admin)
     {
         // 1. does admin exist?
         Admin? doesAdminExist = EmailExists(admin.AdminEmail).Result;
@@ -75,7 +75,7 @@ public class AdminAuthService : IAdminAuth
         if (doesAdminExist != null)
         {
             // if admin exists cant register again
-            return false;
+            return null;
         }
 
         // if admin doesnt exist yet:
@@ -90,7 +90,7 @@ public class AdminAuthService : IAdminAuth
         _context.Admins.Update(admin);
         await _context.SaveChangesAsync();
 
-        return true;
+        return admin;
 
     }
 

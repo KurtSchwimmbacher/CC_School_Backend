@@ -73,25 +73,22 @@ public class LecturerAuthService : ILecturerAuth
         return lecturerFromDB;
     }
 
-    public async Task<bool> RegisterLecturer(LecturerReg lecturer)
-{
-    LecturerReg? doesLecturerExist = await EmailExists(lecturer.LecEmail);
-    if (doesLecturerExist != null)
+    public async Task<LecturerReg> RegisterLecturer(LecturerReg lecturer)
     {
-        return false; // Email exists
-    }
+        LecturerReg? doesLecturerExist = await EmailExists(lecturer.LecEmail);
+        if (doesLecturerExist != null)
+        {
+            return null; // Email exists
+        }
 
-    lecturer.Password = await HashPassword(lecturer.Password);    
+        lecturer.Password = await HashPassword(lecturer.Password);
 
-    if (string.IsNullOrWhiteSpace(lecturer.LecEmail))
-    {
         lecturer.LecEmail = await GenerateEmailAdress(lecturer.LectName);
+
+        _context.Lecturers.Add(lecturer);
+        await _context.SaveChangesAsync();
+
+        return lecturer;
     }
-
-    _context.Lecturers.Add(lecturer);
-    await _context.SaveChangesAsync();
-
-    return true;
-}
 
 }

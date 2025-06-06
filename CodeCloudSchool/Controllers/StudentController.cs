@@ -65,7 +65,7 @@ namespace Code_CloudSchool.Controllers
 
             // Trigger verification
             var token = await _emailVerificationService.GenerateAndStoreToken(registeredStudent);
-            await _emailVerificationService.SendVerificationEmail(registeredStudent, token);
+            await _emailVerificationService.SendVerificationEmail(registeredStudent, token, registeredStudent.Email);
 
             return Ok("Verification email sent. Please check your inbox.");
         }

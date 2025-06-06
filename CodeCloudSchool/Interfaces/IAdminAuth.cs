@@ -12,7 +12,7 @@ public interface IAdminAuth
 
     public Task<string> LoginAdmin(string password, string email);
 
-    public Task<bool> RegisterAdmin (Admin admin);
+    public Task<Admin> RegisterAdmin (Admin admin);
 
     public Task<Admin?> EmailExists(string email);
 

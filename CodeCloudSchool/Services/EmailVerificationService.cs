@@ -41,7 +41,7 @@ public class EmailVerificationService : IEmailVerificationService
             return token;
         }
 
-        public async Task<bool> SendVerificationEmail(User user, string token)
+        public async Task<bool> SendVerificationEmail(User user, string token, string? roleEmail = null)
         {
             var resendKey = _config["Resend:ApiKey"];
             var fromEmail = _config["Resend:FromEmail"];
@@ -56,7 +56,7 @@ public class EmailVerificationService : IEmailVerificationService
                 from = fromEmail,
                 to = user.privateEmail,
                 subject = "Your verification code",
-                html = $"<p>Your CodeCloudSchool verification code is: <strong>{token}</strong></p>"
+                html = $"<p>Your CodeCloudSchool verification code is: <strong>{token}</strong></p>" + (roleEmail != null ? $"<p>Your Code Cloud School generated email is: <strong>{roleEmail}</strong></p>" : "")
             };
 
             var response = await client.PostAsync("emails",

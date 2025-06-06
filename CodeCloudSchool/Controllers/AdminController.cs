@@ -22,11 +22,14 @@ namespace Code_CloudSchool.Controllers
 
         private readonly IAdminAuth _adminAuth;
 
-        public AdminController(AppDBContext context, IAdminAuth adminAuth, IUpdateAdminPassword passwordService)
+        private readonly IEmailVerificationService _emailVerificationService;
+
+        public AdminController(AppDBContext context, IAdminAuth adminAuth, IUpdateAdminPassword passwordService, IEmailVerificationService emailVerificationService)
         {
             _context = context;
             _adminAuth = adminAuth;
             _passwordService = passwordService;
+            _emailVerificationService = emailVerificationService;
         }
 
 
@@ -35,7 +38,7 @@ namespace Code_CloudSchool.Controllers
         public async Task<ActionResult<bool>> RegisterAdmin(AdminRegisterDTO adminRegisterDTO)
         {
             //map AdminRegisterDTO to Admin model
-            Admin admin = new Admin
+            var newAdmin = new Admin
             {
                 Name = adminRegisterDTO.FName,
                 LastName = adminRegisterDTO.LName,
@@ -45,15 +48,50 @@ namespace Code_CloudSchool.Controllers
                 AssignedDepartments = adminRegisterDTO.Department
             };
 
-            bool isRegistered = await _adminAuth.RegisterAdmin(admin);
+            var registeredAdmin = await _adminAuth.RegisterAdmin(newAdmin);
 
-            if (!isRegistered)
+            if (registeredAdmin == null)
             {
                 return BadRequest("Admin already exists");
             }
 
-            return Ok("Admin Registered Successfully");
+            // trigger verification
+            var token = await _emailVerificationService.GenerateAndStoreToken(registeredAdmin);
+            await _emailVerificationService.SendVerificationEmail(registeredAdmin, token, registeredAdmin.AdminEmail);
+
+            return Ok("Verification email sent. Please check your inbox.");
         }
+
+
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailDTO dto)
+        {
+            // Find the token record, include the User with it
+            var tokenEntry = await _context.EmailVerificationTokens
+                                .Include(t => t.User)
+                                .FirstOrDefaultAsync(t => t.Token == dto.Token);
+
+            if (tokenEntry == null)
+            {
+                return BadRequest("Invalid token.");
+            }
+
+            if (tokenEntry.ExpiryTime < DateTime.UtcNow)
+            {
+                return BadRequest("Token has expired.");
+            }
+
+            // Mark the user as verified
+            tokenEntry.User.IsEmailVerified = true;
+
+            // Remove or invalidate the token to prevent reuse
+            _context.EmailVerificationTokens.Remove(tokenEntry);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Email successfully verified.");
+        }
+
 
         // login admin
         [HttpPost("login")]
