@@ -38,12 +38,14 @@ namespace Code_CloudSchool.Controllers
                 if (student == null)
                     return BadRequest("Student does not exist");
 
-                var uploadsFolder = Path.Combine("wwwroot", "Uploads", "Submissions", assignmentId.ToString());
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Submissions", assignmentId.ToString());
                 Directory.CreateDirectory(uploadsFolder);
 
                 var safeFileName = Path.GetFileName(file.FileName);
                 var uniqueFileName = $"{studentId}_{Path.GetFileNameWithoutExtension(safeFileName)}_{Guid.NewGuid()}{Path.GetExtension(safeFileName)}";
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -54,7 +56,7 @@ namespace Code_CloudSchool.Controllers
                 {
                     AssignmentId = assignmentId,
                     StudentId = studentId,
-                    FilePath = filePath,
+                    FilePath = Path.Combine("Uploads", "Submissions", assignmentId.ToString(), uniqueFileName).Replace("\\", "/"),
                     SubmissionDate = DateTime.UtcNow,
                     Assignment = assignment,
                     Student = student,
@@ -66,6 +68,12 @@ namespace Code_CloudSchool.Controllers
 
                 _context.Submissions.Add(submission);
                 await _context.SaveChangesAsync();
+
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return StatusCode(500, "File was not saved.");
+                }
+
 
                 return CreatedAtAction(nameof(GetSubmissionById), new { id = submission.Submission_ID }, submission);
             }
