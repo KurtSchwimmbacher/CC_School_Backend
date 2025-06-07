@@ -24,4 +24,18 @@ public class Announcements
 
     // Foreign key referencing the Lecturer who created the announcement
     public int LecturerId { get; set; }
+
+    public int courseCode { get; set; }
+
+    // Navigation properties
+    public Lecturer? Lecturer { get; set; }
+    public Course? Course { get; set; }
+}
+
+public class Course
+{
+}
+
+public class Lecturer
+{
 }
