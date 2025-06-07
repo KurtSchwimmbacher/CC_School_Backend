@@ -27,7 +27,7 @@ public class Modules
 
     public string AdditionalResources { get; set; } = string.Empty;
 
-
+    public Boolean? published { get; set; } = false;
 
     // relation to course 
     public int CourseId { get; set; }
