@@ -45,7 +45,8 @@ namespace Code_CloudSchool.Controllers
                 Password = adminRegisterDTO.Password,
                 PhoneNumber = adminRegisterDTO.phoneNumber,
                 AdminRole = adminRegisterDTO.AdminRole,
-                AssignedDepartments = adminRegisterDTO.Department
+                AssignedDepartments = adminRegisterDTO.Department,
+                privateEmail = adminRegisterDTO.PrivateEmail
             };
 
             var registeredAdmin = await _adminAuth.RegisterAdmin(newAdmin);
