@@ -122,6 +122,7 @@ namespace Code_CloudSchool.Controllers
                 {
                     c.classID,
                     c.className,
+                    c.Classroom,
                     c.classDescription,
                     TimeSlot = new
                     {
@@ -242,6 +243,29 @@ namespace Code_CloudSchool.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPut("updateClassDetails/{id}")]
+        public async Task<IActionResult> UpdateClassDetails(int id, [FromBody] Classes updatedClass)
+        {
+            if (id <= 0 || updatedClass == null)
+            {
+                return BadRequest("Invalid input parameters");
+            }
+
+            var classToUpdate = await _context.Classes.FindAsync(id);
+            if (classToUpdate == null)
+            {
+                return NotFound($"Class with ID {id} not found.");
+            }
+
+            classToUpdate.className = updatedClass.className;
+            classToUpdate.classDescription = updatedClass.classDescription;
+            classToUpdate.Classroom = updatedClass.Classroom;
+
+            await _context.SaveChangesAsync();
+
+            return Ok($"Class with ID {id} updated successfully.");
         }
 
         [HttpPut("updateClassTime/{id}")]

@@ -14,6 +14,7 @@ public class Classes
     public string className { get; set; } = string.Empty; //this is a nullable field
     public string classDescription { get; set; } = string.Empty; //this is a nullable field
 
+    public string Classroom { get; set; } = string.Empty;
     // public DateTime? classTime { get; set; } //this is the time the class is scheduled to start
     // public DateTime? classEndTime { get; set; } //this is the time the class is scheduled to end 
     public List<Student> Student { get; set; } = []; // this is a list of students that are in the class
