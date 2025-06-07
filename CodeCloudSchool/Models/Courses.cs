@@ -13,7 +13,7 @@ public class Courses
     [Required]
     public string courseName { get; set; } = string.Empty;
 
-    public string? coursePresentationLink { get; set; } = string.Empty; 
+    public string? coursePresentationLink { get; set; } = string.Empty;
 
     [Required]
     public int? courseCode { get; set; }
@@ -33,6 +33,7 @@ public class Courses
     [ForeignKey("LecturerId")]
     public LecturerReg? Lecturer { get; set; } = null!;  // Navigation property
 
+    public List<Modules> Modules { get; set; } = new List<Modules>();
 
 
     public List<Majors> Majors { get; set; } = []; // this is a list of majors that are being taught in the course

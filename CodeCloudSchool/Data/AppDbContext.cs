@@ -23,6 +23,8 @@ public class AppDBContext : DbContext
 
     public DbSet<TimeSlot> TimeSlots { get; set; }
 
+    public DbSet<Modules> Modules { get; set; }
+
     // Define a DbSet for Announcements, representing a table in the database
     public DbSet<Announcements> Announcements { get; set; } = default!;
 
@@ -53,6 +55,11 @@ public class AppDBContext : DbContext
             .HasIndex(s => s.StudentNumber)
             .IsUnique();
 
+        modelBuilder.Entity<Modules>()
+            .HasOne(m => m.Course)
+            .WithMany(c => c.Modules)
+            .HasForeignKey(m => m.CourseId)
+            .OnDelete(DeleteBehavior.Cascade);;
 
         // one class can have many students and one student can take many classes 
         modelBuilder.Entity<Classes>()
