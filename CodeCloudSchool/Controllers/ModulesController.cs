@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Code_CloudSchool.Data;
 using Code_CloudSchool.Models;
 using Microsoft.EntityFrameworkCore;
+using Code_CloudSchool.DTOs;
 
 namespace Code_CloudSchool.Controllers
 {
@@ -19,7 +20,7 @@ namespace Code_CloudSchool.Controllers
 
         // POST: api/Modules/course/3
         [HttpPost("course/{courseId}")]
-        public async Task<IActionResult> CreateModule(int courseId, [FromBody] ModuleCreateDto dto)
+        public async Task<IActionResult> CreateModule(int courseId, [FromBody] ModuleCreateDTO dto)
         {
             var course = await _context.Courses.FindAsync(courseId);
             if (course == null) return NotFound();
