@@ -38,6 +38,7 @@ namespace Code_CloudSchool.Controllers
         {
             var majorWithStudents = await _context.Majors
             .Include(m => m.Students)
+            .Include(m => m.Courses)
             .FirstOrDefaultAsync(m => m.Id == id);
 
             if (majorWithStudents == null)
