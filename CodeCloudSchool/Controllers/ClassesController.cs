@@ -114,23 +114,53 @@ namespace Code_CloudSchool.Controllers
         }
 
         [HttpGet("byStudent/{studentId}")]
-        public async Task<ActionResult<List<Classes>>> GetClassesByStudentId(int studentId)
+        public async Task<ActionResult<List<object>>> GetClassesByStudentId(int studentId)
         {
             var classes = await _context.Classes
-                .Include(c => c.Student)
-                .Include(c => c.Courses)
-                .Include(c => c.Lecturers)
-                .Include(c => c.TimeSlot)
                 .Where(c => c.Student.Any(s => s.UserId == studentId))
+                .Select(c => new
+                {
+                    c.classID,
+                    c.className,
+                    c.classDescription,
+                    TimeSlot = new
+                    {
+                        c.TimeSlot.TimeSlotId,
+                        c.TimeSlot.Day,
+                        c.TimeSlot.StartTime,
+                        c.TimeSlot.EndTime
+                    },
+                    Courses = new
+                    {
+                        c.Courses.Id,
+                        c.Courses.courseName,
+                        c.Courses.courseCode
+                    },
+                    Lecturers = c.Lecturers.Select(l => new
+                    {
+                        l.UserId,
+                        l.Name,
+                        l.LastName,
+                        l.LecEmail
+                    }),
+                    Students = c.Student.Select(s => new
+                    {
+                        s.UserId,
+                        s.Name,
+                        s.LastName,
+                        s.StudentNumber,
+                        s.Email
+                    })
+                })
+                .AsNoTracking()
                 .ToListAsync();
 
             if (classes == null || classes.Count == 0)
-            {
                 return NotFound($"No classes found for student with ID {studentId}");
-            }
 
-            return classes;
+            return Ok(classes);
         }
+
 
 
         [HttpGet("students/{classId}")]
