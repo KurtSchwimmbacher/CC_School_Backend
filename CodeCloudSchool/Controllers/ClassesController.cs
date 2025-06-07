@@ -33,6 +33,7 @@ namespace Code_CloudSchool.Controllers
                 .Include(c => c.Courses)
                 .Include(c => c.Lecturers)
                 .Include(c => c.Student)
+                .Include(c => c.TimeSlot)
                 .ToListAsync();
 
             if (classes == null || !classes.Any())
@@ -111,6 +112,25 @@ namespace Code_CloudSchool.Controllers
                 return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
             }
         }
+
+        [HttpGet("byStudent/{studentId}")]
+        public async Task<ActionResult<List<Classes>>> GetClassesByStudentId(int studentId)
+        {
+            var classes = await _context.Classes
+                .Include(c => c.Student)
+                .Include(c => c.Courses)
+                .Include(c => c.Lecturers)
+                .Where(c => c.Student.Any(s => s.UserId == studentId))
+                .ToListAsync();
+
+            if (classes == null || classes.Count == 0)
+            {
+                return NotFound($"No classes found for student with ID {studentId}");
+            }
+
+            return classes;
+        }
+
 
         [HttpGet("students/{classId}")]
         public async Task<ActionResult<List<Student>>> GetClassStudents(int classId)
