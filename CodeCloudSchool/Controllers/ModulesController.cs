@@ -59,7 +59,6 @@ namespace Code_CloudSchool.Controllers
             return await _context.Modules
                 .Where(m => m.CourseId == courseId)
                 .ToListAsync();
-        }
     }
 }
 }
