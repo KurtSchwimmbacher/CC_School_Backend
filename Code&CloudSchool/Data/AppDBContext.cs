@@ -17,10 +17,6 @@ public class AppDBContext : DbContext
     // Define a DbSet for Announcements, representing a table in the database
     public DbSet<Announcements> Announcements { get; set; } = default!;
 
-<<<<<<< Updated upstream
-    // Define a DbSet for LecturerReg, representing another table in the database
-    public DbSet<LecturerReg> LecturerReg { get; set; } = default!;
-=======
 
     //Add Relationships below 
 
@@ -29,107 +25,7 @@ public class AppDBContext : DbContext
         base.OnModelCreating(modelBuilder);
 
 
-        // Configure TPT: Separate tables for User and Student
-        modelBuilder.Entity<User>().ToTable("Users");
-        modelBuilder.Entity<Student>().ToTable("Students");
-        modelBuilder.Entity<Admin>().ToTable("Admins");
-
-        // Explicitly map StudentNumber to the Students table
-        modelBuilder.Entity<Student>()
-            .Property(s => s.StudentNumber)
-            .HasMaxLength(12);
-
-        // Unique constraint for StudentNumber
-        modelBuilder.Entity<Student>()
-            .HasIndex(s => s.StudentNumber)
-            .IsUnique();
-
-
-        // one class can have many students and one student can take many classes 
-        modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Student)
-            .WithMany(s => s.Classes)
-            .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
-
-        // one lecturer teaches many classes and one class can have many lecturers 
-        modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Lecturers)
-            .WithMany(l => l.Classes)
-            .UsingEntity(joinTbl => joinTbl.ToTable("ClassLecturers"));
-
-        // one course can have many classes and many classes can have one courses
-        modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Classes)
-            .WithOne(cl => cl.Courses)
-            .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
-
-
-        // Configure the one-to-many relationship between Assignment and Submission.
-        modelBuilder.Entity<Assignment>()
-            .HasMany(a => a.Submissions) // An Assignment can have many Submissions.
-            .WithOne(s => s.Assignment) // A Submission belongs to one Assignment.
-            .HasForeignKey(s => s.Assignment_ID) // Foreign key in the Submission table.
-            .OnDelete(DeleteBehavior.Cascade); // If an Assignment is deleted, its Submissions are also deleted.
-
-        // Configure the one-to-one relationship between Submission and Grade.
-        modelBuilder.Entity<Submission>()
-            .HasOne(s => s.Grade) // A Submission can have one Grade.
-            .WithOne(g => g.Submission) // A Grade belongs to one Submission.
-            .HasForeignKey<Grade>(g => g.Submission_ID) // Foreign key in the Grade table.
-            .OnDelete(DeleteBehavior.Cascade); // If a Submission is deleted, its Grade is also deleted.
-
-        // Configure the relationship between Assignment and Lecturer
-        modelBuilder.Entity<Assignment>()
-            .HasOne(a => a.Lecturer) // An Assignment has one Lecturer.
-            .WithMany() // A Lecturer can have many Assignments.
-            .HasForeignKey(a => a.LecturerId) // Foreign key in the Assignment table.
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete (optional: change to Cascade if needed).
-
-        // Configure the relationship between Submission and Student
-        modelBuilder.Entity<Submission>()
-            .HasOne(s => s.Student)
-            .WithMany()
-            .HasForeignKey(s => s.StudentId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-
-
-        // unique constraint for AdminID
-        modelBuilder.Entity<Admin>().HasIndex(a => a.AdminId).IsUnique();
-
-        modelBuilder.Entity<Majors>() //this is the entity that we are going to be working with
-            .HasMany(m => m.Courses) // a major has many courses
-            .WithMany(c => c.Majors) // a course has many majors
-            .UsingEntity(joinTbl => joinTbl.ToTable("MajorCourses")); // this is the name of the join table used to handle the many to many relationship
-
-        //one course has many studdents and one student can take many courses 
-        modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Student)
-            .WithMany(s => s.Courses)
-            .UsingEntity(joinTbl => joinTbl.ToTable("CourseStudents"));
-
-        // one class can have many students and one student can take many classes 
-        modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Student)
-            .WithMany(s => s.Classes)
-            .UsingEntity(joinTbl => joinTbl.ToTable("ClassStudents"));
-
-        // one lecturer teaches many classes and one class can have many lecturers 
-        modelBuilder.Entity<Classes>()
-            .HasMany(cl => cl.Lecturers)
-            .WithMany(l => l.Classes)
-            .UsingEntity(joinTbl => joinTbl.ToTable("ClassLecturers"));
-
-        // one course can have many classes and many classes can have one courses
-        modelBuilder.Entity<Courses>()
-            .HasMany(c => c.Classes)
-            .WithOne(cl => cl.Courses)
-            .HasForeignKey(cl => cl.CourseId); //this is the foreign key that is going to be used to link the two tables together 
-
-        modelBuilder.Entity<Classes>()
-            .HasOne(c => c.TimeSlot)
-            .WithMany()
-            .HasForeignKey(c => c.TimeSlotId);
+     
 
          // Prevent cascade delete (optional: change to Cascade if needed).
         modelBuilder.Entity<Announcements>()
@@ -144,5 +40,4 @@ public class AppDBContext : DbContext
             .HasForeignKey(a => a.courseCode)
             .OnDelete(DeleteBehavior.Restrict);
     }
->>>>>>> Stashed changes
 }
