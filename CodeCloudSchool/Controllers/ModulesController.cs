@@ -19,21 +19,27 @@ namespace Code_CloudSchool.Controllers
 
         // POST: api/Modules/course/3
         [HttpPost("course/{courseId}")]
-        public async Task<IActionResult> CreateModuleForCourse(int courseId, [FromBody] Modules module)
+        public async Task<IActionResult> CreateModule(int courseId, [FromBody] ModuleCreateDto dto)
         {
             var course = await _context.Courses.FindAsync(courseId);
-            if (course == null)
-            {
-                return NotFound($"Course with ID {courseId} not found.");
-            }
+            if (course == null) return NotFound();
 
-            module.CourseId = courseId;
+            var module = new Modules
+            {
+                GroupTitle = dto.GroupTitle,
+                Title = dto.Title,
+                Description = dto.Description,
+                SlideUrl = dto.SlideUrl,
+                CourseId = courseId,
+                Course = course // Optional: EF will track this via CourseId
+            };
 
             _context.Modules.Add(module);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetModule), new { id = module.moduleId }, module);
+            return Ok(module);
         }
+
 
 
         // GET: api/Modules/5
@@ -59,6 +65,6 @@ namespace Code_CloudSchool.Controllers
             return await _context.Modules
                 .Where(m => m.CourseId == courseId)
                 .ToListAsync();
+        }
     }
-}
 }
