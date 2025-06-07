@@ -120,6 +120,7 @@ namespace Code_CloudSchool.Controllers
                 .Include(c => c.Student)
                 .Include(c => c.Courses)
                 .Include(c => c.Lecturers)
+                .Include(c => c.TimeSlot)
                 .Where(c => c.Student.Any(s => s.UserId == studentId))
                 .ToListAsync();
 
