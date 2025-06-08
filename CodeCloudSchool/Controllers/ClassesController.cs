@@ -162,6 +162,58 @@ namespace Code_CloudSchool.Controllers
             return Ok(classes);
         }
 
+        [HttpGet("byLecturer/{lecturerId}")]
+        public async Task<ActionResult<List<object>>> GetClassesByLecturerId(int lecturerId)
+        {
+            if (lecturerId <= 0)
+                return BadRequest("Invalid lecturer ID");
+
+            var classes = await _context.Classes
+                .Where(c => c.Lecturers.Any(l => l.UserId == lecturerId))
+                .Select(c => new
+                {
+                    c.classID,
+                    c.className,
+                    c.Classroom,
+                    c.classDescription,
+                    TimeSlot = new
+                    {
+                        c.TimeSlot.TimeSlotId,
+                        c.TimeSlot.Day,
+                        c.TimeSlot.StartTime,
+                        c.TimeSlot.EndTime
+                    },
+                    Courses = new
+                    {
+                        c.Courses.Id,
+                        c.Courses.courseName,
+                        c.Courses.courseCode
+                    },
+                    Lecturers = c.Lecturers.Select(l => new
+                    {
+                        l.UserId,
+                        l.Name,
+                        l.LastName,
+                        l.LecEmail
+                    }),
+                    Students = c.Student.Select(s => new
+                    {
+                        s.UserId,
+                        s.Name,
+                        s.LastName,
+                        s.StudentNumber,
+                        s.Email
+                    })
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            if (classes == null || !classes.Any())
+                return NotFound($"No classes found for lecturer with ID {lecturerId}");
+
+            return Ok(classes);
+        }
+
 
 
         [HttpGet("students/{classId}")]
