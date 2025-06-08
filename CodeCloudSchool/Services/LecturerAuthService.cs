@@ -83,7 +83,7 @@ public class LecturerAuthService : ILecturerAuth
 
         lecturer.Password = await HashPassword(lecturer.Password);
 
-        lecturer.LecEmail = await GenerateEmailAdress(lecturer.LectName);
+        lecturer.LecEmail = await GenerateEmailAdress(lecturer.Name);
 
         _context.Lecturers.Add(lecturer);
         await _context.SaveChangesAsync();
