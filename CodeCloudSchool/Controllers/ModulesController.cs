@@ -31,6 +31,8 @@ namespace Code_CloudSchool.Controllers
                 Title = dto.Title,
                 Description = dto.Description,
                 SlideUrl = dto.SlideUrl,
+                AdditionalResources = dto.AdditionalResources, // Assuming this is part of the DTO
+                published = dto.Published,
                 CourseId = courseId,
                 Course = course // Optional: EF will track this via CourseId
             };
@@ -67,5 +69,23 @@ namespace Code_CloudSchool.Controllers
                 .Where(m => m.CourseId == courseId)
                 .ToListAsync();
         }
+
+        [HttpPut("course/{courseId}/module/{id}/publish")]
+        public async Task<IActionResult> UpdateModulePublishedStatus(int courseId, int id, [FromBody] bool isPublished)
+        {
+            var module = await _context.Modules
+                .FirstOrDefaultAsync(m => m.moduleId == id && m.CourseId == courseId);
+
+            if (module == null)
+                return NotFound("Module not found or does not belong to the given course");
+
+            module.published = isPublished;
+
+            _context.Modules.Update(module);
+            await _context.SaveChangesAsync();
+
+            return Ok(module);
+        }
+
     }
 }
