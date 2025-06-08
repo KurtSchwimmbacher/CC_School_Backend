@@ -85,14 +85,14 @@ namespace Code_CloudSchool.Controllers
 
 
         [HttpGet("student/{studentId}")]
-        public async Task<IActionResult> GetStudentTimetable(Guid studentId)
+        public async Task<IActionResult> GetStudentTimetable(int studentId)
         {
             var student = await _context.Students
                 .Include(s => s.Classes)
                     .ThenInclude(c => c.TimeSlot)
                 .Include(s => s.Classes)
                     .ThenInclude(c => c.Lecturers)
-                .FirstOrDefaultAsync(s => s.Id == studentId);
+                .FirstOrDefaultAsync(s => s.UserId == studentId);
 
             if (student == null) return NotFound("Student not found");
 
