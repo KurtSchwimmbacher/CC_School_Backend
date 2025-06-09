@@ -36,6 +36,8 @@ namespace Code_CloudSchool.Controllers
             return await _context.Lecturers.ToListAsync();
         }
 
+
+
         [HttpPost("assign")]
         public async Task<IActionResult> AssignCourseToLecturer([FromBody] AssignLecturerToCourse request)
         {

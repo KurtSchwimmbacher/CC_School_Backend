@@ -126,11 +126,14 @@ namespace Code_CloudSchool.Controllers
         }
 
 
+
         // GET: api/Student
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Students
+            .Include(s => s.Courses)
+            .ToListAsync();
         }
 
         [HttpGet("{studentNumber}")]
