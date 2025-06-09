@@ -10,7 +10,7 @@ public interface IAdminAuth
 
     public Task<string> GenerateAdminEmail(string name, string surname, string adminRole);
 
-    public Task<string> LoginAdmin(string password, string email);
+    public Task<Admin?> LoginAdmin(string password, string email);
 
     public Task<Admin> RegisterAdmin (Admin admin);
 

@@ -44,27 +44,27 @@ public class AdminAuthService : IAdminAuth
         return Task.FromResult(BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13));
     }
 
-    public Task<string> LoginAdmin(string password, string email)
+    public async Task<Admin?> LoginAdmin(string password, string email)
     {
         // 1. Check if user exists
-        Admin? adminFromDB = EmailExists(email).Result;
+        Admin? adminFromDB = await EmailExists(email);
 
         // 1.1 if not return not found
         if (adminFromDB == null)
         {
-            return Task.FromResult("Admin Doesn't Exist");
+            return null;
         }
 
         // if admin exists
         // 2. Does password match?
         // passes admin and pword to function -> fetches boolean
-        if (!ValidatePassword(adminFromDB, password).Result)
+        if (!await ValidatePassword(adminFromDB, password))
         {
-            return Task.FromResult("Password is incorrect");
+            return null;
         }
 
         // 3. If admin exists && pword matches return success
-        return Task.FromResult("Login Successful");
+        return adminFromDB;
     }
 
     public async Task<Admin> RegisterAdmin(Admin admin)

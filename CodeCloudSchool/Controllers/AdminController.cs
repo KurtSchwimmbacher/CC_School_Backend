@@ -96,17 +96,15 @@ namespace Code_CloudSchool.Controllers
 
         // login admin
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginAdmin(LoginDTO admin)
+        public async Task<ActionResult<Admin>> LoginAdmin(LoginDTO admin)
         {
-            string msg = await _adminAuth.LoginAdmin(admin.Password, admin.Email);
-            if (msg == "Login Successful")
+            var adminFromDB = await _adminAuth.LoginAdmin(admin.Password, admin.Email);
+            if (adminFromDB == null)
             {
-                return Ok(msg);
+                return BadRequest("Invalid email or password.");
             }
-            else
-            {
-                return BadRequest(msg);
-            }
+
+            return Ok(adminFromDB);
         }
 
 
