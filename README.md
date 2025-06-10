@@ -140,7 +140,12 @@ Ensure you have the following installed before running the backend API manually:
 
 ## Demonstration
 link to our Demo video -> 
+
 ## Architecture / System Design
+### System Design Diagram (the layered approach) 
+![WhatsApp Image 2025-06-10 at 21 52 58_2b984a57](https://github.com/user-attachments/assets/4105bef9-5f3c-4983-b45a-4f46e27e50b6)
+
+
 ## Unit Testing & User Testing
 ### ✅ Unit Testing
 
