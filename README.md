@@ -176,7 +176,9 @@ link to our Demo video ->
 ---
 
 ## Contributing & Licenses
-This project is an assigned brief as part of our university curriculum; therefore, at this time, we will not be accepting any contributors.
+This project was developed as part of a university course requirement and is currently private and non-commercial.  
+No external contributions are being accepted at this time. 
+
 
 ## Authors & Contact Info
 Built with ❤️ by:
