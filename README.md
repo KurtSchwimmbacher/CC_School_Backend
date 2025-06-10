@@ -4,7 +4,7 @@
 
 --- 
 <h1 align="center">Code & Cloud School</h1>
-<h4 align="center">Backend Repo</h4>
+<h4 align="center">Backend Repo • <a href="https://github.com/Mwape-Kurete/CC-School-Frontend">Frontend Repo</a></h4>
 <details>
 <summary>📑 <strong>Table of Contents</strong> (Click to expand)</summary>
 
@@ -59,14 +59,137 @@ By unifying these features, the system reduces manual overhead, minimises errors
 
 
 ## Getting Started
+
 ### 2.1 Prerequisites
-### 2.2 How to Install 
+
+Ensure you have the following installed before running the backend API manually:
+
+- [.NET SDK 7.0+](https://dotnet.microsoft.com/en-us/download)
+- [PostgreSQL](https://www.postgresql.org/download/)
+- [Entity Framework CLI](https://learn.microsoft.com/en-us/ef/core/cli/dotnet) (`dotnet tool install --global dotnet-ef`)
+
+> ✅ Optional:
+> - [pgAdmin](https://www.pgadmin.org/) for database management
+> - [Visual Studio](https://visualstudio.microsoft.com/) or [Rider](https://www.jetbrains.com/rider/) for IDE support
+
+---
+
+### 2.2 How to Install (Manual Setup)
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/KurtSchwimmbacher/CC_School_Backend.git
+   cd CC-School-Backend
+   ```
+2. Configure your database
+   * Create a new PostgreSQL database (e.g. schooldb)
+   * Update appsettings.json or appsettings.Development.json with your PostgreSQL connection string
+3. Restore project dependencies
+   ```
+   dotnet restore
+   ```
+4. Apply Entity Framework migrations
+   ```
+   dotnet ef database update
+   ```
+5. Run the backend
+   ```
+   dotnet run
+   ```
+6. Access the API
+   * By default: http://localhost:5000 or https://localhost:5001
 ## Features & Usage
+### **🚀 Core Features by Role**  
+
+#### **👨‍💼 Administrators**  
+- **📅 Timetable Management**  
+  - Generate conflict-free class timetables and exam schedules.  
+  - Automatically resolve room/lecturer clashes.  
+- **👩‍🏫 Lecturer Management**  
+  - Create and assign lecturers to courses.  
+- **🎓 Enrollment Oversight**  
+  - Verify/approve student enrollments.  
+
+---
+
+#### **👩‍🏫 Lecturers**  
+- **🏫 Class Management**  
+  - Upload course materials (PDFs, videos, links).  
+- **📝 Assignments & Grading**  
+  - Create assignments with deadlines.   
+- **📢 Announcements**  
+  - Post updates to entire classes or specific students.  
+
+---
+
+#### **🎓 Students**  
+- **📚 Enrollment Portal**  
+  - Select majors during registration.  
+- **🗓️ Schedule Access**  
+  - View personalised class timetable.  
+- **📤 Assignment Submissions**  
+  - Upload files (PDF, DOCX, ZIP).  
+
+---
+
+### **🎨 Usage Highlights**  
+- **Timetable**: Avoids overlaps in rooms/lecturers during generation.  
+- **Live Edit**: Lecturers can visualise, update, and upload course content with ease  
+
+---
+
 ## Demonstration
+link to our Demo video -> 
 ## Architecture / System Design
 ## Unit Testing & User Testing
+### ✅ Unit Testing
+
 ## Highlights & Challenges
 ## Roadmap & Future Implementations
+
+### **🌐 Integration Enhancements**  
+- **Video Conferencing**: Integrate Google Meet/Zoom for virtual classrooms.  
+- **Calendar Sync**: Sync with Google Calendar/iCal for deadline reminders.  
+
+### **👨‍💼 Administrators**  
+- **Analytics Dashboard**:  
+  - Real-time insights on student performance, course popularity, and resource utilisation.  
+- **Automated Teaching Assignments**:  
+  - Algorithm-based distribution of teaching loads based on lecturer availability/expertise.  
+
+### **👩‍🏫 Lecturers**  
+- **Resource Library**:  
+  - Centralised repository for lecture recordings, slides, and reading materials.  
+- **Automated Grading**:  
+  - AI-assisted grading for quizzes/MCQs (e.g., regex-based answer matching).  
+- **Attendance Automation**:  
+  - Facial recognition/QR codes for automated attendance marking.  
+
+### **🎓 Students**  
+- **Course Recommendations**:  
+  - ML-driven suggestions based on past performance/interests.  
+- **Smart Planner**:  
+  - Unified view of timetables, deadlines, and personal events (with notifications).  
+- **Quiz Hosting**:  
+  - In-app quiz creation/submission with instant feedback.  
+
+---
+
 ## Contributing & Licenses
+This project is an assigned brief as part of our university curriculum; therefore, at this time, we will not be accepting any contributors.
+
 ## Authors & Contact Info
+Built with ❤️ by:
+- **Brilu Hlongwane**
+- **Kurt Schwimmbacher**
+- **Mwape Kurete**
+- **Ngozi Ojukwu**
+
+  
 ## Acknowledgements 
+Special thanks to:
+- **Vue.js** and the open-source community for powerful tools and documentation
+- **Microsoft .NET Team** for backend scalability support
+- **Code & Cloud Academy** lecturers and students for real-world testing and feedback
+- Contributors of [Electron](https://www.electronjs.org/) for enabling seamless cross-platform desktop apps
+- [Google Forms](https://forms.google.com) for collecting valuable user insights
