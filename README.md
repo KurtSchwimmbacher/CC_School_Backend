@@ -176,7 +176,7 @@ link to our Demo video ->
 ---
 
 ## Contributing & Licenses
-This project was developed as part of a university course requirement and is currently private and non-commercial.  
+> This project was developed as part of a university course requirement and is currently private and non-commercial.  
 No external contributions are being accepted at this time. 
 
 
