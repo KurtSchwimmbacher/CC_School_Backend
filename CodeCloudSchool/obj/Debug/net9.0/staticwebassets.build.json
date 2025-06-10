@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "pPnCjdW+y3BawUv0HxYQUp6v0fgfv8PEonaJr1F0H4k=",
+  "Source": "Code_CloudSchool",
+  "BasePath": "_content/Code_CloudSchool",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Code_CloudSchool\\wwwroot",
+      "Source": "Code_CloudSchool",
+      "ContentRoot": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\CodeCloudSchool\\wwwroot\\",
+      "BasePath": "_content/Code_CloudSchool",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}
