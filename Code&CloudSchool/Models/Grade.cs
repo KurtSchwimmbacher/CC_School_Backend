@@ -11,7 +11,7 @@ public class Grade
 
     [Required] // The Submission_ID field is required and cannot be null.
     [ForeignKey("Submission")] // This is a foreign key linking to the Submission table.
-    public int Submission_ID { get; set; }
+    public int Submission_ID { get; set; } 
 
     [Required] // The Score field is required and cannot be null.
     [Range(0, 100)] // The Score must be between 0 and 100.

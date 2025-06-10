@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore; // Added for Include() method
 using Code_CloudSchool.Data; // Added for AppDBContext
 
-namespace Code_CloudSchool.Controllers
+namespace Code_CloudSchool.Controllers 
 {
     [Route("api/[controller]")] // Base route for this controller (e.g., "/api/grades").
     [ApiController] // Indicates this is an API controller.

@@ -22,7 +22,7 @@ public interface IGradeService
     Task<Grade> UpdateGrade(Grade grade);
 
     // Delete a grade by its ID.
-    Task<bool> DeleteGrade(int id);
+    Task<bool> DeleteGrade(int id); 
 
     // Get all grades for a specific assignment (useful for lecturers).
     Task<List<Grade>> GetGradesForAssignment(int assignmentId);
