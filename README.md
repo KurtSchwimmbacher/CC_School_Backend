@@ -1,4 +1,4 @@
-![GitHub-CC-Banner-backend](https://github.com/user-attachments/assets/089136b4-e68e-4656-b42c-a8a7abdd77fd)
+![GitHub-CC-Banner-backend](https://github.com/user-attachments/assets/47421c40-aaeb-4178-8195-bccae994c212)
 ---
 <h4 align="center"> A cross-platform desktop school management system</h4>
 
