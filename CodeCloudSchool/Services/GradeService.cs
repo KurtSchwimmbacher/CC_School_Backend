@@ -52,19 +52,19 @@ public class GradeService : IGradeService
         return grade;
     }
 
-    // Get a grade by its submission ID.
-    public async Task<Grade?> GetGradeBySubmissionId(int submissionId)
-    {
-        var grade = await _context.Grades
-            .FirstOrDefaultAsync(g => g.Submission_ID == submissionId);
+    // // Get a grade by its submission ID.
+    // public async Task<Grade?> GetGradeBySubmissionId(int submissionId)
+    // {
+    //     var grade = await _context.Grades
+    //         .FirstOrDefaultAsync(g => g.Submission_ID == submissionId);
 
-        if (grade == null)
-        {
-            throw new KeyNotFoundException($"Grade for submission ID {submissionId} not found");
-        }
+    //     if (grade == null)
+    //     {
+    //         throw new KeyNotFoundException($"Grade for submission ID {submissionId} not found");
+    //     }
 
-        return grade;
-    }
+    //     return grade;
+    // }
 
     // Update an existing grade.
     public async Task<Grade> UpdateGrade(Grade grade)
@@ -108,5 +108,10 @@ public class GradeService : IGradeService
     {
         return await _context.Grades
             .AnyAsync(g => g.Submission_ID == submissionId);
+    }
+
+    public Task<Grade?> GetGradeBySubmissionId(int submissionId)
+    {
+        throw new NotImplementedException();
     }
 }
