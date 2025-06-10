@@ -1,9 +1,10 @@
-![GitHub-CC-Banner](https://github.com/user-attachments/assets/f3b589cc-dfa7-4d3b-aa70-1e265facb24c)
+![GitHub-CC-Banner-backend](https://github.com/user-attachments/assets/089136b4-e68e-4656-b42c-a8a7abdd77fd)
 ---
 <h4 align="center"> A cross-platform desktop school management system</h4>
 
 --- 
-<h1>Code & Cloud School</h1>
+<h1 align="center">Code & Cloud School</h1>
+<h4 align="center">Backend Repo</h4>
 <details>
 <summary>📑 <strong>Table of Contents</strong> (Click to expand)</summary>
 
