@@ -145,6 +145,14 @@ link to our Demo video ->
 ### System Design Diagram (the layered approach) 
 ![WhatsApp Image 2025-06-10 at 21 52 58_2b984a57](https://github.com/user-attachments/assets/4105bef9-5f3c-4983-b45a-4f46e27e50b6)
 
+### System UI Design 
+![IMG-20250610-WA0074](https://github.com/user-attachments/assets/c2b28af0-5b34-425d-8a38-007589c99936)
+![IMG-20250610-WA0075](https://github.com/user-attachments/assets/2ba37842-d8aa-4f59-a5c7-fc4ea45a1bd8)
+![IMG-20250610-WA0076](https://github.com/user-attachments/assets/95f2e6a3-3f68-4f8d-b9d4-60a964d89e00)
+![IMG-20250610-WA0079](https://github.com/user-attachments/assets/b64f3add-9265-468d-b9b7-37531adfd6ab)
+![IMG-20250610-WA0077](https://github.com/user-attachments/assets/6e6d82c4-7195-4f7b-aff3-73382dd9f5b1)
+![IMG-20250610-WA0078](https://github.com/user-attachments/assets/e9b88358-6d85-4110-8bfd-0525ce95876d)
+---
 
 ## Unit Testing & User Testing
 ### ✅ Unit Testing
