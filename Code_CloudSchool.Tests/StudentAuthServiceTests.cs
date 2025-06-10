@@ -1,150 +1,170 @@
 using System;
+using System.Threading.Tasks;
 using Code_CloudSchool.Data;
-using Code_CloudSchool.Interfaces;
 using Code_CloudSchool.Models;
 using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 namespace Code_CloudSchool.Tests;
 
 public class StudentAuthServiceTests
 {
     private readonly StudentAuthService _service;
+    private readonly AppDBContext _context;
 
     public StudentAuthServiceTests()
     {
-                // use an in-memory db for testing
         var options = new DbContextOptionsBuilder<AppDBContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        var context = new AppDBContext(options);
+        _context = new AppDBContext(options);
 
-        // seed the in-memory database
+        // Seed a student
         var student = new Student
         {
-            StudentNumber = "3250000",
-            Name = "test student",
-            LastName = "test last name",
+            UserId = 1,
+            StudentNumber = "3250001",
+            Name = "Test",
+            LastName = "Student",
             Gender = "Male",
-            Email = "3250000@codecloudschool.com"
-
+            Email = "3250001@codecloudschool.com",
+            Password = BCrypt.Net.BCrypt.EnhancedHashPassword("correct_password", 13)
         };
 
-        context.Students.Add(student);
-        context.SaveChanges();
+        _context.Students.Add(student);
+        _context.SaveChanges();
 
-
-        // Initialize the LecturerAuthService with the in-memory context
-        _service = new StudentAuthService(context);
+        _service = new StudentAuthService(_context);
     }
 
-
-    // Test Case 1: EmailExists -> email exists in DB
     [Fact]
     public async Task EmailExists_EmailExists_ReturnsStudent()
     {
-        // Arrange
-        // use existing email in DB
-        string testEmail = "3250000@codecloudschool.com";
-
-        // Act
-        var Student = await _service.EmailExists(testEmail);
-
-        // Assert
-        Assert.NotNull(Student);
-        Assert.Equal(testEmail, Student.Email);
-
+        var result = await _service.EmailExists("3250001@codecloudschool.com");
+        Assert.NotNull(result);
+        Assert.Equal("3250001@codecloudschool.com", result.Email);
     }
 
-    // Test Case 2: EmailExists -> email does not exist in DB
     [Fact]
     public async Task EmailExists_EmailNotFound_ReturnsNull()
     {
-        // Arrange
-        // non existent email
-        string nonEmail = "noEmail@ccSchool.com";
-
-        // Act
-        var Student = await _service.EmailExists(nonEmail);
-
-        // Assert
-        Assert.Null(Student);
+        var result = await _service.EmailExists("noEmail@ccSchool.com");
+        Assert.Null(result);
     }
 
-    // Test Case 3: GenerateStudentNumber -> generates student number
     [Fact]
     public async Task GenerateStudentNumber_Success_ReturnsStudentNumber()
     {
-        // Arrange
-        Student student = new Student
-        {
-            Id = 5,
-            Name = "Kurt",
-            Gender = "Male"
-        };
+        var student = new Student { UserId = 5, Gender="Male" };
+        var expected = "3250005";
 
-        string expectedStudentNumber = "3250005";
+        var result = await _service.GenerateStudentNumber(student);
 
-        // Act
-        var studentNumber = await _service.GenerateStudentNumber(student);
-
-        // Assert
-        Assert.NotNull(studentNumber);
-        Assert.Equal(expectedStudentNumber, studentNumber);
+        Assert.Equal(expected, result);
     }
 
-
-    // Test Case 4: GenerateEmailAddress -> generates email address
     [Fact]
     public async Task GenerateEmailAddress_Successful_ReturnsEmail()
     {
-        // Arrange
-        string StudentNumber = "3250005";
-        string expectedEmail = "3250005@codecloudschool.com";
+        var studentNumber = "3250005";
+        var expected = "3250005@codecloudschool.com";
 
-        // Act
-        var email = await _service.GenerateEmailAddress(StudentNumber);
+        var result = await _service.GenerateEmailAddress(studentNumber);
 
-        // Assert
-        Assert.NotNull(email);
-        Assert.Equal(expectedEmail, email);
+        Assert.Equal(expected, result);
     }
 
-    // Test Case 5: HashPassword -> hashes password correctly
     [Fact]
     public async Task HashPassword_Successful_ReturnsHashedPassword()
     {
-        // Arrange
-        string password = "password123";
+        var password = "password123";
 
-        // Act
-        var hashedPassword = await _service.HashPassword(password);
+        var result = await _service.HashPassword(password);
 
-        // Assert
-        Assert.NotNull(hashedPassword);
-        // Ensure hashed password is not the same as the original
-        Assert.NotEqual(password, hashedPassword); 
+        Assert.NotNull(result);
+        Assert.NotEqual(password, result);
     }
 
-    // Test Case 6: RegisterStudent -> student is registered successfully
-    [Fact] 
-    public async Task RegisterStudent_Successful_ReturnsTrue()
+    [Fact]
+    public async Task RegisterStudent_EmailAlreadyExists_ReturnsNull()
     {
-        // Arrange 
-        var student = new Student
+        var existingStudent = new Student
         {
-            Name = "John",
-            LastName = "Doe",
+            Email = "3250001@codecloudschool.com",
+            Password = "password",
             Gender = "Male",
-            Email = "john.doe@codecloudschool.com"
         };
 
-        // Act
-        var result = await _service.RegisterStudent(student);
+        var result = await _service.RegisterStudent(existingStudent);
 
-        // Assert
-        Assert.True(result);
+        Assert.Null(result);
     }
 
+    [Fact]
+    public async Task RegisterStudent_NewStudent_ReturnsStudentWithGeneratedFields()
+    {
+        var newStudent = new Student
+        {
+            Name = "New",
+            LastName = "Student",
+            Gender = "Female",
+            Email = "newstudent@example.com",  // This will be overridden by RegisterStudent
+            Password = "new_password"
+        };
+
+        var result = await _service.RegisterStudent(newStudent);
+
+        Assert.NotNull(result);
+        Assert.NotNull(result.StudentNumber);
+        Assert.EndsWith("@codecloudschool.com", result.Email);
+        Assert.NotEqual("new_password", result.Password); // Password hashed
+    }
+
+    [Fact]
+    public async Task ValidatePassword_CorrectPassword_ReturnsTrue()
+    {
+        var student = await _service.EmailExists("3250001@codecloudschool.com");
+        var isValid = await _service.ValidatePassword(student!, "correct_password");
+
+        Assert.True(isValid);
+    }
+
+    [Fact]
+    public async Task ValidatePassword_IncorrectPassword_ReturnsFalse()
+    {
+        var student = await _service.EmailExists("3250001@codecloudschool.com");
+        var isValid = await _service.ValidatePassword(student!, "wrong_password");
+
+        Assert.False(isValid);
+    }
+
+    [Fact]
+    public async Task LoginStudent_NonExistentEmail_ReturnsNull()
+    {
+        var result = await _service.LoginStudent("any_password", "noemail@example.com");
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task LoginStudent_WrongPassword_ReturnsNull()
+    {
+        var email = "3250001@codecloudschool.com";
+        var result = await _service.LoginStudent("wrong_password", email);
+
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task LoginStudent_CorrectCredentials_ReturnsStudent()
+    {
+        var email = "3250001@codecloudschool.com";
+        var password = "correct_password";
+
+        var result = await _service.LoginStudent(password, email);
+
+        Assert.NotNull(result);
+        Assert.Equal(email, result!.Email);
+    }
 }

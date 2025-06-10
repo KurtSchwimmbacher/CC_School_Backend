@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Code&amp;CloudSchool\Code_CloudSchool.csproj" />
+    <ProjectReference Include="..\CodeCloudSchool\Code_CloudSchool.csproj" />
   </ItemGroup>
 
 </Project>

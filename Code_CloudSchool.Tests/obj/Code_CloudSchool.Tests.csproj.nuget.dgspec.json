@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj": {}
+    "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj": {
+    "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\CodeCloudSchool\\Code_CloudSchool.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj",
+        "projectUniqueName": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\CodeCloudSchool\\Code_CloudSchool.csproj",
         "projectName": "Code_CloudSchool",
-        "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj",
+        "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\CodeCloudSchool\\Code_CloudSchool.csproj",
         "packagesPath": "C:\\Users\\Kurts\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\obj\\",
+        "outputPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\CodeCloudSchool\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Kurts\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -54,35 +54,35 @@
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.0-preview.2.24128.4, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.3, )"
+              "version": "[9.0.0-preview.2.24128.2, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.0-preview.2.24128.2, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.0-preview.2.24128.2, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.0-preview.2.24128.2, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[9.0.0, )"
+              "version": "[9.0.0-preview.2.24128.4, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.0-preview.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -112,14 +112,14 @@
         }
       }
     },
-    "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj": {
+    "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj",
         "projectName": "Code_CloudSchool.Tests",
-        "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj",
+        "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\Code_CloudSchool.Tests\\Code_CloudSchool.Tests.csproj",
         "packagesPath": "C:\\Users\\Kurts\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code_CloudSchool.Tests\\obj\\",
+        "outputPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\Code_CloudSchool.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Kurts\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -134,8 +134,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj": {
-                "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code&CloudSchool\\Code&CloudSchool\\Code_CloudSchool.csproj"
+              "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\CodeCloudSchool\\Code_CloudSchool.csproj": {
+                "projectPath": "C:\\Users\\Kurts\\OneDrive\\Desktop\\Code_CloudSchool\\CodeCloudSchool\\Code_CloudSchool.csproj"
               }
             }
           }
