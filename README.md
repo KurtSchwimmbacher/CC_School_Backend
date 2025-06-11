@@ -168,7 +168,7 @@ Throughout the development of the CC School Management System
 | **Assignments**    | Accessibility Feature, Rich Text Editor      | 
 | **Timetable**      | Visual Representation | 
 | **User**           | extending user types           |
-| **Avatar Api**     |            |
+| **Avatar Api**     | Smart Api to create unique user avatars|
 
 ### Challenges 
 | Feature            | Challenges                                   | 
@@ -177,6 +177,8 @@ Throughout the development of the CC School Management System
 | **Live Course Edit**    | Partial Patching                 |
 | **Accessibility Feature**    | Webkit Recognition                |
 | **Assignment Course Relationship**    | Fetching the relevent relationship details      |
+| **Assignment File Uploads**    | Storing Filees in backend      |
+
 
 
 ## Roadmap & Future Implementations
