@@ -139,7 +139,7 @@ Ensure you have the following installed before running the backend API manually:
 ---
 
 ## Demonstration
-link to our Demo video -> 
+link to our Demo video -> ![Demo Video](https://drive.google.com/file/d/10KLjwpqMqiMYzO_2HIpNvMB4rxMOCKAp/view?usp=sharing)
 
 ## Architecture / System Design
 ### System Design Diagram (the layered approach) 
@@ -159,6 +159,26 @@ link to our Demo video ->
 ![image](https://github.com/user-attachments/assets/d3c26717-5ee7-4aca-acb5-61cd1e681749)
 
 ## Highlights & Challenges
+Throughout the development of the CC School Management System 
+
+### Highlights 
+| Feature            | Highlights                                   | 
+|--------------------|----------------------------------------------|
+| **Authentication** | 2 Factor Authentication                      |
+| **Assignments**    | Accessibility Feature, Rich Text Editor      | 
+| **Timetable**      | Visual Representation | 
+| **User**           | extending user types           |
+| **Avatar Api**     |            |
+
+### Challenges 
+| Feature            | Challenges                                   | 
+|--------------------|----------------------------------------------|
+| **2 Factor Authentication**    | Email Services                   |
+| **Live Course Edit**    | Partial Patching                 |
+| **Accessibility Feature**    | Webkit Recognition                |
+| **Assignment Course Relationship**    | Fetching the relevent relationship details      |
+
+
 ## Roadmap & Future Implementations
 
 ### **🌐 Integration Enhancements**  
