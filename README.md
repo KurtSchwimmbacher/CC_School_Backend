@@ -17,7 +17,7 @@
 3. [**Features & Usage**](#features--usage)  
 4. [**Demonstration**](#demonstration)  
 5. [**Architecture / System Design**](#architecture--system-design)  
-6. [**Unit Testing & User Testing**](#unit-testing--user-testing)  
+6. [**Unit Testing**](#unit-testing)  
 7. [**Highlights & Challenges**](#highlights--challenges)  
 8. [**Roadmap & Future Implementations**](#roadmap--future-implementations)  
 9. [**Contributing & Licenses**](#contributing--licenses)  
@@ -74,7 +74,7 @@ Ensure you have the following installed before running the backend API manually:
 
 ---
 
-### 2.2 How to Install (Manual Setup)
+### 2.2 How to Install
 
 1. **Clone the repository**
    ```bash
@@ -154,8 +154,9 @@ link to our Demo video ->
 ![IMG-20250610-WA0078](https://github.com/user-attachments/assets/e9b88358-6d85-4110-8bfd-0525ce95876d)
 ---
 
-## Unit Testing & User Testing
+## Unit Testing 
 ### ✅ Unit Testing
+![image](https://github.com/user-attachments/assets/d3c26717-5ee7-4aca-acb5-61cd1e681749)
 
 ## Highlights & Challenges
 ## Roadmap & Future Implementations
