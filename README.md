@@ -139,7 +139,7 @@ Ensure you have the following installed before running the backend API manually:
 ---
 
 ## Demonstration
-link to our Demo video -> ![Demo Video](https://drive.google.com/file/d/10KLjwpqMqiMYzO_2HIpNvMB4rxMOCKAp/view?usp=sharing)
+link to our Demo video -> [Demo Video](https://drive.google.com/file/d/10KLjwpqMqiMYzO_2HIpNvMB4rxMOCKAp/view?usp=sharing)
 
 ## Architecture / System Design
 ### System Design Diagram (the layered approach) 
