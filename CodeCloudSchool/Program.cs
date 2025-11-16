@@ -75,6 +75,27 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Apply database migrations automatically (optional - controlled by env var)
+// Set RUN_MIGRATIONS=true in Render to enable automatic migrations on startup
+var runMigrations = Environment.GetEnvironmentVariable("RUN_MIGRATIONS") == "true";
+if (runMigrations)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<AppDBContext>();
+            context.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            // Log error (you might want to use ILogger here)
+            Console.WriteLine($"Error running migrations: {ex.Message}");
+            throw;
+        }
+    }
+}
 
 // Pipeline
 if (app.Environment.IsDevelopment())
