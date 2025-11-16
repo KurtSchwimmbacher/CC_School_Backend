@@ -6,19 +6,21 @@ using Code_CloudSchool.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-// Load .env (for local dev)
-DotNetEnv.Env.Load();
+// Load .env (for local dev) - only if file exists
+if (File.Exists(".env"))
+{
+    DotNetEnv.Env.Load();
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Setup DB connection string
-var connectionString = builder.Environment.IsDevelopment()
-    ? builder.Configuration.GetConnectionString("DefaultConnection")
-    : Environment.GetEnvironmentVariable("DB_CONNECTION");
+// Setup DB connection string - prioritize environment variable, fallback to config
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") 
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
-    throw new InvalidOperationException("DB_CONNECTION environment variable is not set.");
+    throw new InvalidOperationException("Database connection string is not set. Please set DB_CONNECTION environment variable or DefaultConnection in appsettings.json");
 }
 
 // Register services
@@ -93,6 +95,8 @@ app.UseStaticFiles();
 app.MapControllers();
 app.MapHealthChecks("/health");
 
+// Get port from environment variable (Render provides PORT), default to 80
+var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+var url = $"http://0.0.0.0:{port}";
 
-// Important for Docker/Render: Listen on port 80
-app.Run("http://0.0.0.0:80");
+app.Run(url);

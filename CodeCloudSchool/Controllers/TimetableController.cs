@@ -48,12 +48,15 @@ namespace Code_CloudSchool.Controllers
         {
             try
             {
-                await _timetableService.GenerateTimetableAsync();
-                return Ok("Timetable generation successful.");
+                var result = await _timetableService.GenerateTimetableAsync();
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Timetable generation failed: {ex.Message}");
+                return StatusCode(500, new { 
+                    Message = $"Timetable generation failed: {ex.Message}",
+                    Error = ex.Message 
+                });
             }
         }
 

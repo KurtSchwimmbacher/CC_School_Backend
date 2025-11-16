@@ -43,8 +43,21 @@ public class EmailVerificationService : IEmailVerificationService
 
         public async Task<bool> SendVerificationEmail(User user, string token, string? roleEmail = null)
         {
-            var resendKey = _config["Resend:ApiKey"];
-            var fromEmail = _config["Resend:FromEmail"];
+            // Prioritize environment variables, fallback to configuration
+            var resendKey = Environment.GetEnvironmentVariable("RESEND_API_KEY") 
+                ?? _config["Resend:ApiKey"];
+            var fromEmail = Environment.GetEnvironmentVariable("RESEND_FROM_EMAIL") 
+                ?? _config["Resend:FromEmail"];
+
+            if (string.IsNullOrWhiteSpace(resendKey))
+            {
+                throw new InvalidOperationException("Resend API key is not configured. Please set RESEND_API_KEY environment variable or Resend:ApiKey in appsettings.json");
+            }
+
+            if (string.IsNullOrWhiteSpace(fromEmail))
+            {
+                throw new InvalidOperationException("Resend from email is not configured. Please set RESEND_FROM_EMAIL environment variable or Resend:FromEmail in appsettings.json");
+            }
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://api.resend.com/");
