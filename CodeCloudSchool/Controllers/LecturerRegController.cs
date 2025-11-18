@@ -134,11 +134,15 @@ namespace Code_CloudSchool.Controllers
                 return BadRequest("Lecturer already exists");
             }
 
-            // trigger verification 
-            var token = await _emailVerificationService.GenerateAndStoreToken(registeredLecturer);
-            await _emailVerificationService.SendVerificationEmail(registeredLecturer, token, registeredLecturer.LecEmail);
+            // Set email as verified by default (email verification removed from signup process)
+            registeredLecturer.IsEmailVerified = true;
+            await _context.SaveChangesAsync();
 
-            return Ok("Verification email sent. Please check your inbox");
+            return Ok(new { 
+                message = "Lecturer registered successfully", 
+                lecturerId = registeredLecturer.LecturerId,
+                email = registeredLecturer.LecEmail
+            });
         }
 
 

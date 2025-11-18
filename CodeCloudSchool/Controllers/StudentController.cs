@@ -63,11 +63,15 @@ namespace Code_CloudSchool.Controllers
                 return BadRequest("Student already exists");
             }
 
-            // Trigger verification
-            var token = await _emailVerificationService.GenerateAndStoreToken(registeredStudent);
-            await _emailVerificationService.SendVerificationEmail(registeredStudent, token, registeredStudent.Email);
+            // Set email as verified by default (email verification removed from signup process)
+            registeredStudent.IsEmailVerified = true;
+            await _context.SaveChangesAsync();
 
-            return Ok("Verification email sent. Please check your inbox.");
+            return Ok(new { 
+                message = "Student registered successfully", 
+                studentId = registeredStudent.UserId,
+                studentNumber = registeredStudent.StudentNumber
+            });
         }
 
 

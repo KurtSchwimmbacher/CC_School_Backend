@@ -56,11 +56,15 @@ namespace Code_CloudSchool.Controllers
                 return BadRequest("Admin already exists");
             }
 
-            // trigger verification
-            var token = await _emailVerificationService.GenerateAndStoreToken(registeredAdmin);
-            await _emailVerificationService.SendVerificationEmail(registeredAdmin, token, registeredAdmin.AdminEmail);
+            // Set email as verified by default (email verification removed from signup process)
+            registeredAdmin.IsEmailVerified = true;
+            await _context.SaveChangesAsync();
 
-            return Ok("Verification email sent. Please check your inbox.");
+            return Ok(new { 
+                message = "Admin registered successfully", 
+                adminId = registeredAdmin.AdminId,
+                email = registeredAdmin.AdminEmail
+            });
         }
 
 
