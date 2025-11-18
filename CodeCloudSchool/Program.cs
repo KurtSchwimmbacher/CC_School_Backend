@@ -60,15 +60,21 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IEmailVerificationService, EmailVerificationService>();
 
 
-// Allow any origin, method, and header (for testing — restrict later in production)
+// CORS configuration - Allow frontend to access API
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
         policy
-            .AllowAnyOrigin()       // Or .WithOrigins("http://localhost:5173") for stricter
+            .WithOrigins(
+                "https://cc-school-frontend.vercel.app",
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "http://localhost:5174"
+            )
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowAnyHeader()
+            .AllowCredentials(); // Allow credentials if needed for authentication
     });
 });
 
@@ -97,7 +103,9 @@ if (runMigrations)
     }
 }
 
-// Pipeline
+// Pipeline - CORS must be early in the pipeline
+app.UseCors("AllowAll");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -109,10 +117,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
-
-app.UseCors("AllowAll");
-
-
 
 app.UseStaticFiles();
 
